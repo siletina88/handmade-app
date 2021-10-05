@@ -4,6 +4,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useState } from 'react'
 import { sliderItems } from '../data'
+import { mobile } from '../responsive'
 
 const Container = styled.div`
   width: 100%;
@@ -12,6 +13,7 @@ const Container = styled.div`
   background-color: coral;
   position: relative;
   overflow: hidden;
+  ${mobile({ display: 'none' })}
 `
 
 const Arrow = styled.div`
@@ -42,7 +44,7 @@ const Slide = styled.div`
   display: flex;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 100px);
   background-color: ${(props) => props.bg};
 `
 const ImgContainer = styled.div`
