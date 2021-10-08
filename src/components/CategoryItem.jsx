@@ -1,13 +1,14 @@
-import styled from 'styled-components'
-import { mobile } from '../responsive'
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { mobile } from "../responsive";
 
 const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: all 2s ease;
-  ${mobile({ height: '30vh' })}
-`
+  ${mobile({ height: "30vh" })}
+`;
 const Container = styled.div`
   flex: 1;
   margin: 3px;
@@ -17,7 +18,7 @@ const Container = styled.div`
   &:hover ${Image} {
     transform: scale(1.2);
   }
-`
+`;
 const Info = styled.div`
   position: absolute;
   height: 100%;
@@ -28,12 +29,12 @@ const Info = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`
+`;
 const Title = styled.h1`
   color: white;
   margin-bottom: 20px;
   text-align: center;
-`
+`;
 const Button = styled.button`
   border: none;
   padding: 10px;
@@ -41,18 +42,20 @@ const Button = styled.button`
   color: gray;
   cursor: pointer;
   font-weight: 600;
-`
+`;
 
 const CategoryItem = ({ item }) => {
   return (
     <Container>
-      <Image src={item.img}></Image>
-      <Info>
-        <Title>{item.title}</Title>
-        <Button>PRETRAZI</Button>
-      </Info>
+      <Link to={`/products/${item.cat}`}>
+        <Image src={item.img}></Image>
+        <Info>
+          <Title>{item.title}</Title>
+          <Button>PRETRAZI</Button>
+        </Info>
+      </Link>
     </Container>
-  )
-}
+  );
+};
 
-export default CategoryItem
+export default CategoryItem;

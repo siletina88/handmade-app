@@ -1,7 +1,7 @@
-import styled from 'styled-components'
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
-import SearchIcon from '@mui/icons-material/Search'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import styled from "styled-components";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import SearchIcon from "@mui/icons-material/Search";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const Info = styled.div`
   opacity: 0;
@@ -18,7 +18,7 @@ const Info = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
   transition: all 0.5s ease;
   cursor: pointer;
-`
+`;
 const Icon = styled.div`
   width: 40px;
   height: 40px;
@@ -34,7 +34,7 @@ const Icon = styled.div`
     background-color: palevioletred;
     transform: scale(1.1);
   }
-`
+`;
 
 const Container = styled.div`
   flex: 1;
@@ -50,18 +50,18 @@ const Container = styled.div`
   &:hover ${Info} {
     opacity: 1;
   }
-`
+`;
 const Circle = styled.div`
   width: 200px;
   height: 200px;
   border-radius: 50%;
   background-color: white;
   position: absolute;
-`
+`;
 const Image = styled.img`
   height: 75%;
   z-index: 2;
-`
+`;
 
 const Product = ({ item }) => {
   return (
@@ -80,7 +80,7 @@ const Product = ({ item }) => {
         </Icon>
       </Info>
     </Container>
-  )
-}
+  );
+};
 
-export default Product
+export default Product;
