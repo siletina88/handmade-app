@@ -2,6 +2,7 @@ import styled from "styled-components";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { Link } from "react-router-dom";
 
 const Info = styled.div`
   opacity: 0;
@@ -46,6 +47,7 @@ const Container = styled.div`
   justify-content: center;
   background-color: #dfccd3;
   position: relative;
+  overflow: hidden;
 
   &:hover ${Info} {
     opacity: 1;
@@ -72,9 +74,11 @@ const Product = ({ item }) => {
         <Icon>
           <AddShoppingCartIcon />
         </Icon>
-        <Icon>
-          <SearchIcon />
-        </Icon>
+        <Link to={`/product/${item._id}`}>
+          <Icon>
+            <SearchIcon />
+          </Icon>
+        </Link>
         <Icon>
           <FavoriteBorderIcon />
         </Icon>
