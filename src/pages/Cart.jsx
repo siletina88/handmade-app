@@ -27,9 +27,15 @@ const TopButton = styled.button`
   padding: 10px;
   font-weight: 600;
   cursor: pointer;
-  border: ${(props) => props.type === "filled" && "none"};
-  color: ${(props) => props.type === "filled" && "white"};
-  background-color: ${(props) => (props.type === "filled" ? "black" : "transparent")};
+  border: ${(props) =>
+    // @ts-ignore
+    props.type === "filled" && "none"};
+  color: ${(props) =>
+    // @ts-ignore
+    props.type === "filled" && "white"};
+  background-color: ${(props) =>
+    // @ts-ignore
+    props.type === "filled" ? "black" : "transparent"};
   ${mobile({ margin: "10px", padding: "5px" })}
 `;
 const TopTexts = styled.div`
@@ -132,8 +138,12 @@ const SummaryItem = styled.div`
   margin: 30px 0px;
   display: flex;
   justify-content: space-between;
-  font-weight: ${(props) => props.type === "total" && "600"};
-  font-size: ${(props) => props.type === "total" && "24px"};
+  font-weight: ${(props) =>
+    // @ts-ignore
+    props.type === "total" && "600"};
+  font-size: ${(props) =>
+    // @ts-ignore
+    props.type === "total" && "24px"};
 `;
 const SummaryItemText = styled.span``;
 const SummaryItemPrice = styled.span``;
@@ -149,6 +159,7 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
+  // @ts-ignore
   const cart = useSelector((state) => state.cart);
   return (
     <Container>
@@ -162,7 +173,12 @@ const Cart = () => {
             <TopText>KOSARICA (2)</TopText>
             <TopText>LISTA ZELJA (2)</TopText>
           </TopTexts>
-          <TopButton type='filled'>ZAPOCNI NARUDZBU</TopButton>
+          <TopButton
+            // @ts-ignore
+            type='filled'
+          >
+            ZAPOCNI NARUDZBU
+          </TopButton>
         </Top>
         <Bottom>
           <Info>
@@ -212,7 +228,10 @@ const Cart = () => {
               <SummaryItemText>Popust na dostavu</SummaryItemText>
               <SummaryItemPrice>$ -5.90</SummaryItemPrice>
             </SummaryItem>
-            <SummaryItem type='total'>
+            <SummaryItem
+              // @ts-ignore
+              type='total'
+            >
               <SummaryItemText>UKUPNO</SummaryItemText>
               <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
