@@ -5,12 +5,16 @@ import styled from "styled-components";
 import { popularProducts } from "../data";
 import Product from "./Product";
 import axios from "axios";
+import { mobile } from "../responsive";
 
 const Container = styled.div`
-  padding: 20px;
+  padding: 40px 150px;
   display: flex;
   flex-wrap: wrap;
+  gap: 30px;
   justify-content: space-between;
+  background-color: #f5fafd;
+  ${mobile({ padding: "20px", marginTop: "10px" })};
 `;
 
 const Products = ({ cat, filter, sort }) => {
@@ -42,7 +46,7 @@ const Products = ({ cat, filter, sort }) => {
   }, [sort]);
 
   return (
-    <Container>{cat ? filteredProducts.map((item) => <Product key={item._id} item={item}></Product>) : products.slice(0, 8).map((item) => <Product key={item._id} item={item}></Product>)}</Container>
+    <Container>{cat ? filteredProducts.map((item) => <Product key={item._id} item={item}></Product>) : products.slice(0, 10).map((item) => <Product key={item._id} item={item}></Product>)}</Container>
   );
 };
 

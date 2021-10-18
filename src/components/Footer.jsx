@@ -11,6 +11,7 @@ import { mobile } from "../responsive";
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
+  background-color: #12130f;
 
   overflow-x: hidden;
   ${mobile({ flexDirection: "column" })}
@@ -20,6 +21,7 @@ const Left = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
+  color: white;
 `;
 const Logo = styled.h1``;
 const Description = styled.p`
@@ -45,6 +47,7 @@ const Center = styled.div`
   flex: 1;
   padding: 20px;
   ${mobile({ display: "none" })}
+  color: white;
 `;
 
 const Title = styled.h3`
@@ -64,7 +67,8 @@ const ListItem = styled.li`
 const Right = styled.div`
   flex: 1;
   padding: 20px;
-  ${mobile({ backgroundColor: "whitesmoke" })};
+  ${mobile({ backgroundColor: "#565656" })};
+  color: white;
 `;
 const ContactItem = styled.div`
   margin-bottom: 20px;

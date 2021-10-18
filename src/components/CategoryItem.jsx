@@ -11,10 +11,11 @@ const Image = styled.img`
 `;
 const Container = styled.div`
   flex: 1;
-  margin: 3px;
+  width: 100%;
   height: 70vh;
   position: relative;
   overflow: hidden;
+  ${mobile({ margin: "0px", paddingTop: "5px" })}
   &:hover ${Image} {
     transform: scale(1.2);
   }
@@ -32,16 +33,17 @@ const Info = styled.div`
 `;
 const Title = styled.h1`
   color: white;
+  text-shadow: 2px 2px 2px #000000a7;
   margin-bottom: 20px;
   text-align: center;
 `;
 const Button = styled.button`
   border: none;
-  padding: 10px;
-  background-color: white;
-  color: gray;
+  padding: 10px 20px;
+  background-color: #ffc5c5d5;
+  color: #12130f;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 500;
 `;
 
 const CategoryItem = ({ item }) => {
@@ -51,7 +53,7 @@ const CategoryItem = ({ item }) => {
         <Image src={item.img}></Image>
         <Info>
           <Title>{item.title}</Title>
-          <Button>PRETRAZI</Button>
+          <Button>POGLEDAJ</Button>
         </Info>
       </Link>
     </Container>

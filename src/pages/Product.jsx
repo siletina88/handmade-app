@@ -15,23 +15,46 @@ import { publicRequest } from "../requestMethods";
 import { addProduct } from "../redux/cartSlice";
 import { useDispatch } from "react-redux";
 
-const Container = styled.div``;
+const Container = styled.div`
+  background-color: #eae6e5;
+`;
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
   ${mobile({ flexDirection: "column", padding: "10px" })}
 `;
+
+const Left = styled.div`
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+`;
 const ImgContainer = styled.div`
+  flex: 4;
+`;
+const ThumbContainer = styled.div`
   flex: 1;
+  display: flex;
+  align-items: center;
+  border: 1px solid lightgray;
+  gap: 10px;
+
+  height: 100px;
+`;
+const Thumbnail = styled.img`
+  width: 20%;
+  height: 100px;
+  object-fit: cover;
+  cursor: pointer;
 `;
 const Image = styled.img`
   width: 100%;
-  height: 90vh;
+  height: 70vh;
   object-fit: cover;
   ${mobile({ height: "40vh" })}
 `;
 const InfoContainer = styled.div`
-  flex: 1;
+  flex: 2;
   padding: 0px 50px;
   ${mobile({ padding: "10px" })}
 `;
@@ -102,7 +125,7 @@ const Amount = styled.span`
   width: 30px;
   height: 30px;
   border-radius: 10px;
-  border: 1px solid palevioletred;
+  border: 2px solid black;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -112,8 +135,8 @@ const Amount = styled.span`
 const Button = styled.button`
   display: flex;
   align-items: center;
-  padding: 15px;
-  border: 2px solid palevioletred;
+  padding: 10px;
+
   background-color: white;
   cursor: pointer;
   font-weight: 500;
@@ -145,6 +168,7 @@ const Product = () => {
       try {
         const res = await publicRequest.get("/products/find/" + id);
         setProduct(res.data);
+        console.log(product?.img);
       } catch (error) {}
     };
     getProduct();
@@ -152,22 +176,26 @@ const Product = () => {
 
   const handleClick = () => {
     dispatch(addProduct({ ...product, quantity, color, size }));
-    console.log("i clicked");
   };
 
   return (
     <Container>
-      <Announcment />
       <Navbar></Navbar>
+      <Announcment />
       <Wrapper>
-        <ImgContainer>
-          <Image
-            src={
-              // @ts-ignore
-              product.img
-            }
-          ></Image>
-        </ImgContainer>
+        <Left>
+          {" "}
+          <ImgContainer>
+            <Image
+              src={
+                // @ts-ignore
+                product.img
+              }
+            ></Image>
+          </ImgContainer>
+          <ThumbContainer>{product.imgAlt ? product.imgAlt.map((item) => <Thumbnail src={item}></Thumbnail>) : <h1>loading</h1>}</ThumbContainer>
+        </Left>
+
         <InfoContainer>
           <Title>
             {

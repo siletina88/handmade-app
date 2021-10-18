@@ -4,8 +4,11 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { mobile } from "../responsive";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { removeProduct } from "../redux/cartSlice";
+import { Link } from "react-router-dom";
 
 const Container = styled.div``;
 const Wrapper = styled.div`
@@ -29,7 +32,7 @@ const TopButton = styled.button`
   cursor: pointer;
   border: ${(props) =>
     // @ts-ignore
-    props.type === "filled" && "none"};
+    props.type === "filled" && "2px solid black"};
   color: ${(props) =>
     // @ts-ignore
     props.type === "filled" && "white"};
@@ -118,6 +121,8 @@ const ProductPrice = styled.div`
   font-weight: 200;
   ${mobile({ marginBottom: "20px", fontSize: "26px" })}
 `;
+
+const Remove = styled.div``;
 const Hr = styled.hr`
   background-color: #eee;
   border: none;
@@ -159,16 +164,24 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
+  const dispatch = useDispatch();
   // @ts-ignore
   const cart = useSelector((state) => state.cart);
+  const handleRemove = (e, product) => {
+    e.preventDefault();
+
+    dispatch(removeProduct(product));
+  };
   return (
     <Container>
-      <Announcment></Announcment>
       <Navbar></Navbar>
+      <Announcment></Announcment>
       <Wrapper>
         <Title>VASA KOSARICA </Title>
         <Top>
-          <TopButton>NASTAVI SA KUPOVANJEM</TopButton>
+          <Link to='/'>
+            <TopButton>NASTAVI SA KUPOVANJEM</TopButton>
+          </Link>
           <TopTexts>
             <TopText>KOSARICA (2)</TopText>
             <TopText>LISTA ZELJA (2)</TopText>
@@ -184,7 +197,7 @@ const Cart = () => {
           <Info>
             {cart.products.map((product) => (
               <>
-                <Product>
+                <Product key={product._id}>
                   <ProductDetail>
                     <Image src={product.img}></Image>
                     <Details>
@@ -208,6 +221,9 @@ const Cart = () => {
                     </ProductAmountContainer>
                     <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
                   </PriceDetail>
+                  <Remove>
+                    <HighlightOffIcon style={{ fontSize: "30px", cursor: "pointer" }} onClick={(e) => handleRemove(e, product)}></HighlightOffIcon>
+                  </Remove>
                 </Product>
                 <Hr />
               </>

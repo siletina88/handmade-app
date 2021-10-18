@@ -79,9 +79,7 @@ const Login = () => {
           <Input type='password' onChange={(e) => setPassword(e.target.value)} placeholder='Lozinka'></Input>
         </Form>
 
-        <Button onClick={handleLogin} disabled={isFetching}>
-          LOGIN
-        </Button>
+        <Button onClick={handleLogin}>LOGIN</Button>
 
         {error && <Error>Wrong username or password!{error}</Error>}
         <Link>Zaboravili ste password ili korisnicko ime?</Link>
