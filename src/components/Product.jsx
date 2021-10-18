@@ -107,7 +107,7 @@ const Container = styled.div`
   background-color: white;
   box-shadow: 1px 4px 9px -2px rgba(0, 0, 0, 0.301);
 
-  min-width: 340px;
+  min-width: 300px;
   height: 500px;
 
   align-items: center;

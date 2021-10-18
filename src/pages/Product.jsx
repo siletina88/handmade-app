@@ -25,15 +25,15 @@ const Wrapper = styled.div`
 `;
 
 const Left = styled.div`
-  flex: 3;
+  flex: 4;
   display: flex;
   flex-direction: column;
 `;
 const ImgContainer = styled.div`
-  flex: 4;
+  border: 1px solid lightgray;
 `;
 const ThumbContainer = styled.div`
-  flex: 1;
+  max-width: 100%;
   display: flex;
   align-items: center;
   border: 1px solid lightgray;
@@ -55,18 +55,20 @@ const Image = styled.img`
 `;
 const InfoContainer = styled.div`
   flex: 2;
-  padding: 0px 50px;
+  padding: 0px 30px;
+  padding-top: 30px;
   ${mobile({ padding: "10px" })}
 `;
 const Title = styled.h1`
-  font-weight: 300;
+  font-weight: 500;
 `;
 const Description = styled.p`
-  margin: 20px 0px;
+  margin: 40px 0px;
+  font-weight: 300;
 `;
 const Price = styled.span`
   font-weight: 300;
-  font-size: 40px;
+  font-size: 32px;
 `;
 
 const FilterContainer = styled.div`
@@ -74,7 +76,7 @@ const FilterContainer = styled.div`
 
   justify-content: space-between;
   width: 60%;
-  margin: 30px 0px;
+  margin: 20px 0px;
   ${mobile({ width: "100%" })}
 `;
 
@@ -84,7 +86,7 @@ const Filter = styled.div`
 `;
 
 const FilterTitle = styled.span`
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 300;
   margin-right: 20px;
 `;
@@ -108,7 +110,7 @@ const FilterSizeOption = styled.option``;
 
 const AddContainer = styled.div`
   width: 60%;
-  gap: 20px;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -124,7 +126,7 @@ const AmountContainer = styled.div`
 const Amount = styled.span`
   width: 30px;
   height: 30px;
-  border-radius: 10px;
+  background-color: white;
   border: 2px solid black;
   display: flex;
   align-items: center;
@@ -135,13 +137,16 @@ const Amount = styled.span`
 const Button = styled.button`
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 15px 10px;
+  border: none;
 
-  background-color: white;
+  background-color: #f82c73;
   cursor: pointer;
-  font-weight: 500;
+  color: white;
+
+  font-weight: 400;
   &:hover {
-    background-color: #eebcbc;
+    background-color: #f82c73c8;
   }
 `;
 
@@ -150,6 +155,7 @@ const Product = () => {
   const id = location.pathname.split("/")[2];
 
   const [product, setProduct] = useState({});
+  const [currentImage, setCurrentImage] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
@@ -168,11 +174,11 @@ const Product = () => {
       try {
         const res = await publicRequest.get("/products/find/" + id);
         setProduct(res.data);
-        console.log(product?.img);
+        setCurrentImage(product?.img);
       } catch (error) {}
     };
     getProduct();
-  }, [id]);
+  }, [id, product.img]);
 
   const handleClick = () => {
     dispatch(addProduct({ ...product, quantity, color, size }));
@@ -186,14 +192,23 @@ const Product = () => {
         <Left>
           {" "}
           <ImgContainer>
-            <Image
-              src={
-                // @ts-ignore
-                product.img
-              }
-            ></Image>
+            {currentImage ? (
+              <Image
+                src={
+                  // @ts-ignore
+                  currentImage
+                }
+              ></Image>
+            ) : (
+              <Image
+                src={
+                  // @ts-ignore
+                  "https://lh3.googleusercontent.com/proxy/b8B-EmGSEJltLdYxMp0TgmFvRvImP4UTd-y5C0euBUvZ1ntRhFi0p2LAmMw07S_liiAPxiPV5joVTi9LA8WLAtk"
+                }
+              ></Image>
+            )}
           </ImgContainer>
-          <ThumbContainer>{product.imgAlt ? product.imgAlt.map((item) => <Thumbnail src={item}></Thumbnail>) : <h1>loading</h1>}</ThumbContainer>
+          <ThumbContainer>{product.imgAlt ? product.imgAlt.map((item) => <Thumbnail onClick={() => setCurrentImage(item)} src={item}></Thumbnail>) : <h1>loading</h1>}</ThumbContainer>
         </Left>
 
         <InfoContainer>
@@ -209,17 +224,17 @@ const Product = () => {
               product.description
             }
           </Description>
-          <Price>£45.49</Price>
+          <Price>{product.price} KM</Price>
           <FilterContainer>
             <Filter>
-              <FilterTitle>Boja</FilterTitle>
+              <FilterTitle>Boja:</FilterTitle>
               {product &&
                 // @ts-ignore
                 product.color // @ts-ignore
                   ?.map((c) => <FilterColor onClick={() => setColor(c)} key={c} color={c}></FilterColor>)}
             </Filter>
             <Filter>
-              <FilterTitle>Velicina</FilterTitle>
+              <FilterTitle>Velicina:</FilterTitle>
               <FilterSize onClick={(e) => setSize(e.target.value)}>
                 <FilterSizeOption>Broj</FilterSizeOption>
                 {product &&
@@ -235,11 +250,8 @@ const Product = () => {
               <Amount>{quantity}</Amount>
               <AddIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("inc")} />
             </AmountContainer>
-            <Button onClick={handleClick}>
-              Dodaj u kosaricu
-              <AddShoppingCartIcon style={{ paddingLeft: "5px" }} />
-            </Button>
           </AddContainer>
+          <Button onClick={handleClick}>Dodaj u kosaricu</Button>
         </InfoContainer>
       </Wrapper>
       <Newsletter />

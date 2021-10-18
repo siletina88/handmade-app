@@ -132,9 +132,9 @@ const Hr = styled.hr`
 const Summary = styled.div`
   flex: 1;
   border: 0.5px solid lightgray;
-  border-radius: 10px;
+
   padding: 20px;
-  height: 40vh;
+  height: auto;
 `;
 const SummaryTitle = styled.h1`
   font-weight: 200;
@@ -183,7 +183,7 @@ const Cart = () => {
             <TopButton>NASTAVI SA KUPOVANJEM</TopButton>
           </Link>
           <TopTexts>
-            <TopText>KOSARICA (2)</TopText>
+            <TopText>KOSARICA ({cart.quantity})</TopText>
             <TopText>LISTA ZELJA (2)</TopText>
           </TopTexts>
           <TopButton
@@ -222,7 +222,7 @@ const Cart = () => {
                     <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
                   </PriceDetail>
                   <Remove>
-                    <HighlightOffIcon style={{ fontSize: "30px", cursor: "pointer" }} onClick={(e) => handleRemove(e, product)}></HighlightOffIcon>
+                    <HighlightOffIcon style={{ fontSize: "30px", cursor: "pointer", marginRight: "10px" }} onClick={(e) => handleRemove(e, product)}></HighlightOffIcon>
                   </Remove>
                 </Product>
                 <Hr />
@@ -249,7 +249,7 @@ const Cart = () => {
               type='total'
             >
               <SummaryItemText>UKUPNO</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>$ {Math.floor(cart.total)}</SummaryItemPrice>
             </SummaryItem>
             <Button>NARUCI</Button>
           </Summary>

@@ -8,7 +8,7 @@ import axios from "axios";
 import { mobile } from "../responsive";
 
 const Container = styled.div`
-  padding: 40px 150px;
+  padding: 40px 100px;
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
