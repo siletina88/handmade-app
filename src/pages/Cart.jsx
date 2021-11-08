@@ -169,7 +169,6 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
-  const [ordered, setOrdered] = useState(false);
   const [showOrderWindow, setShowOrderWindow] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
@@ -291,7 +290,7 @@ const Cart = () => {
         ) : (
           <div style={{ textAlign: "center" }}>VASA KOSARICA JE PRAZNA</div>
         )}
-        {showOrderWindow && <Order setShowOrderWindow={setShowOrderWindow} showOrderWindow={showOrderWindow} ordered={ordered} setOrdered={setOrdered}></Order>}
+        {showOrderWindow && <Order setShowOrderWindow={setShowOrderWindow} showOrderWindow={showOrderWindow}></Order>}
       </Wrapper>
       <Footer></Footer>
     </Container>
