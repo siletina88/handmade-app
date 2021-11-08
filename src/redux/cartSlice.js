@@ -12,7 +12,7 @@ const cartSlice = createSlice({
     isFetching: false,
   },
   reducers: {
-    clearCart: (state) => {
+    clearCart: (state, action) => {
       state.quantity = 0;
       state._id = null;
       state.userId = null;
@@ -72,6 +72,20 @@ const cartSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
+    clearUserCartStart: (state, action) => {
+      state.isFetching = true;
+    },
+    clearUserCartSuccess: (state, action) => {
+      state.isFetching = false;
+      state.products = [];
+      state.quantity = 0;
+      state.total = 0;
+      // state.products.push(action.payload);
+    },
+    clearUserCartFailure: (state, action) => {
+      state.isFetching = false;
+      state.error = true;
+    },
   },
 });
 
@@ -88,5 +102,8 @@ export const {
   createUserCartFailure,
   createUserCartStart,
   createUserCartSuccess,
+  clearUserCartFailure,
+  clearUserCartStart,
+  clearUserCartSuccess,
 } = cartSlice.actions;
 export default cartSlice.reducer;

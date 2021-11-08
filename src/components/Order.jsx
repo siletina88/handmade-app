@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
 import axios from "axios";
+import Congratulations from "./Congratulations";
+import { clearCartOnOrder } from "../redux/apiCalls";
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -146,9 +149,14 @@ const IconWrapper = styled.div`
 `;
 
 const Order = ({ setShowOrderWindow }) => {
+  const dispatch = useDispatch();
+  const [ordered, setOrdered] = useState(false);
   const cart = useSelector((state) => state.cart);
   const [inputs, setInputs] = useState({});
   const user = useSelector((state) => state.user.currentUser);
+
+  const cartId = cart._id;
+
   let fullName;
   let address;
   let phone;
@@ -198,7 +206,8 @@ const Order = ({ setShowOrderWindow }) => {
 
     try {
       const res = await axios.post(`http://localhost:5000/api/orders`, order);
-      console.log(res.data);
+      setOrdered(true);
+      clearCartOnOrder(cartId, userId, dispatch);
     } catch (error) {
       console.log(error);
     }
@@ -219,46 +228,52 @@ const Order = ({ setShowOrderWindow }) => {
   return (
     <Container>
       <Wrapper>
-        <Title>ZAVRSI NARUDZBU</Title>
-        <IconWrapper>
-          <HighlightOffIcon onClick={() => setShowOrderWindow(false)} style={{ fontSize: "30px", cursor: "pointer", color: "white" }} />
-        </IconWrapper>
+        {ordered ? (
+          <Congratulations setShowOrderWindow={setShowOrderWindow} setOrdered={setOrdered}></Congratulations>
+        ) : (
+          <>
+            <Title>ZAVRSI NARUDZBU</Title>
+            <IconWrapper>
+              <HighlightOffIcon onClick={() => setShowOrderWindow(false)} style={{ fontSize: "30px", cursor: "pointer", color: "white" }} />
+            </IconWrapper>
 
-        <OrderDetails>
-          <ProductList>
-            {cart.products.map((item) => (
-              <Product>
-                {item.product.title} x {item.quantity}
-                <Total>{item.product.price * item.quantity} KM</Total>
-              </Product>
-            ))}
-          </ProductList>
-          <OrderTotal>UKUPNO {cart.total.toFixed(2)} KM</OrderTotal>
-        </OrderDetails>
-        <Form>
-          <FormItem>
-            <Label>Ime i prezime</Label>
-            <Input ref={user && fullName} onChange={handleChange} name='name' type='text'></Input>
-          </FormItem>
-          <FormItem>
-            <Label>Adresa dostave </Label>
-            <Input ref={user && address} onChange={handleChange} name='address' type='text'></Input>
-          </FormItem>
-          <FormItem>
-            <Label>Grad </Label>
-            <Input onChange={handleChange} name='city' type='text'></Input>
-          </FormItem>
-          <FormItem>
-            <Label>Broj telefona</Label>
-            <Input ref={user && phone} onChange={handleChange} name='phone' type='text'></Input>
-          </FormItem>
-          <FormItem>
-            <Label>Email</Label>
-            <Input ref={user && email} onChange={handleChange} name='email' type='email'></Input>
-          </FormItem>
+            <OrderDetails>
+              <ProductList>
+                {cart.products.map((item) => (
+                  <Product>
+                    {item.product.title} x {item.quantity}
+                    <Total>{item.product.price * item.quantity} KM</Total>
+                  </Product>
+                ))}
+              </ProductList>
+              <OrderTotal>UKUPNO {cart.total.toFixed(2)} KM</OrderTotal>
+            </OrderDetails>
+            <Form>
+              <FormItem>
+                <Label>Ime i prezime</Label>
+                <Input ref={user && fullName} onChange={handleChange} name='name' type='text'></Input>
+              </FormItem>
+              <FormItem>
+                <Label>Adresa dostave </Label>
+                <Input ref={user && address} onChange={handleChange} name='address' type='text'></Input>
+              </FormItem>
+              <FormItem>
+                <Label>Grad </Label>
+                <Input onChange={handleChange} name='city' type='text'></Input>
+              </FormItem>
+              <FormItem>
+                <Label>Broj telefona</Label>
+                <Input ref={user && phone} onChange={handleChange} name='phone' type='text'></Input>
+              </FormItem>
+              <FormItem>
+                <Label>Email</Label>
+                <Input ref={user && email} onChange={handleChange} name='email' type='email'></Input>
+              </FormItem>
 
-          <Button onClick={handleClick}>Naruci</Button>
-        </Form>
+              <Button onClick={handleClick}>Naruci</Button>
+            </Form>
+          </>
+        )}
       </Wrapper>
     </Container>
   );

@@ -20,10 +20,13 @@ import {
   updateUserCartFailure,
   updateUserCartStart,
   updateUserCartSuccess,
-  clearCart,
+  clearUserCartStart,
+  clearUserCartSuccess,
+  clearUserCartFailure,
   createUserCartStart,
   createUserCartFailure,
   createUserCartSuccess,
+  clearCart,
 } from "./cartSlice";
 
 //login
@@ -41,6 +44,7 @@ export const login = async (dispatch, user) => {
 export const logout = (dispatch) => {
   dispatch(logoutStart());
   dispatch(clearCart());
+
   try {
     dispatch(logoutSuccess());
   } catch (error) {
@@ -117,6 +121,18 @@ export const updateCart = async (cartId, item, userId, dispatch) => {
   } catch (error) {
     console.log(error);
     dispatch(updateUserCartFailure());
+  }
+};
+// clear cart
+export const clearCartOnOrder = async (cartId, userId, dispatch) => {
+  dispatch(clearUserCartStart());
+  try {
+    const res = await userRequest.put(`/cart/clear/${userId}`, { cartId });
+    dispatch(clearUserCartSuccess(res.data));
+    console.log(res.data);
+  } catch (error) {
+    console.log(error);
+    dispatch(clearUserCartFailure());
   }
 };
 // remove item from cart
