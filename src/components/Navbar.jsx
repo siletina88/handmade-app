@@ -5,7 +5,7 @@ import { Badge, IconButton } from "@mui/material";
 import { NoEncryption, ShoppingCart } from "@mui/icons-material";
 import { mobile } from "../responsive";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { logout } from "../redux/apiCalls";
 import logo from "../logo6.png";
 
@@ -45,7 +45,7 @@ const LanguageFlag = styled.img`
 `;
 
 const SearchContainer = styled.div`
-  width: 300px;
+  width: 200px;
   display: flex;
   align-items: center;
   margin-left: 20px;
@@ -65,6 +65,7 @@ const Input = styled.input`
 
   &::placeholder {
     color: white;
+    font-size: 12px;
   }
 
   &:focus {
@@ -72,7 +73,7 @@ const Input = styled.input`
   }
 `;
 const Center = styled.div`
-  flex: 2;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,6 +81,7 @@ const Center = styled.div`
 `;
 const Logo = styled.img`
   width: 280px;
+  padding-left: 25px;
   ${mobile({ width: "180px" })}
 `;
 const Right = styled.div`
@@ -90,6 +92,9 @@ const Right = styled.div`
   ${mobile({ justifyContent: "center", flex: "3", gap: "5px" })}
 `;
 const NavItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -102,19 +107,21 @@ const Avatar = styled.img`
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  margin-left: 10px;
+  margin-left: 7px;
   ${mobile({ marginLeft: "0px", height: "30px", width: "30px" })}
 `;
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const quantity = useSelector((state) => state.cart.quantity);
+  const history = useHistory();
 
   const loggedIn = useSelector((state) => state.user.loggedIn);
   const user = useSelector((state) => state.user.currentUser);
   const handleLogout = (e) => {
     e.preventDefault();
     logout(dispatch);
+    history.push("/");
   };
 
   return (
@@ -135,34 +142,41 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-          <Logo src={logo}></Logo>
+          <Link to='/'>
+            <Logo src={logo}></Logo>
+          </Link>
         </Center>
         <Right>
           {loggedIn ? (
             <>
-              <NavItem>Hello, {user.username}</NavItem>
-              <Avatar src={user.img ? user.img : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}></Avatar>
+              <Link to='/profile'>
+                <NavItem>
+                  Hi, {user.username} <Avatar src={user.img ? user.img : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}></Avatar>
+                </NavItem>
+              </Link>
+
               <NavItem onClick={handleLogout}>LOGOUT</NavItem>
             </>
           ) : (
             <>
-              <NavItem>REGISTRACIJA</NavItem>
+              <Link style={{ textDecoration: "none" }} to='/register'>
+                <NavItem>REGISTRACIJA</NavItem>
+              </Link>
               <Link style={{ textDecoration: "none" }} to='/login'>
-                {" "}
                 <NavItem>LOGIN</NavItem>
               </Link>
             </>
           )}
 
-          <Link to='/cart'>
-            <NavItem>
+          <NavItem>
+            <Link to='/cart'>
               <IconButton aria-label='cart'>
                 <Badge badgeContent={quantity} color='secondary'>
                   <ShoppingCart color='info' />
                 </Badge>
               </IconButton>
-            </NavItem>
-          </Link>
+            </Link>
+          </NavItem>
         </Right>
       </Wrapper>
     </Container>

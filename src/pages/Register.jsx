@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { useState } from "react";
 import { mobile } from "../responsive";
 import { useDispatch } from "react-redux";
-import { register } from "../redux/apiCalls";
+import { register, login } from "../redux/apiCalls";
+import Alert from "../components/Alert";
 
 const Container = styled.div`
   width: 100vw;
@@ -36,31 +37,53 @@ const Input = styled.input`
 const Agreement = styled.div`
   font-size: 12px;
   margin: 10px 0px;
+  line-height: 1.3;
 `;
 const Button = styled.button`
   width: 40%;
   border: none;
   padding: 15px 20px;
   color: white;
-  background-color: palevioletred;
+  font-weight: 600;
+  background-color: #f82c73;
   cursor: pointer;
+  &:hover {
+    background-color: #f82c73c0;
+  }
 `;
 
 const Register = () => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({});
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
+    setError(false);
     setInputs((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
   };
+  const handlePassword = (e) => {
+    setError(false);
+    setPassword(e.target.value);
+  };
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
+    setError(false);
     e.preventDefault();
     const user = { ...inputs };
-    console.log(user);
-    register(dispatch, { ...user });
+
+    const username = inputs.username;
+
+    if (user.username && user.password && user.password.length > 5 && user?.password === password) {
+      await register(dispatch, { ...user });
+
+      login(dispatch, { username, password });
+    } else {
+      setError(true);
+      return;
+    }
   };
 
   return (
@@ -71,10 +94,21 @@ const Register = () => {
           <Input onChange={handleChange} name='username' placeholder='Korisnicko ime'></Input>
           <Input onChange={handleChange} name='email' type='email' placeholder='email'></Input>
           <Input onChange={handleChange} type='password' name='password' placeholder='Sifra'></Input>
-          <Input type='password' placeholder='Sifra ponovo'></Input>
+          <Input onChange={handlePassword} type='password' placeholder='Sifra ponovo'></Input>
           <Input onChange={handleChange} name='fullName' placeholder='Ime i prezime'></Input>
           <Input onChange={handleChange} name='address' placeholder='Adresa'></Input>
         </Form>
+        <Alert
+          message={
+            (!inputs.username && "Korisnicko ime je obavezno") ||
+            (!inputs.email && "Email je obavezan") ||
+            (!inputs.password && "Sifra je obavezna") ||
+            (inputs.password !== password && "Sifre se ne podudaraju") ||
+            (inputs.password.length < 6 && "Sifre mora imati najmanje 6 karaktera")
+          }
+          trigger={error}
+          type='error'
+        ></Alert>
         <Agreement>
           Kreiranjem ovog naloga, pristajem na procesuiranje licnih podataka u skladu sa <b>POLISOM PRIVATNOSTI</b>
         </Agreement>

@@ -2,8 +2,8 @@ export const sliderItems = [
   {
     id: 1,
     img: "https://pngimg.com/uploads/jewelry/jewelry_PNG6756.png",
-    title: "SUMMER SALE",
-    desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
+    title: "Ljetna rasprodaja",
+    desc: "Kupujte po povoljnijim cijenama, zahvaljujući ljetnjoj rasprodaji!",
     bg: "#f5fafd",
   },
   {

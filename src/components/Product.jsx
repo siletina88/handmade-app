@@ -45,11 +45,12 @@ const Icon = styled.div`
   align-items: center;
   justify-content: center;
   margin: 5px;
-  transition: all 0.5s ease;
+  transition: all 0.5s ease-out;
   cursor: pointer;
   &:hover {
-    background-color: palevioletred;
-    transform: scale(1.1);
+    background-color: #f82c73;
+    transform: scale(1.2);
+    color: white;
   }
 `;
 const Description = styled.div`

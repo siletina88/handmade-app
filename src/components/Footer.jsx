@@ -7,6 +7,7 @@ import RoomIcon from "@mui/icons-material/Room";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import EmailIcon from "@mui/icons-material/Email";
 import { mobile } from "../responsive";
+import logo from "../logo6.png";
 
 const Container = styled.div`
   display: flex;
@@ -23,23 +24,26 @@ const Left = styled.div`
   padding: 20px;
   color: white;
 `;
-const Logo = styled.h1``;
+const Logo = styled.img`
+  width: 200px;
+`;
 const Description = styled.p`
   margin: 20px 0px;
 `;
 const SocialContainer = styled.div`
   display: flex;
+  gap: 8px;
 `;
 const SocialIcon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  /* border-radius: 50%; */
   color: white;
   background-color: ${(props) => props.color};
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 5px;
+
   cursor: pointer;
 `;
 
@@ -83,7 +87,7 @@ const Footer = () => {
   return (
     <Container>
       <Left>
-        <Logo>CORI.</Logo>
+        <Logo src={logo}></Logo>
         <Description>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores sed vel eius nobis temporibus eum maiores facere quos. Neque, minus!</Description>
         <SocialContainer>
           <SocialIcon color='#3B5999'>

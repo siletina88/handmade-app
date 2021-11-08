@@ -1,10 +1,11 @@
 import SendIcon from "@mui/icons-material/Send";
+import MarkEmailReadSharpIcon from "@mui/icons-material/MarkEmailReadSharp";
 
 import styled from "styled-components";
 import { mobile } from "../responsive";
 
 const Container = styled.div`
-  height: 40vh;
+  height: 35vh;
   background-color: #565656;
   display: flex;
   flex-direction: column;
@@ -13,7 +14,7 @@ const Container = styled.div`
   color: white;
 `;
 const Title = styled.h1`
-  font-size: 60px;
+  font-size: 50px;
   margin-bottom: 20px;
   ${mobile({ fontSize: "40px" })}
 `;
@@ -57,7 +58,7 @@ const Newsletter = () => {
       <InputContainer>
         <Input placeholder='Vas email' />
         <Button>
-          <SendIcon></SendIcon>
+          <MarkEmailReadSharpIcon />
         </Button>
       </InputContainer>
     </Container>

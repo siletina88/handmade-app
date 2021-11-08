@@ -10,10 +10,10 @@ import { mobile } from "../responsive";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { publicRequest } from "../requestMethods";
-// @ts-ignore
-// @ts-ignore
 import { addProduct } from "../redux/cartSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCart } from "../redux/apiCalls";
+import { handleQuantity } from "../customFunctions";
 
 const Container = styled.div`
   background-color: #eae6e5;
@@ -33,8 +33,8 @@ const ImgContainer = styled.div`
   border: 1px solid lightgray;
 `;
 const ThumbContainer = styled.div`
-  max-width: 100%;
   display: flex;
+
   align-items: center;
   border: 1px solid lightgray;
   gap: 10px;
@@ -153,6 +153,8 @@ const Button = styled.button`
 const Product = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
+  const user = useSelector((state) => state.user.currentUser);
+  const cartItems = useSelector((state) => state.cart.products);
 
   const [product, setProduct] = useState({});
   const [currentImage, setCurrentImage] = useState("");
@@ -160,28 +162,52 @@ const Product = () => {
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const dispatch = useDispatch();
+  let userId;
+  let cartId;
 
-  const handleQuantity = (type) => {
-    if (type === "dec") {
-      quantity > 1 && setQuantity(quantity - 1);
-    } else {
-      quantity < 50 && setQuantity(quantity + 1);
-    }
+  const getUserIdAndCartId = () => {
+    if (user) {
+      return (userId = user._id), (cartId = user.cart._id);
+    } else return;
   };
+
+  getUserIdAndCartId();
 
   useEffect(() => {
     const getProduct = async () => {
       try {
         const res = await publicRequest.get("/products/find/" + id);
         setProduct(res.data);
-        setCurrentImage(product?.img);
       } catch (error) {}
     };
     getProduct();
+    setCurrentImage(product?.img);
   }, [id, product.img]);
 
   const handleClick = () => {
-    dispatch(addProduct({ ...product, quantity, color, size }));
+    const cart = { ...product, color, size };
+
+    const item = { product: cart, quantity: Number(quantity) };
+
+    if (cartItems.length > 0) {
+      let existInCart = false;
+      const checkIfExists = () => {
+        cartItems.map((cartItem) => {
+          if (product._id === cartItem.product._id) {
+            existInCart = true;
+            return;
+          }
+        });
+      };
+      checkIfExists();
+      if (!existInCart) {
+        dispatch(addProduct({ ...product, quantity, color, size }));
+        updateCart(cartId, item, userId, dispatch);
+      } else return;
+    } else {
+      dispatch(addProduct({ ...product, quantity, color, size }));
+      updateCart(cartId, item, userId, dispatch);
+    }
   };
 
   return (
@@ -200,15 +226,10 @@ const Product = () => {
                 }
               ></Image>
             ) : (
-              <Image
-                src={
-                  // @ts-ignore
-                  "https://lh3.googleusercontent.com/proxy/b8B-EmGSEJltLdYxMp0TgmFvRvImP4UTd-y5C0euBUvZ1ntRhFi0p2LAmMw07S_liiAPxiPV5joVTi9LA8WLAtk"
-                }
-              ></Image>
+              <Image src={"https://lh3.googleusercontent.com/proxy/b8B-EmGSEJltLdYxMp0TgmFvRvImP4UTd-y5C0euBUvZ1ntRhFi0p2LAmMw07S_liiAPxiPV5joVTi9LA8WLAtk"}></Image>
             )}
           </ImgContainer>
-          <ThumbContainer>{product.imgAlt ? product.imgAlt.map((item) => <Thumbnail onClick={() => setCurrentImage(item)} src={item}></Thumbnail>) : <h1>loading</h1>}</ThumbContainer>
+          <ThumbContainer>{product?.imgAlt ? product.imgAlt.map((item) => <Thumbnail key={item} onClick={() => setCurrentImage(item)} src={item}></Thumbnail>) : <h1>loading</h1>}</ThumbContainer>
         </Left>
 
         <InfoContainer>
@@ -224,7 +245,7 @@ const Product = () => {
               product.description
             }
           </Description>
-          <Price>{product.price} KM</Price>
+          <Price>{product?.price} KM</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Boja:</FilterTitle>
@@ -246,9 +267,9 @@ const Product = () => {
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <RemoveIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("dec")} />
+              <RemoveIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("dec", quantity, setQuantity)} />
               <Amount>{quantity}</Amount>
-              <AddIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("inc")} />
+              <AddIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("inc", quantity, setQuantity)} />
             </AmountContainer>
           </AddContainer>
           <Button onClick={handleClick}>Dodaj u kosaricu</Button>

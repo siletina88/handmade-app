@@ -29,7 +29,7 @@
     "eject": "react-scripts eject"
   },
   "resolutions": {
-    "react-scripts/eslint-webpack-plugin": "2.4.1"
+    "react-scripts/eslint-webpack-plugin": "2.3.0"
   },
   "eslintConfig": {
     "ignorePatterns": [

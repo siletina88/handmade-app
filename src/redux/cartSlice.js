@@ -3,24 +3,90 @@ import { createSlice } from "@reduxjs/toolkit";
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
+    _id: null,
+    userId: null,
     products: [],
     quantity: 0,
     total: 0,
+    error: false,
+    isFetching: false,
   },
   reducers: {
+    clearCart: (state) => {
+      state.quantity = 0;
+      state._id = null;
+      state.userId = null;
+      state.products = [];
+      state.total = 0;
+    },
+
     addProduct: (state, action) => {
       state.quantity += 1;
-      state.products.push(action.payload);
+      state.products.push({ product: action.payload, quantity: action.payload.quantity });
+
       state.total += action.payload.price * action.payload.quantity;
     },
     removeProduct: (state, action) => {
       state.quantity -= 1;
 
-      state.products = state.products.filter((product) => product._id !== action.payload._id);
-      state.total = state.total - action.payload.price;
+      state.products = state.products.filter((product) => product.product._id !== action.payload.product._id);
+      state.total = state.total - action.payload.product.price * action.payload.quantity;
+    },
+
+    getUserCartStart: (state, action) => {
+      state.isFetching = true;
+    },
+    getUserCartSuccess: (state, action) => {
+      state.isFetching = false;
+      state.products = action.payload.products;
+      state.quantity = action.payload.quantity;
+      state._id = action.payload._id;
+      state.userId = action.payload.userId;
+      state.total = action.payload.total;
+    },
+    getUserCartFailure: (state, action) => {
+      state.isFetching = false;
+      state.error = true;
+    },
+    createUserCartStart: (state, action) => {
+      state.isFetching = true;
+    },
+    createUserCartSuccess: (state, action) => {
+      state.isFetching = false;
+      state.error = false;
+      state._id = action.payload._id;
+      state.userId = action.payload.userId;
+    },
+    createUserCartFailure: (state, action) => {
+      state.isFetching = false;
+      state.error = true;
+    },
+    updateUserCartStart: (state, action) => {
+      state.isFetching = true;
+    },
+    updateUserCartSuccess: (state, action) => {
+      state.isFetching = false;
+      // state.products.push(action.payload);
+    },
+    updateUserCartFailure: (state, action) => {
+      state.isFetching = false;
+      state.error = true;
     },
   },
 });
 
-export const { addProduct, removeProduct } = cartSlice.actions;
+export const {
+  addProduct,
+  removeProduct,
+  getUserCartStart,
+  getUserCartFailure,
+  getUserCartSuccess,
+  updateUserCartFailure,
+  updateUserCartStart,
+  updateUserCartSuccess,
+  clearCart,
+  createUserCartFailure,
+  createUserCartStart,
+  createUserCartSuccess,
+} = cartSlice.actions;
 export default cartSlice.reducer;

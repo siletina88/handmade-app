@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Announcment from "../components/Announcment";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Order from "../components/Order";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -9,6 +10,10 @@ import { mobile } from "../responsive";
 import { useSelector, useDispatch } from "react-redux";
 import { removeProduct } from "../redux/cartSlice";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { getCart, removeItemFromCart } from "../redux/apiCalls";
+import { getUserInfoAndCart } from "../redux/actions";
+import { useEffect } from "react";
 
 const Container = styled.div``;
 const Wrapper = styled.div`
@@ -164,14 +169,41 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
+  const [showOrderWindow, setShowOrderWindow] = useState(false);
   const dispatch = useDispatch();
-  // @ts-ignore
+  const user = useSelector((state) => state.user.currentUser);
+  const checkUser = () => {
+    if (user) {
+      const id = useSelector((state) => state.user.currentUser._id);
+
+      return id;
+    } else {
+      const id = "public";
+      console.log(id);
+      return id;
+    }
+  };
+  const id = checkUser();
+
   const cart = useSelector((state) => state.cart);
   const handleRemove = (e, product) => {
     e.preventDefault();
+    const cartId = cart._id;
+    const productId = product.product._id;
+    const cartPrice = product.product.price * product.quantity;
+
+    removeItemFromCart(cartId, productId, cartPrice, dispatch);
+    //
 
     dispatch(removeProduct(product));
   };
+  useEffect(() => {
+    console.log("I RAN");
+    const body = document.querySelector("body");
+    body.style.overflow = showOrderWindow === true ? "hidden" : "visible";
+    window.scroll(0, 0);
+  }, [showOrderWindow]);
+
   return (
     <Container>
       <Navbar></Navbar>
@@ -183,77 +215,82 @@ const Cart = () => {
             <TopButton>NASTAVI SA KUPOVANJEM</TopButton>
           </Link>
           <TopTexts>
-            <TopText>KOSARICA ({cart.quantity})</TopText>
+            <TopText>KOSARICA ({cart?.quantity})</TopText>
             <TopText>LISTA ZELJA (2)</TopText>
           </TopTexts>
-          <TopButton
-            // @ts-ignore
-            type='filled'
-          >
-            ZAPOCNI NARUDZBU
-          </TopButton>
+          <TopButton type='filled'>ZAPOCNI NARUDZBU</TopButton>
         </Top>
-        <Bottom>
-          <Info>
-            {cart.products.map((product) => (
-              <>
-                <Product key={product._id}>
-                  <ProductDetail>
-                    <Image src={product.img}></Image>
-                    <Details>
-                      <ProductName>
-                        <b>Artikal:</b> {product.title}
-                      </ProductName>
-                      <ProductId>
-                        <b>ID:</b> {product._id}
-                      </ProductId>
-                      <ProductColor color={product.color} />
+        {cart.products.length ? (
+          <Bottom>
+            <Info>
+              {cart.products.map((product) => (
+                <div key={product.product._id}>
+                  {product ? (
+                    <Product>
+                      <ProductDetail>
+                        <Image src={product.product.img}></Image>
+                        <Details>
+                          <ProductName>
+                            <b>Artikal:</b> {product.product.title}
+                          </ProductName>
+                          <ProductId>
+                            <b>ID:</b> {product.product._id}
+                          </ProductId>
+                          {/*                       
+                      <ProductColor color={product.product.color} />
                       <ProductSize>
-                        <b>Velicina:</b> {product.size.toUpperCase()}
-                      </ProductSize>
-                    </Details>
-                  </ProductDetail>
-                  <PriceDetail>
-                    <ProductAmountContainer>
-                      <RemoveIcon></RemoveIcon>
-                      <ProductAmount>{product.quantity}</ProductAmount>
-                      <AddIcon></AddIcon>
-                    </ProductAmountContainer>
-                    <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
-                  </PriceDetail>
-                  <Remove>
-                    <HighlightOffIcon style={{ fontSize: "30px", cursor: "pointer", marginRight: "10px" }} onClick={(e) => handleRemove(e, product)}></HighlightOffIcon>
-                  </Remove>
-                </Product>
-                <Hr />
-              </>
-            ))}
-          </Info>
-          <Summary>
-            <SummaryTitle>DETALJI KOSARICE</SummaryTitle>
-            <SummaryItem>
-              <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Cijena dostave</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
-            </SummaryItem>
+                        <b>Velicina:</b> {product.product.size.toUpperCase()}
+                      </ProductSize> */}
+                        </Details>
+                      </ProductDetail>
+                      <PriceDetail>
+                        <ProductAmountContainer>
+                          <RemoveIcon></RemoveIcon>
+                          <ProductAmount>{product.quantity}</ProductAmount>
+                          <AddIcon></AddIcon>
+                        </ProductAmountContainer>
+                        <ProductPrice> {(product.product.price * product.quantity).toFixed(2)} KM</ProductPrice>
+                      </PriceDetail>
+                      <Remove>
+                        <HighlightOffIcon style={{ fontSize: "30px", cursor: "pointer", marginRight: "10px" }} onClick={(e) => handleRemove(e, product, product._id)}></HighlightOffIcon>
+                      </Remove>
+                    </Product>
+                  ) : (
+                    <div>loading...</div>
+                  )}
+                  <Hr />
+                </div>
+              ))}
+            </Info>
+            <Summary>
+              <SummaryTitle>DETALJI KOSARICE</SummaryTitle>
+              <SummaryItem>
+                <SummaryItemText>Subtotal</SummaryItemText>
+                <SummaryItemPrice> {cart.total ? cart?.total.toFixed(2) : "0.00"} KM</SummaryItemPrice>
+              </SummaryItem>
+              <SummaryItem>
+                <SummaryItemText>Cijena dostave</SummaryItemText>
+                <SummaryItemPrice> 5.90 KM</SummaryItemPrice>
+              </SummaryItem>
 
-            <SummaryItem>
-              <SummaryItemText>Popust na dostavu</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem
-              // @ts-ignore
-              type='total'
-            >
-              <SummaryItemText>UKUPNO</SummaryItemText>
-              <SummaryItemPrice>$ {Math.floor(cart.total)}</SummaryItemPrice>
-            </SummaryItem>
-            <Button>NARUCI</Button>
-          </Summary>
-        </Bottom>
+              <SummaryItem>
+                <SummaryItemText>Popust na dostavu</SummaryItemText>
+                <SummaryItemPrice>-5.90 KM</SummaryItemPrice>
+              </SummaryItem>
+              <SummaryItem
+                // @ts-ignore
+                type='total'
+              >
+                <SummaryItemText>UKUPNO</SummaryItemText>
+                <SummaryItemPrice>{cart.total ? cart?.total.toFixed(2) : "0.00"} KM</SummaryItemPrice>
+              </SummaryItem>
+              <Button onClick={() => setShowOrderWindow(true)}>NARUCI</Button>
+            </Summary>
+          </Bottom>
+        ) : (
+          <div style={{ textAlign: "center" }}>VASA KOSARICA JE PRAZNA</div>
+        )}
+        {showOrderWindow && <Order setShowOrderWindow={setShowOrderWindow} showOrderWindow={showOrderWindow}></Order>}
       </Wrapper>
       <Footer></Footer>
     </Container>

@@ -64,21 +64,28 @@ const InfoContainer = styled.div`
 const Title = styled.h1`
   font-size: 70px;
   color: #12130f;
+  text-transform: uppercase;
 `;
 const Description = styled.p`
   margin: 50px 0px;
   font-size: 20px;
   font-weight: 500;
   letter-spacing: 3px;
+  text-transform: uppercase;
 `;
 const Button = styled.button`
   padding: 10px 20px;
   font-size: 18px;
   background-color: transparent;
   cursor: pointer;
-  transition: all 0.5s ease-in;
+  transition: all 0.2s ease-in;
+  border: none;
+  border: 1px solid black;
   &:hover {
-    background-color: #fccfdf;
+    background-color: #f82c73;
+    color: white;
+    border: none;
+    border: 1px solid white;
   }
 `;
 
@@ -106,7 +113,7 @@ const Slider = () => {
             <InfoContainer>
               <Title>{item.title}</Title>
               <Description>{item.desc}</Description>
-              <Button>KUPI ODMAH</Button>
+              <Button>SAZNAJ VISE</Button>
             </InfoContainer>
           </Slide>
         ))}
