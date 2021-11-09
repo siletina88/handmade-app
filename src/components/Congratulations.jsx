@@ -75,7 +75,7 @@ const Congratulations = ({ setOrdered, setShowOrderWindow }) => {
       </CounterContainer>
       <Wrapper>
         <IconContainer>
-          <Icon src='/check.png'></Icon>
+          <Icon src='/assets/check.png'></Icon>
         </IconContainer>
         <Heading>HVALA VAM!</Heading>
         <Text>Uspjesno ste obavili narudzbu. Uskoro cete dobiti email sa potvrdom i detaljima narudzbe.</Text>

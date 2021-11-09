@@ -54,6 +54,11 @@ const Loading = styled.img`
   width: 40px;
   height: 40px;
 `;
+const BottomContainer = styled.div`
+  display: flex;
+  height: 40px;
+  gap: 40px;
+`;
 
 const EditProfile = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -70,7 +75,7 @@ const EditProfile = () => {
 
   const dispatch = useDispatch();
 
-  const [inputs, setInputs] = useState({ ...user, fullName: user?.fullName, address: user?.address, phone: user?.phone });
+  const [inputs, setInputs] = useState({ ...user, fullName: user?.fullName, address: user?.address, phone: user?.phone, city: user?.city });
   const [file, setFile] = useState(null);
 
   const handleChange = (e) => {
@@ -100,6 +105,10 @@ const EditProfile = () => {
           <Input onChange={handleChange} value={inputs.address} type='text' name='address'></Input>
         </FormItem>
         <FormItem>
+          <Label>Grad</Label>
+          <Input onChange={handleChange} value={inputs.city} type='text' name='city'></Input>
+        </FormItem>
+        <FormItem>
           <Label>Telefon</Label>
           <Input onChange={handleChange} value={inputs.phone} type='text' name='phone'></Input>
         </FormItem>
@@ -108,13 +117,13 @@ const EditProfile = () => {
           <Label>Slika</Label>
           <Input onChange={(e) => setFile(e.target.files[0])} type='file' id='file'></Input>
         </FormItem>
-        <Button onClick={handleClick}>Uredi</Button>
-        <Alert type='success' message='Uspjesno ste azurirali profil' trigger={showAlert} timeout='2000'></Alert>
-        {isFetching && (
+        <BottomContainer>
+          <Button onClick={handleClick}>Uredi</Button>{" "}
           <LoadingCont>
-            <Loading src={spinner}></Loading>
+            <Alert type='success' message='Uspjesno ste azurirali profil' trigger={showAlert} timeout='2000'></Alert>
+            {isFetching && <Loading src={spinner}></Loading>}
           </LoadingCont>
-        )}
+        </BottomContainer>
       </Form>
     </>
   );

@@ -3,9 +3,11 @@ import styled from "styled-components";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useSelector, useDispatch } from "react-redux";
 
-import axios from "axios";
 import Congratulations from "./Congratulations";
 import { clearCartOnOrder } from "../redux/apiCalls";
+import { clearCart } from "../redux/cartSlice";
+import { publicRequest } from "../requestMethods";
+
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -52,7 +54,6 @@ const OrderDetails = styled.div`
   align-items: center;
   flex-direction: column;
   font-size: 14px;
-  /* border: 1px solid black; */
 `;
 const ProductList = styled.ul`
   display: flex;
@@ -151,8 +152,8 @@ const IconWrapper = styled.div`
 const Order = ({ setShowOrderWindow }) => {
   const dispatch = useDispatch();
   const [ordered, setOrdered] = useState(false);
-  const cart = useSelector((state) => state.cart);
   const [inputs, setInputs] = useState({});
+  const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user.currentUser);
 
   const cartId = cart._id;
@@ -162,6 +163,7 @@ const Order = ({ setShowOrderWindow }) => {
   let phone;
   let userId;
   let email;
+  let city;
 
   const checkIfUser = () => {
     if (user) {
@@ -169,6 +171,7 @@ const Order = ({ setShowOrderWindow }) => {
       address = useRef(user.address);
       phone = useRef(user.phone);
       email = useRef(user.email);
+      city = useRef(user.city);
       userId = useSelector((state) => state.user.currentUser._id);
     }
   };
@@ -205,9 +208,13 @@ const Order = ({ setShowOrderWindow }) => {
     }
 
     try {
-      const res = await axios.post(`http://localhost:5000/api/orders`, order);
+      const res = await publicRequest.post(`orders`, order);
       setOrdered(true);
-      clearCartOnOrder(cartId, userId, dispatch);
+      if (user) {
+        clearCartOnOrder(cartId, userId, dispatch);
+      } else {
+        dispatch(clearCart());
+      }
     } catch (error) {
       console.log(error);
     }
@@ -219,8 +226,9 @@ const Order = ({ setShowOrderWindow }) => {
       address.current.value = user.address;
       phone.current.value = user.phone;
       email.current.value = user.email;
+      city.current.value = user.city;
       setInputs((prev) => {
-        return { ...prev, name: user.fullName, address: user.address, phone: user.phone, email: user.email };
+        return { ...prev, name: user.fullName, address: user.address, phone: user.phone, email: user.email, city: user.city };
       });
     }
   }, []);
@@ -259,7 +267,7 @@ const Order = ({ setShowOrderWindow }) => {
               </FormItem>
               <FormItem>
                 <Label>Grad </Label>
-                <Input onChange={handleChange} name='city' type='text'></Input>
+                <Input ref={user && city} onChange={handleChange} name='city' type='text'></Input>
               </FormItem>
               <FormItem>
                 <Label>Broj telefona</Label>

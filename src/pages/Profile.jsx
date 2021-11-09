@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import EditProfile from "../components/EditProfile";
 import ChangePassword from "../components/ChangePassword";
+import UserOrders from "../components/UserOrders";
 
 const Container = styled.div`
   background-color: #eae6e5;
@@ -24,14 +25,19 @@ const Wrapper = styled.div`
 const Card = styled.div`
   display: flex;
   width: 100%;
-  height: 70vh;
+
   border-radius: 10px;
   overflow: hidden;
+
   box-shadow: 0px 0px 10px 0px rgba(161, 161, 161, 0.274);
 `;
 const Left = styled.div`
   flex: 1;
   background-color: #ffffffe1;
+  height: 75vh;
+  position: sticky;
+  top: 0;
+  left: 0;
 
   box-shadow: 4px 0px 14px 0px rgba(161, 161, 161, 0.274);
   z-index: 2;
@@ -170,7 +176,10 @@ const Profile = () => {
               <StyledNavLink exact={true} activeClassName='active' style={{ textDecoration: "none" }} to='/profile'>
                 <MenuListItem>Profil</MenuListItem>
               </StyledNavLink>
-              <MenuListItem>Moje narudzbe</MenuListItem>
+              <StyledNavLink exact={true} activeClassName='active' style={{ textDecoration: "none" }} to='/profile/orders'>
+                <MenuListItem>Moje narudzbe</MenuListItem>
+              </StyledNavLink>
+
               <MenuListItem>Lista zelja</MenuListItem>
               <StyledNavLink exact={true} activeClassName='active' style={{ textDecoration: "none" }} to='/profile/password'>
                 <MenuListItem>Promjeni sifru</MenuListItem>
@@ -180,6 +189,9 @@ const Profile = () => {
           <Right>
             <Route exact path='/profile'>
               <EditProfile></EditProfile>
+            </Route>
+            <Route exact path='/profile/orders'>
+              <UserOrders></UserOrders>
             </Route>
             <Route exact path='/profile/password'>
               <ChangePassword></ChangePassword>
