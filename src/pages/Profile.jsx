@@ -52,10 +52,10 @@ const ImgContainer = styled.div`
   ${mobile({ height: "170px" })}
 `;
 const Avatar = styled.img`
-  width: 120px;
+  width: 140px;
 
   object-fit: cover;
-  height: 120px;
+  height: 140px;
   border-radius: 50%;
   border: 1px solid white;
   ${mobile({ width: "140px", height: "140px" })}
@@ -65,8 +65,9 @@ const DefAvatar = styled.div`
   align-items: center;
 
   justify-content: center;
-  width: 120px;
-  height: 120px;
+  border-radius: 50%;
+  width: 140px;
+  height: 140px;
   font-size: 60px;
   background-color: #d1d1d1;
   color: #f82c73;

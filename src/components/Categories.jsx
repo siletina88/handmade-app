@@ -18,14 +18,15 @@ const Title = styled.h1`
   font-size: 50px;
   padding: 20px;
   padding-top: 40px;
-  letter-spacing: 5px;
+  font-size: 60px;
+  letter-spacing: 4px;
   text-transform: uppercase;
   background: linear-gradient(#f82c7318, #eae6e5);
-  text-shadow: 0px 1px #22241d29;
+  color: #333333;
 
-  color: white;
+  text-shadow: 2px 2px 0px #ffffff, 5px 4px 0px rgba(0, 0, 0, 0.15);
 
-  ${mobile({ fontSize: "20px", padding: "10px" })}
+  ${mobile({ fontSize: "40px", paddingTop: "40px" })}
 `;
 
 const Categories = () => {

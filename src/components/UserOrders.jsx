@@ -17,7 +17,7 @@ const Title = styled.h1`
 const TableContainer = styled.div`
   padding: 0;
   margin: 0;
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 10px;
   width: 100%;
   overflow-x: auto;

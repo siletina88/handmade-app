@@ -34,18 +34,17 @@ const ImgContainer = styled.div`
 `;
 const ThumbContainer = styled.div`
   display: flex;
-
+  flex-wrap: wrap;
   align-items: center;
   border: 1px solid lightgray;
-  gap: 10px;
-
-  height: 100px;
+  gap: 5px;
+  overflow-x: hidden;
 `;
 const Thumbnail = styled.img`
-  width: 20%;
   height: 100px;
   object-fit: cover;
   cursor: pointer;
+  ${mobile({ minWidth: "30px", maxWidth: "60px", height: "auto" })}
 `;
 const Image = styled.img`
   width: 100%;
@@ -61,6 +60,7 @@ const InfoContainer = styled.div`
 `;
 const Title = styled.h1`
   font-weight: 500;
+  ${mobile({ paddingTop: "20px" })}
 `;
 const Description = styled.p`
   margin: 40px 0px;
@@ -114,7 +114,7 @@ const AddContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  ${mobile({ width: "100%" })}
+  ${mobile({ width: "100%", justifyContent: "center" })}
 `;
 
 const AmountContainer = styled.div`
@@ -145,9 +145,11 @@ const Button = styled.button`
   color: white;
 
   font-weight: 400;
+
   &:hover {
     background-color: #f82c73c8;
   }
+  ${mobile({ margin: "0 auto" })}
 `;
 
 const Product = () => {

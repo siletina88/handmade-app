@@ -13,14 +13,15 @@ const Title = styled.h1`
 
   padding: 20px;
   padding-top: 40px;
-  font-size: 50px;
-  letter-spacing: 5px;
+  font-size: 60px;
+
   text-transform: uppercase;
   background: linear-gradient(#f82c7318, #f5fafd);
-  text-shadow: 0px 1px #22241d29;
+  color: #333333;
 
-  color: white;
-  ${mobile({ fontSize: "20px", padding: "10px" })};
+  text-shadow: 2px 2px 0px #ffffff, 5px 4px 0px rgba(0, 0, 0, 0.15);
+  letter-spacing: 4px;
+  ${mobile({ fontSize: "40px", paddingTop: "40px" })};
 `;
 
 const Container = styled.div`
