@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { mobile } from "../responsive";
 import WarningIcon from "@mui/icons-material/Warning";
 import { updateUser } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,11 +9,13 @@ import Alert from "./Alert";
 
 const Title = styled.h1`
   margin-bottom: 20px;
+  ${mobile({ textAlign: "center", marginTop: "30px" })}
 `;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  ${mobile({ padding: "30px" })}
 `;
 const FormItem = styled.div`
   display: flex;
@@ -46,7 +49,7 @@ const Error = styled.div`
 
   margin: 20px 0px;
   color: red;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 400px;
 `;
 
@@ -60,6 +63,12 @@ const LoadingCont = styled.span`
 const Loading = styled.img`
   width: 40px;
   height: 40px;
+`;
+const BottomContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 40px;
+  gap: 30px;
 `;
 
 const ChangePassword = () => {
@@ -117,19 +126,20 @@ const ChangePassword = () => {
           <Label>Ponovi Sifru</Label>
           <Input onChange={handleChangeRepeat} value={repeat} type='password'></Input>
         </FormItem>
-        <Button onClick={handleClick}>Promjeni</Button> <Alert type='success' message='Uspjesno ste promjenili vasu sifru' trigger={showAlert}></Alert>
-        {isFetching && (
-          <LoadingCont>
-            <Loading src={spinner}></Loading>
-          </LoadingCont>
-        )}
+        <BottomContainer>
+          <Button onClick={handleClick}>Promjeni</Button> <Alert type='success' message='Uspjesno ste promjenili vasu sifru' trigger={showAlert}></Alert>
+          {isFetching && (
+            <LoadingCont>
+              <Loading src={spinner}></Loading>
+            </LoadingCont>
+          )}{" "}
+          {error && (
+            <Error>
+              <WarningIcon style={{ color: "red", fontSize: "12px", paddingRight: "10px" }} /> {error}
+            </Error>
+          )}
+        </BottomContainer>
       </Form>
-
-      {error && (
-        <Error>
-          <WarningIcon style={{ color: "red", fontSize: "12px", paddingRight: "10px" }} /> {error}
-        </Error>
-      )}
     </>
   );
 };

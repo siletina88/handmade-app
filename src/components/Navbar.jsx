@@ -13,6 +13,7 @@ const Container = styled.div`
   height: 95px;
 
   background-color: #12130f;
+  ${mobile({ height: "160px" })}
 `;
 
 const Wrapper = styled.div`
@@ -21,7 +22,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   overflow-x: hidden;
-  ${mobile({ padding: "10px 0px" })}
+  ${mobile({ padding: "10px 0px", flexDirection: "column" })}
 `;
 
 const Left = styled.div`
@@ -77,19 +78,19 @@ const Center = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  ${mobile({ flex: "2", paddingLeft: "15px", paddingTop: "10px" })}
+  ${mobile({ flex: "3", paddingLeft: "15px", paddingTop: "10px" })}
 `;
 const Logo = styled.img`
   width: 280px;
   padding-left: 25px;
-  ${mobile({ width: "180px" })}
+  ${mobile({ width: "300px" })}
 `;
 const Right = styled.div`
   flex: 1;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  ${mobile({ justifyContent: "center", flex: "3", gap: "5px" })}
+  ${mobile({ width: "100%", alignItems: "center", justifyContent: "flex-end", flex: "3" })}
 `;
 const NavItem = styled.div`
   display: flex;
@@ -100,15 +101,30 @@ const NavItem = styled.div`
   cursor: pointer;
   color: white;
   margin-left: 25px;
-  ${mobile({ fontSize: "12px", marginLeft: "0" })}
+
+  ${mobile({ fontSize: "16px", marginLeft: "0", justifyContent: "space-between", gap: "30px", paddingRight: "10px", paddingLeft: "10px" })}
+`;
+
+const NavItemContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 const Avatar = styled.img`
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  margin-left: 7px;
-  ${mobile({ marginLeft: "0px", height: "30px", width: "30px" })}
+  margin-right: 7px;
+  ${mobile({ height: "40px", width: "40px", marginRight: "10px" })}
+`;
+
+const VR = styled.div`
+  border-right: 1px solid gray;
+  height: 30px;
+  width: 1px;
+  display: none;
+  ${mobile({ display: "block" })}
 `;
 
 const Navbar = () => {
@@ -151,23 +167,30 @@ const Navbar = () => {
             <>
               <Link to='/profile'>
                 <NavItem>
-                  Hi, {user.username} <Avatar src={user.img ? user.img : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}></Avatar>
+                  <NavItemContainer>
+                    <Avatar src={user.img ? user.img : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}></Avatar>
+                    Hi, {user.username}
+                  </NavItemContainer>
                 </NavItem>
               </Link>
+              <VR></VR>
 
               <NavItem onClick={handleLogout}>LOGOUT</NavItem>
             </>
           ) : (
             <>
-              <Link style={{ textDecoration: "none" }} to='/register'>
-                <NavItem>REGISTRACIJA</NavItem>
-              </Link>
-              <Link style={{ textDecoration: "none" }} to='/login'>
-                <NavItem>LOGIN</NavItem>
-              </Link>
+              <VR></VR>
+              <NavItem>
+                <Link style={{ textDecoration: "none" }} to='/register'>
+                  <NavItem>REGISTRACIJA</NavItem>
+                </Link>
+                <Link style={{ textDecoration: "none" }} to='/login'>
+                  <NavItem>LOGIN</NavItem>
+                </Link>
+              </NavItem>
             </>
           )}
-
+          <VR></VR>
           <NavItem>
             <Link to='/cart'>
               <IconButton aria-label='cart'>

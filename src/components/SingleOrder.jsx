@@ -1,30 +1,36 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 import moment from "moment";
 import "moment/locale/bs";
-import { spacing } from "@mui/system";
+import { mobile } from "../responsive";
 
 const Container = styled.tr`
   color: white;
   width: 100%;
+  ${mobile({ fontSize: "12px", minWidth: "70px" })}
 
   background-color: #12130fce;
 `;
 const TD = styled.td`
   padding: 12px 15px;
-  min-width: 150px;
+  min-width: 60px;
+
+  border-right: 1px solid #00000076;
+
   border-bottom: 2px solid #00000076;
+  &::last-child {
+    white-space: nowrap;
+    width: 1%;
+  }
+  ${mobile({ fontSize: "12px", minWidth: "40px" })}
 
   color: ${(props) => props.color || "white"};
 `;
 const ImageContainer = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+
   gap: 5px;
-  width: 30px;
-  height: 30px;
 `;
 const Image = styled.img`
   width: 30px;
@@ -47,11 +53,11 @@ const SingleOrder = ({ createdAt, id, total, products, status, allProducts, addr
         break;
       case "delivering":
         stanje = "U dostavi";
-        color = "#39ffb3";
+        color = "#fcde37";
         break;
       case "delivered":
-        stanje = "Zavrseno";
-        color = "#fa6793";
+        stanje = "Dostavljeno";
+        color = "#a5ff8a";
         break;
     }
     return { color, stanje };
@@ -77,18 +83,18 @@ const SingleOrder = ({ createdAt, id, total, products, status, allProducts, addr
       <TD>{date}</TD>
       <TD color={color}>{stanje}</TD>
 
-      <TD>
+      <TD width='fit-content'>
         <ImageContainer>
           {x.map((product) => (
             <Image src={product}></Image>
           ))}
         </ImageContainer>
       </TD>
-      <TD>{id}</TD>
+      {/* <TD>{id}</TD> */}
       <TD>{address}</TD>
       <TD>{city}</TD>
 
-      <TD>{total} KM</TD>
+      <TD>{total.toFixed(2)} KM</TD>
     </Container>
   );
 };

@@ -5,7 +5,6 @@ import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
 import { BrowserRouter as Router, Switch, Route, Redirect, NavLink, useLocation } from "react-router-dom";
-import { useEffect } from "react";
 
 import { useSelector } from "react-redux";
 import EditProfile from "../components/EditProfile";
@@ -16,15 +15,16 @@ const Container = styled.div`
   background-color: #eae6e5;
 `;
 const Wrapper = styled.div`
-  padding: 50px;
+  padding: 30px;
   display: flex;
   overflow: hidden;
 
-  ${mobile({ flexDirection: "column", padding: "10px" })}
+  ${mobile({ flexDirection: "column", padding: "20px 5px" })}
 `;
 const Card = styled.div`
   display: flex;
   width: 100%;
+  ${mobile({ flexDirection: "column" })}
 
   border-radius: 10px;
   overflow: hidden;
@@ -34,7 +34,7 @@ const Card = styled.div`
 const Left = styled.div`
   flex: 1;
   background-color: #ffffffe1;
-  height: 75vh;
+
   position: sticky;
   top: 0;
   left: 0;
@@ -47,15 +47,18 @@ const ImgContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 30%;
+  height: 200px;
   background-color: #f82c73;
+  ${mobile({ height: "170px" })}
 `;
 const Avatar = styled.img`
   width: 120px;
+
   object-fit: cover;
   height: 120px;
   border-radius: 50%;
   border: 1px solid white;
+  ${mobile({ width: "140px", height: "140px" })}
 `;
 const DefAvatar = styled.div`
   display: flex;
@@ -67,7 +70,7 @@ const DefAvatar = styled.div`
   font-size: 60px;
   background-color: #d1d1d1;
   color: #f82c73;
-  border-radius: 50%;
+  ${mobile({ width: "140px", height: "140px" })}
 `;
 const InfoContainer = styled.div`
   display: flex;
@@ -87,7 +90,6 @@ const Username = styled.p`
   font-weight: 600;
   font-size: 18px;
   line-height: 0.5;
-  letter-spacing: 3px;
 `;
 const MenuList = styled.ul`
   display: flex;
@@ -102,6 +104,7 @@ const MenuList = styled.ul`
   margin: 0;
 
   list-style: none;
+  ${mobile({ paddingTop: "5px" })}
 `;
 const MenuListItem = styled.li`
   padding: 20px;
@@ -114,6 +117,7 @@ const MenuListItem = styled.li`
   color: black;
   border-bottom: 1px solid lightgray;
   position: relative;
+  ${mobile({ borderTop: "2px solid  #eae6e5" })}
   &:hover {
     background-color: #e9e9e9;
 
@@ -132,6 +136,8 @@ const Right = styled.div`
   background-color: #ffffffc3;
   flex: 3;
   padding: 40px;
+  overflow: hidden;
+  ${mobile({ padding: "5px" })}
 `;
 
 const StyledNavLink = styled(NavLink)`

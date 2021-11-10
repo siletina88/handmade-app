@@ -8,6 +8,21 @@ import axios from "axios";
 import { mobile } from "../responsive";
 import { publicRequest } from "../requestMethods";
 
+const Title = styled.h1`
+  text-align: center;
+
+  padding: 20px;
+  padding-top: 40px;
+  font-size: 50px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  background: linear-gradient(#f82c7318, #f5fafd);
+  text-shadow: 0px 1px #22241d29;
+
+  color: white;
+  ${mobile({ fontSize: "20px", padding: "10px" })};
+`;
+
 const Container = styled.div`
   padding: 40px 100px;
   display: flex;
@@ -15,7 +30,7 @@ const Container = styled.div`
   gap: 30px;
   justify-content: space-between;
   background-color: #f5fafd;
-  ${mobile({ padding: "20px", marginTop: "10px" })};
+  ${mobile({ padding: "20px" })};
 `;
 
 const Products = ({ cat, filter, sort }) => {
@@ -47,7 +62,12 @@ const Products = ({ cat, filter, sort }) => {
   }, [sort]);
 
   return (
-    <Container>{cat ? filteredProducts.map((item) => <Product key={item._id} item={item}></Product>) : products.slice(0, 12).map((item) => <Product key={item._id} item={item}></Product>)}</Container>
+    <>
+      <Title>Artikli</Title>
+      <Container>
+        {cat ? filteredProducts.map((item) => <Product key={item._id} item={item}></Product>) : products.slice(0, 12).map((item) => <Product key={item._id} item={item}></Product>)}
+      </Container>
+    </>
   );
 };
 

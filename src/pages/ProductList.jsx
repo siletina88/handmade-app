@@ -44,8 +44,9 @@ const ProductList = () => {
   };
   return (
     <Container>
-      <Announcment></Announcment>
       <Navbar></Navbar>
+      <Announcment></Announcment>
+
       <Title>{cat.toUpperCase()}</Title>
       <FilterContainer>
         <Filter>

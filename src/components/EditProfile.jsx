@@ -11,11 +11,13 @@ import Alert from "./Alert";
 
 const Title = styled.h1`
   margin-bottom: 20px;
+  ${mobile({ textAlign: "center", marginTop: "30px" })}
 `;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  ${mobile({ padding: "30px" })}
 `;
 const Input = styled.input`
   border: none;

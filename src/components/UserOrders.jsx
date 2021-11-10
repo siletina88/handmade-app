@@ -1,26 +1,30 @@
 import styled from "styled-components";
 
 import { mobile } from "../responsive";
-import { useLocation, NavLink } from "react-router-dom";
+
 import { useState, useEffect } from "react";
 
 import SingleOrder from "./SingleOrder";
 import { publicRequest, userRequest } from "../requestMethods";
 import { useSelector } from "react-redux";
 
+const Wrapper = styled.div``;
 const Title = styled.h1`
   margin-bottom: 20px;
+  ${mobile({ textAlign: "center", marginTop: "30px" })}
 `;
 
 const TableContainer = styled.div`
-  overflow: hidden;
   padding: 0;
   margin: 0;
   border: 2px solid black;
   border-radius: 10px;
+  width: 100%;
+  overflow-x: auto;
 `;
 const Table = styled.table`
   border-collapse: collapse;
+  width: 100%;
 
   font-size: 0.9em;
 
@@ -38,7 +42,10 @@ const TableRow = styled.tr`
 `;
 const TableHeadElement = styled.th`
   padding: 12px 15px;
-  border-right: 2px solid black;
+  text-shadow: 0px 1px #00000075;
+  border-right: 1px solid #00000076;
+
+  ${mobile({ fontSize: "12px" })}
 `;
 
 const UserOrders = () => {
@@ -64,7 +71,7 @@ const UserOrders = () => {
   }, []);
 
   return (
-    <>
+    <Wrapper>
       <Title>Moje narudzbe</Title>
       <TableContainer>
         <Table>
@@ -73,7 +80,7 @@ const UserOrders = () => {
               <TableHeadElement>Datum narudzbe</TableHeadElement>
               <TableHeadElement>Status</TableHeadElement>
               <TableHeadElement>Artikli</TableHeadElement>
-              <TableHeadElement>ID</TableHeadElement>
+              {/* <TableHeadElement>ID</TableHeadElement> */}
               <TableHeadElement>Adresa dostave</TableHeadElement>
               <TableHeadElement>Grad</TableHeadElement>
               <TableHeadElement>Cijena</TableHeadElement>
@@ -97,7 +104,7 @@ const UserOrders = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </Wrapper>
   );
 };
 
