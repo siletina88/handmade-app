@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { mobile } from "../responsive";
 import { useDispatch } from "react-redux";
 import { register, login } from "../redux/apiCalls";
@@ -53,10 +54,12 @@ const Button = styled.button`
 `;
 
 const Register = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({});
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     setError(false);
@@ -78,8 +81,12 @@ const Register = () => {
 
     if (user.username && user.password && user.password.length > 5 && user?.password === password) {
       await register(dispatch, { ...user });
+      setMessage("Uspjesno ste registrovali nalog. Molimo Vas da verifikujete vasu email adresu kako bi nastavili sa koristenjem nasih usluga. Hvala!");
+      setTimeout(() => {
+        history.push("/login");
+      }, 5000);
 
-      login(dispatch, { username, password });
+      // login(dispatch, { username, password });
     } else {
       setError(true);
       return;
@@ -109,6 +116,7 @@ const Register = () => {
           trigger={error}
           type='error'
         ></Alert>
+        <Alert message={message} trigger={message} type='success'></Alert>
         <Agreement>
           Kreiranjem ovog naloga, pristajem na procesuiranje licnih podataka u skladu sa <b>POLISOM PRIVATNOSTI</b>
         </Agreement>

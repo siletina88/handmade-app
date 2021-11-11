@@ -87,7 +87,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showAlert, setShowAlert] = useState(false);
-  const { isFetching, error, currentUser } = useSelector((state) => state.user);
+  const { isFetching, error, currentUser, message } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
@@ -111,7 +111,7 @@ const Login = () => {
         </Form>
         <Link>Zaboravili ste password ili korisnicko ime?</Link>
         <Link>Kreirajte novi nalog</Link>
-        <Alert type='error' message={!password || !username ? "Molimo Vas da popunite polja" : "Podaci nisu tacni"} trigger={showAlert}></Alert>
+        <Alert type='error' message={!password || !username ? "Molimo Vas da popunite polja" : message} trigger={showAlert}></Alert>
 
         {isFetching && (
           <LoadingCont>
