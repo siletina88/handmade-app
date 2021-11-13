@@ -79,8 +79,6 @@ const Register = () => {
     e.preventDefault();
     const user = { ...inputs };
 
-    const username = inputs.username;
-    // TODO!
     if (user.username && user.password && user.password.length > 5 && user?.password === password && user?.email.includes("@")) {
       await register(dispatch, { ...user });
       setWelcome("Uspjesno ste registrovali nalog. Molimo Vas da verifikujete vasu email adresu kako bi nastavili sa koristenjem nasih usluga. Hvala!");
