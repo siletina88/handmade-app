@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { mobile } from "../responsive";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { register, login } from "../redux/apiCalls";
 import Alert from "../components/Alert";
 
@@ -59,7 +59,8 @@ const Register = () => {
   const [inputs, setInputs] = useState({});
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState("");
+  const [welcome, setWelcome] = useState("");
+  const { message } = useSelector((state) => state.user);
 
   const handleChange = (e) => {
     setError(false);
@@ -73,15 +74,16 @@ const Register = () => {
   };
 
   const handleClick = async (e) => {
+    setWelcome("");
     setError(false);
     e.preventDefault();
     const user = { ...inputs };
 
     const username = inputs.username;
-
-    if (user.username && user.password && user.password.length > 5 && user?.password === password) {
+    // TODO!
+    if (user.username && user.password && user.password.length > 5 && user?.password === password && user?.email.includes("@")) {
       await register(dispatch, { ...user });
-      setMessage("Uspjesno ste registrovali nalog. Molimo Vas da verifikujete vasu email adresu kako bi nastavili sa koristenjem nasih usluga. Hvala!");
+      setWelcome("Uspjesno ste registrovali nalog. Molimo Vas da verifikujete vasu email adresu kako bi nastavili sa koristenjem nasih usluga. Hvala!");
       setTimeout(() => {
         history.push("/login");
       }, 5000);
@@ -109,6 +111,7 @@ const Register = () => {
           message={
             (!inputs.username && "Korisnicko ime je obavezno") ||
             (!inputs.email && "Email je obavezan") ||
+            (!inputs.email.includes("@") && "Molimo da unesete validnu email adresu") ||
             (!inputs.password && "Sifra je obavezna") ||
             (inputs.password !== password && "Sifre se ne podudaraju") ||
             (inputs.password.length < 6 && "Sifre mora imati najmanje 6 karaktera")
@@ -116,7 +119,8 @@ const Register = () => {
           trigger={error}
           type='error'
         ></Alert>
-        <Alert message={message} trigger={message} type='success'></Alert>
+        <Alert message={message} trigger={message} type='error'></Alert>
+        {!message && <Alert message={welcome} trigger={welcome} type='success'></Alert>}
         <Agreement>
           Kreiranjem ovog naloga, pristajem na procesuiranje licnih podataka u skladu sa <b>POLISOM PRIVATNOSTI</b>
         </Agreement>

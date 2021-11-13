@@ -47,15 +47,17 @@ const userSlice = createSlice({
     registerStart: (state) => {
       state.isFetching = true;
       state.error = false;
+      state.message = "";
     },
     registerSuccess: (state, action) => {
       state.isFetching = false;
       state.currentUser = action.payload;
       state.loggedIn = true;
     },
-    registerFailure: (state) => {
+    registerFailure: (state, action) => {
       state.isFetching = false;
       state.error = true;
+      state.message = action.payload;
     },
     //update user
     updateUserStart: (state) => {
