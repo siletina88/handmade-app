@@ -3,7 +3,7 @@ import Announcment from "../components/Announcment";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 import { BrowserRouter as Router, Switch, Route, Redirect, NavLink, useLocation } from "react-router-dom";
 
 import { useSelector } from "react-redux";
@@ -19,11 +19,13 @@ const Wrapper = styled.div`
   display: flex;
   overflow: hidden;
 
+  ${tablet({ flexDirection: "column", padding: "20px 20px" })}
   ${mobile({ flexDirection: "column", padding: "20px 5px" })}
 `;
 const Card = styled.div`
   display: flex;
   width: 100%;
+  ${tablet({ flexDirection: "column" })}
   ${mobile({ flexDirection: "column" })}
 
   border-radius: 10px;
@@ -105,6 +107,7 @@ const MenuList = styled.ul`
   margin: 0;
 
   list-style: none;
+  ${tablet({ paddingTop: "5px" })}
   ${mobile({ paddingTop: "5px" })}
 `;
 const MenuListItem = styled.li`
@@ -118,6 +121,7 @@ const MenuListItem = styled.li`
   color: black;
   border-bottom: 1px solid lightgray;
   position: relative;
+  ${tablet({ borderTop: "2px solid  #eae6e5" })};
   ${mobile({ borderTop: "2px solid  #eae6e5" })}
   &:hover {
     background-color: #e9e9e9;
@@ -138,6 +142,8 @@ const Right = styled.div`
   flex: 3;
   padding: 40px;
   overflow: hidden;
+
+  ${tablet({ padding: "30px 20px" })}
   ${mobile({ padding: "5px" })}
 `;
 

@@ -6,7 +6,7 @@ import Announcment from "../components/Announcment";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { publicRequest } from "../requestMethods";
@@ -21,6 +21,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
+  ${tablet({ flexDirection: "column" })}
   ${mobile({ flexDirection: "column", padding: "10px" })}
 `;
 
@@ -50,12 +51,14 @@ const Image = styled.img`
   width: 100%;
   height: 70vh;
   object-fit: cover;
+  ${tablet({ height: "60vh" })}
   ${mobile({ height: "40vh" })}
 `;
 const InfoContainer = styled.div`
   flex: 2;
   padding: 0px 30px;
   padding-top: 30px;
+
   ${mobile({ padding: "10px" })}
 `;
 const Title = styled.h1`
@@ -77,6 +80,7 @@ const FilterContainer = styled.div`
   justify-content: space-between;
   width: 60%;
   margin: 20px 0px;
+  ${tablet({ width: "100%" })}
   ${mobile({ width: "100%" })}
 `;
 
@@ -114,6 +118,7 @@ const AddContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  ${tablet({ width: "100%", justifyContent: "center" })}
   ${mobile({ width: "100%", justifyContent: "center" })}
 `;
 
@@ -149,6 +154,7 @@ const Button = styled.button`
   &:hover {
     background-color: #f82c73c8;
   }
+  ${tablet({ margin: "0 auto" })}
   ${mobile({ margin: "0 auto" })}
 `;
 

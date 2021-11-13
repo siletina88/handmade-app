@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { categories } from "../data";
 import CategoryItem from "./CategoryItem";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 
 const Container = styled.div`
   display: flex;
@@ -10,6 +10,7 @@ const Container = styled.div`
   gap: 20px;
   padding: 20px;
   justify-content: space-between;
+  ${tablet({ flexDirection: "column", padding: "20px", paddingTop: "20px", paddingBottom: "20px", gap: "0px" })}
   ${mobile({ flexDirection: "column", padding: "10px", paddingTop: "20px", paddingBottom: "20px", gap: "0px" })}
 `;
 

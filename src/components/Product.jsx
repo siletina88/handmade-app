@@ -3,7 +3,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Link } from "react-router-dom";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 
 const ProductTop = styled.div`
   display: flex;

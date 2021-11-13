@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 
 const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: all 2s ease;
+  ${tablet({ height: "60vh" })}
   ${mobile({ height: "30vh" })}
 `;
 const Container = styled.div`
@@ -15,6 +16,7 @@ const Container = styled.div`
   height: 70vh;
   position: relative;
   overflow: hidden;
+  ${tablet({ margin: "0px", paddingTop: "10px" })}
   ${mobile({ margin: "0px", paddingTop: "5px" })}
   &:hover ${Image} {
     transform: scale(1.2);

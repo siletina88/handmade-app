@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { login } from "../redux/apiCalls";
 import { clear } from "../redux/actions";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 import WarningIcon from "@mui/icons-material/Warning";
 import spinner from "../spinner.gif";
 import { useEffect } from "react";
@@ -23,24 +23,38 @@ const Wrapper = styled.div`
   flex-direction: column;
   padding: 20px;
   width: 40%;
-  height: 270px;
+  height: 320px;
   background-color: white;
+  ${tablet({ width: "50%" })}
   ${mobile({ width: "80%" })}
 `;
 const Title = styled.h1`
   font-size: 24px;
   font-weight: 300;
+  padding: 10px 0px;
 `;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  gap: 20px;
+`;
+const FormInput = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 `;
 const Input = styled.input`
   flex: 1;
   min-width: 40%;
-  margin: 10px 0px;
+
   padding: 10px;
+`;
+const Label = styled.label`
+  font-size: 10px;
+  font-weight: 600;
+
+  color: #f82c73;
 `;
 
 const Button = styled.button`
@@ -48,7 +62,7 @@ const Button = styled.button`
   border: none;
   padding: 15px 20px;
   color: white;
-  background-color: palevioletred;
+  background-color: #f82c73;
   cursor: pointer;
   margin-bottom: 10px;
   &:disabled {
@@ -105,8 +119,14 @@ const Login = () => {
       <Wrapper>
         <Title>LOGIRAJ SE</Title>
         <Form>
-          <Input onChange={(e) => setUsername(e.target.value)} placeholder='Korisnicko ime'></Input>
-          <Input type='password' onChange={(e) => setPassword(e.target.value)} placeholder='Lozinka'></Input>
+          <FormInput>
+            <Label>Korisnicko ime</Label>
+            <Input onChange={(e) => setUsername(e.target.value)} placeholder='Korisnicko ime'></Input>
+          </FormInput>
+          <FormInput>
+            <Label>Lozinka</Label>
+            <Input type='password' onChange={(e) => setPassword(e.target.value)} placeholder='Lozinka'></Input>
+          </FormInput>
           <Button onClick={handleLogin}>LOGIN</Button>
         </Form>
         <Link>Zaboravili ste password ili korisnicko ime?</Link>

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { popularProducts } from "../data";
 import Product from "./Product";
 import axios from "axios";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 import { publicRequest } from "../requestMethods";
 
 const Title = styled.h1`
@@ -31,6 +31,7 @@ const Container = styled.div`
   gap: 30px;
   justify-content: space-between;
   background-color: #f5fafd;
+  ${tablet({ padding: "20px" })};
   ${mobile({ padding: "20px" })};
 `;
 

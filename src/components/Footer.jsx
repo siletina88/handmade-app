@@ -6,7 +6,7 @@ import PinterestIcon from "@mui/icons-material/Pinterest";
 import RoomIcon from "@mui/icons-material/Room";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import EmailIcon from "@mui/icons-material/Email";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 import logo from "../logo6.png";
 
 const Container = styled.div`
@@ -50,6 +50,7 @@ const SocialIcon = styled.div`
 const Center = styled.div`
   flex: 1;
   padding: 20px;
+  ${tablet({ display: "none" })}
   ${mobile({ display: "none" })}
   color: white;
 `;

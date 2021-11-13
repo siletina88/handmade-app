@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useSelector, useDispatch } from "react-redux";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 
 import Congratulations from "./Congratulations";
 import { clearCartOnOrder } from "../redux/apiCalls";
@@ -34,7 +34,8 @@ const Wrapper = styled.div`
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.397);
   border-radius: 10px;
   overflow: hidden;
-  ${mobile({ width: "96%" })};
+  ${tablet({ width: "60%" })};
+  ${mobile({ width: "92%" })};
 `;
 const Title = styled.h1`
   color: white;
@@ -42,6 +43,7 @@ const Title = styled.h1`
   padding: 20px 0px;
   text-align: center;
   background-color: #f82c73;
+  ${tablet({ fontSize: "25px" })};
   ${mobile({ fontSize: "25px" })};
 `;
 

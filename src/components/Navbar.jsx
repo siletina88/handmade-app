@@ -3,7 +3,7 @@ import styled from "styled-components";
 import SearchIcon from "@mui/icons-material/Search";
 import { Badge, IconButton } from "@mui/material";
 import { NoEncryption, ShoppingCart } from "@mui/icons-material";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { logout } from "../redux/apiCalls";
@@ -13,6 +13,7 @@ const Container = styled.div`
   height: 95px;
 
   background-color: #12130f;
+  ${tablet({ height: "160px" })}
   ${mobile({ height: "160px" })}
 `;
 
@@ -22,6 +23,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   overflow-x: hidden;
+  ${tablet({ padding: "10px 0px", flexDirection: "column" })}
   ${mobile({ padding: "10px 0px", flexDirection: "column" })}
 `;
 
@@ -29,12 +31,14 @@ const Left = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
+  ${tablet({ display: "none" })}
   ${mobile({ display: "none" })}
 `;
 const Language = styled.div`
   font-style: 14px;
   display: flex;
   gap: 0.5rem;
+
   ${mobile({ display: "none" })}
 `;
 const LanguageOption = styled.span`
@@ -78,11 +82,13 @@ const Center = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  ${tablet({ flex: "3", paddingLeft: "15px", paddingTop: "10px" })}
   ${mobile({ flex: "3", paddingLeft: "15px", paddingTop: "10px" })}
 `;
 const Logo = styled.img`
   width: 280px;
   padding-left: 25px;
+  ${tablet({ width: "300px" })}
   ${mobile({ width: "300px" })}
 `;
 const Right = styled.div`
@@ -90,7 +96,8 @@ const Right = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  ${mobile({ width: "100%", alignItems: "center", justifyContent: "flex-end", flex: "3" })}
+
+  ${mobile({ width: "100%", alignItems: "center", justifyContent: "center", flex: "3" })}
 `;
 const NavItem = styled.div`
   display: flex;
@@ -101,7 +108,11 @@ const NavItem = styled.div`
   cursor: pointer;
   color: white;
   margin-left: 25px;
-
+  transition: all 0.3s ease;
+  &:hover {
+    color: #ff5b94;
+  }
+  ${tablet({ fontSize: "16px", marginLeft: "0", justifyContent: "space-between", gap: "30px", paddingRight: "10px", paddingLeft: "10px" })}
   ${mobile({ fontSize: "16px", marginLeft: "0", justifyContent: "space-between", gap: "30px", paddingRight: "10px", paddingLeft: "10px" })}
 `;
 
@@ -116,6 +127,7 @@ const Avatar = styled.img`
   border-radius: 50%;
   object-fit: cover;
   margin-right: 7px;
+  ${tablet({ height: "40px", width: "40px", marginRight: "10px" })}
   ${mobile({ height: "40px", width: "40px", marginRight: "10px" })}
 `;
 
@@ -124,6 +136,7 @@ const VR = styled.div`
   height: 30px;
   width: 1px;
   display: none;
+  ${tablet({ display: "block" })}
   ${mobile({ display: "block" })}
 `;
 

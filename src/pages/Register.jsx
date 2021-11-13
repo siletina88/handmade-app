@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 import { useDispatch, useSelector } from "react-redux";
 import { register, login } from "../redux/apiCalls";
 import Alert from "../components/Alert";
@@ -19,21 +19,36 @@ const Wrapper = styled.div`
   padding: 20px;
   width: 40%;
   background-color: white;
+  ${tablet({ width: "65%" })}
   ${mobile({ width: "80%" })}
 `;
 const Title = styled.h1`
   font-size: 24px;
   font-weight: 300;
+  padding: 10px 0px;
 `;
 const Form = styled.form`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 20px;
 `;
 const Input = styled.input`
   flex: 1;
   min-width: 40%;
-  margin: 20px 10px 0px 0px;
+
   padding: 10px;
+  ${tablet({ minWidth: "43%" })}
+`;
+const Label = styled.label`
+  font-size: 10px;
+  font-weight: 600;
+
+  color: #f82c73;
+`;
+const FormInput = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 `;
 const Agreement = styled.div`
   font-size: 12px;
@@ -98,13 +113,32 @@ const Register = () => {
       <Wrapper>
         <Title>KREIRAJ NALOG</Title>
         <Form>
-          <Input onChange={handleChange} name='username' placeholder='Korisnicko ime'></Input>
-          <Input onChange={handleChange} name='email' type='email' placeholder='email'></Input>
-          <Input onChange={handleChange} type='password' name='password' placeholder='Sifra'></Input>
-          <Input onChange={handlePassword} type='password' placeholder='Sifra ponovo'></Input>
-          <Input onChange={handleChange} name='fullName' placeholder='Ime i prezime'></Input>
-          <Input onChange={handleChange} name='address' placeholder='Adresa'></Input>
+          <FormInput>
+            <Label>Korisnicko ime</Label>
+            <Input onChange={handleChange} name='username' placeholder='Korisnicko ime'></Input>
+          </FormInput>
+
+          <FormInput>
+            <Label>Email adresa</Label>
+            <Input onChange={handleChange} name='email' type='email' placeholder='email'></Input>
+          </FormInput>
+
+          <FormInput>
+            <Label>Lozinka</Label>
+            <Input onChange={handleChange} type='password' name='password' placeholder='Sifra'></Input>
+          </FormInput>
+
+          <FormInput>
+            <Label>Lozinka ponovo</Label>
+            <Input onChange={handlePassword} type='password' placeholder='Sifra ponovo'></Input>
+          </FormInput>
+
+          <Button onClick={handleClick}>KREIRAJ</Button>
         </Form>
+
+        <Agreement>
+          Kreiranjem ovog naloga, pristajem na procesuiranje licnih podataka u skladu sa <b>POLISOM PRIVATNOSTI</b>
+        </Agreement>
         <Alert
           message={
             (!inputs.username && "Korisnicko ime je obavezno") ||
@@ -119,10 +153,6 @@ const Register = () => {
         ></Alert>
         <Alert message={message} trigger={message} type='error'></Alert>
         {!message && <Alert message={welcome} trigger={welcome} type='success'></Alert>}
-        <Agreement>
-          Kreiranjem ovog naloga, pristajem na procesuiranje licnih podataka u skladu sa <b>POLISOM PRIVATNOSTI</b>
-        </Agreement>
-        <Button onClick={handleClick}>KREIRAJ</Button>
       </Wrapper>
     </Container>
   );

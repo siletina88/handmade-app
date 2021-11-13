@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import { mobile } from "../responsive";
-import { useLocation, NavLink } from "react-router-dom";
+import { mobile, tablet } from "../responsive";
+
 import { useState, useEffect } from "react";
 import spinner from "../spinner.gif";
 

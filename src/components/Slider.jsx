@@ -4,7 +4,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useState } from "react";
 import { sliderItems } from "../data";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 
 const Container = styled.div`
   width: 100%;
@@ -56,15 +56,18 @@ const ImgContainer = styled.div`
 `;
 const Image = styled.img`
   height: 80%;
+  ${tablet({ height: "50%" })}
 `;
 const InfoContainer = styled.div`
   flex: 1;
   padding: 50px;
+  ${tablet({ flex: "2" })}
 `;
 const Title = styled.h1`
   font-size: 70px;
   color: #12130f;
   text-transform: uppercase;
+  ${tablet({ fontSize: "50px" })}
 `;
 const Description = styled.p`
   margin: 50px 0px;

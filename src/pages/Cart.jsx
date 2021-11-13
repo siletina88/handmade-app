@@ -6,7 +6,7 @@ import Order from "../components/Order";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 import { useSelector, useDispatch } from "react-redux";
 import { removeProduct } from "../redux/cartSlice";
 import { Link } from "react-router-dom";
@@ -15,9 +15,15 @@ import { getCart, removeItemFromCart } from "../redux/apiCalls";
 import { getUserInfoAndCart } from "../redux/actions";
 import { useEffect } from "react";
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+  overflow: hidden;
+`;
 const Wrapper = styled.div`
   padding: 20px;
+  min-height: 60vh;
+  overflow: hidden;
+  width: 95%;
   ${mobile({ padding: "10px" })}
 `;
 const Title = styled.h1`
@@ -47,6 +53,7 @@ const TopButton = styled.button`
   ${mobile({ margin: "10px", padding: "5px" })}
 `;
 const TopTexts = styled.div`
+  ${tablet({ display: "none" })}
   ${mobile({ display: "none" })}
 `;
 const TopText = styled.span`
@@ -58,36 +65,57 @@ const TopText = styled.span`
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
+  ${tablet({ flexDirection: "column" })}
   ${mobile({ flexDirection: "column" })}
 `;
 const Info = styled.div`
   flex: 3;
 `;
 const Product = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   padding: 10px 0px;
+  ${tablet({ flexDirection: "column" })}
   ${mobile({ flexDirection: "column" })}
 `;
 const ProductDetail = styled.div`
   flex: 2;
   display: flex;
 `;
+const ImageContainer = styled.div`
+  width: 200px;
+  height: 200px;
+`;
 const Image = styled.img`
   width: 200px;
+
   max-height: 150px;
   object-fit: cover;
+  ${tablet({ maxWidth: "180px", maxHeight: "140px" })};
   ${mobile({ maxWidth: "150px", maxHeight: "120px" })};
 `;
 const Details = styled.div`
   padding: 5px 20px;
   display: flex;
+  gap: 10px;
+  margin-top: 15px;
+
   flex-direction: column;
-  justify-content: space-around;
+
+  justify-content: flex-start;
+  ${tablet({ padding: "0px 15px" })}
   ${mobile({ padding: "0px 15px" })}
 `;
 const ProductName = styled.span`
-  ${mobile({ fontSize: "12px" })}
+  font-weight: bold;
+  font-size: 18px;
+  ${mobile({ fontSize: "14px" })}
+`;
+const ProductDescription = styled.span`
+  font-size: 14px;
+
+  ${mobile({ fontSize: "10px" })}
 `;
 const ProductId = styled.span`
   ${mobile({ fontSize: "12px" })}
@@ -114,6 +142,8 @@ const ProductAmountContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+
+  ${tablet({ margin: "10px" })}
   ${mobile({ margin: "20px" })}
 `;
 const ProductAmount = styled.div`
@@ -124,10 +154,16 @@ const ProductAmount = styled.div`
 const ProductPrice = styled.div`
   font-size: 30px;
   font-weight: 200;
+  ${tablet({ marginBottom: "20px", fontSize: "26px" })}
   ${mobile({ marginBottom: "20px", fontSize: "26px" })}
 `;
 
-const Remove = styled.div``;
+const Remove = styled.div`
+  position: absolute;
+  top: 15px;
+  right: 5px;
+  ${tablet({ top: "20px", right: "-5px" })}
+`;
 const Hr = styled.hr`
   background-color: #eee;
   border: none;
@@ -140,6 +176,7 @@ const Summary = styled.div`
 
   padding: 20px;
   height: auto;
+  ${mobile({ width: "80%" })}
 `;
 const SummaryTitle = styled.h1`
   font-weight: 200;
@@ -160,11 +197,12 @@ const SummaryItemPrice = styled.span``;
 const Button = styled.button`
   width: 100%;
   padding: 10px;
+  margin-top: 10px;
   background-color: black;
   color: white;
   font-weight: 600;
   border: none;
-  border-radius: 10px;
+
   cursor: pointer;
 `;
 
@@ -223,20 +261,24 @@ const Cart = () => {
         {cart.products.length ? (
           <Bottom>
             <Info>
+              <Hr />
               {cart.products.map((product) => (
                 <div key={product.product._id}>
                   {product ? (
                     <Product>
                       <Hr />
                       <ProductDetail>
-                        <Image src={product.product.img}></Image>
+                        <ImageContainer>
+                          {" "}
+                          <Image src={product.product.img}></Image>
+                        </ImageContainer>
+
                         <Details>
-                          <ProductName>
-                            <b>Artikal:</b> {product.product.title}
-                          </ProductName>
-                          <ProductId>
+                          <ProductName>{product.product.title}</ProductName>
+                          <ProductDescription>{product.product.description}</ProductDescription>
+                          {/* <ProductId>
                             <b>ID:</b> {product.product._id}
-                          </ProductId>
+                          </ProductId> */}
                           {/*                       
                       <ProductColor color={product.product.color} />
                       <ProductSize>
@@ -289,7 +331,7 @@ const Cart = () => {
             </Summary>
           </Bottom>
         ) : (
-          <div style={{ textAlign: "center" }}>VASA KOSARICA JE PRAZNA</div>
+          <div style={{ textAlign: "center", marginTop: "150px", border: "1px solid lightgray", padding: "30px" }}>VASA KOSARICA JE PRAZNA</div>
         )}
         {showOrderWindow && <Order setShowOrderWindow={setShowOrderWindow} showOrderWindow={showOrderWindow}></Order>}
       </Wrapper>
