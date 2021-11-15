@@ -68,7 +68,7 @@ const Description = styled.div`
 const Title = styled.p`
   font-size: 22px;
   font-weight: 600;
-  color: #636363;
+  color: #4d4d4d;
   text-transform: uppercase;
 `;
 const Price = styled.p`
