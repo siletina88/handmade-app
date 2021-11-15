@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useEffect } from "react";
+
 import Announcment from "../components/Announcment";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
@@ -28,7 +30,7 @@ const Card = styled.div`
   ${tablet({ flexDirection: "column" })}
   ${mobile({ flexDirection: "column" })}
 
-  border-radius: 10px;
+  border-radius: 3px;
   overflow: hidden;
 
   box-shadow: 0px 0px 10px 0px rgba(161, 161, 161, 0.274);
@@ -150,6 +152,7 @@ const Right = styled.div`
 const StyledNavLink = styled(NavLink)`
   color: blue;
   position: relative;
+  cursor: pointer;
 
   &:hover {
     background-color: #e9e9e9;
@@ -172,10 +175,12 @@ const StyledNavLink = styled(NavLink)`
 
 const Profile = () => {
   const user = useSelector((state) => state.user.currentUser);
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
 
   return (
     <Container>
-      <Navbar></Navbar>
       <Announcment />
       <Wrapper>
         <Card>

@@ -51,8 +51,9 @@ const Image = styled.img`
   width: 100%;
   height: 70vh;
   object-fit: cover;
+  object-position: center;
   ${tablet({ height: "60vh" })}
-  ${mobile({ height: "40vh" })}
+  ${mobile({ height: "30vh" })}
 `;
 const InfoContainer = styled.div`
   flex: 2;
@@ -63,15 +64,17 @@ const InfoContainer = styled.div`
 `;
 const Title = styled.h1`
   font-weight: 500;
-  ${mobile({ paddingTop: "20px" })}
+  ${mobile({ paddingTop: "20px", fontSize: "26px" })}
 `;
 const Description = styled.p`
   margin: 40px 0px;
   font-weight: 300;
+  ${mobile({ margin: "20px 0px", fontSize: "16px" })}
 `;
 const Price = styled.span`
   font-weight: 300;
   font-size: 32px;
+  ${mobile({ fontSize: "24px" })}
 `;
 
 const FilterContainer = styled.div`
@@ -93,6 +96,7 @@ const FilterTitle = styled.span`
   font-size: 16px;
   font-weight: 300;
   margin-right: 20px;
+  ${mobile({ marginRight: "5px" })}
 `;
 
 const FilterColor = styled.div`
@@ -155,7 +159,7 @@ const Button = styled.button`
     background-color: #f82c73c8;
   }
   ${tablet({ margin: "0 auto" })}
-  ${mobile({ margin: "0 auto" })}
+  ${mobile({ width: "100%", justifyContent: "center" })}
 `;
 
 const Product = () => {
@@ -178,6 +182,9 @@ const Product = () => {
       return (userId = user._id), (cartId = user.cart._id);
     } else return;
   };
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
 
   getUserIdAndCartId();
 
@@ -220,7 +227,6 @@ const Product = () => {
 
   return (
     <Container>
-      <Navbar></Navbar>
       <Announcment />
       <Wrapper>
         <Left>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Announcment from "../components/Announcment";
 import Categories from "../components/Categories";
 import Footer from "../components/Footer";
@@ -8,9 +8,11 @@ import Products from "../components/Products";
 import Slider from "../components/Slider";
 
 const Home = () => {
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
   return (
     <>
-      <Navbar></Navbar>
       <Announcment />
       <Slider></Slider>
       <Categories></Categories>

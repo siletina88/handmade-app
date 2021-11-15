@@ -66,21 +66,21 @@ const Description = styled.div`
   flex: 1;
 `;
 const Title = styled.p`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
-  color: #12130f;
+  color: black;
   text-transform: uppercase;
-  letter-spacing: 2px;
 `;
 const Price = styled.p`
   font-size: 14px;
-  color: #12130f;
+  color: black;
+  font-weight: 600;
 `;
 const ItemDesc = styled.p`
   font-size: 14px;
   text-decoration: italic;
   padding-bottom: 10px;
-  color: #12130f;
+  color: white;
 `;
 const Colors = styled.div`
   display: flex;
@@ -105,7 +105,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  background-color: white;
+  border-radius: 3px;
+  background-color: #fff7fa;
   box-shadow: 1px 4px 9px -2px rgba(0, 0, 0, 0.301);
 
   min-width: 300px;
@@ -134,6 +135,7 @@ const ImgContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 90%;
+  border-radius: 3px;
   border: 1px solid rgba(173, 173, 173, 0.425);
 
   height: 450px;
@@ -172,11 +174,11 @@ const Product = ({ item }) => {
       </ProductTop>
       <Description>
         <Title>{item.title}</Title>
-        <Price>BAM {item.price}</Price>
-        <Colors>
+        <Price>{item.price} KM</Price>
+        {/* <Colors>
           Boje:
           {item.color.map((color) => (color ? <Color color={color}></Color> : ""))}
-        </Colors>
+        </Colors> */}
         {/* <ItemDesc>{item.description}</ItemDesc> */}
       </Description>
     </Container>

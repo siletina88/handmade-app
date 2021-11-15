@@ -26,7 +26,7 @@ const TableContainer = styled.div`
   padding: 0;
   margin: 0;
   border: 1px solid black;
-  border-radius: 10px;
+  border-radius: 3px;
   width: 100%;
   overflow-x: auto;
 `;

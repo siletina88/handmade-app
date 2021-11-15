@@ -243,100 +243,101 @@ const Cart = () => {
   }, [showOrderWindow]);
 
   return (
-    <Container>
-      <Navbar></Navbar>
+    <>
       <Announcment></Announcment>
-      <Wrapper>
-        <Title>VASA KOSARICA </Title>
-        <Top>
-          <Link to='/'>
-            <TopButton>NASTAVI SA KUPOVANJEM</TopButton>
-          </Link>
-          <TopTexts>
-            <TopText>KOSARICA ({cart?.quantity})</TopText>
-            <TopText>LISTA ZELJA (2)</TopText>
-          </TopTexts>
-          <TopButton type='filled'>ZAPOCNI NARUDZBU</TopButton>
-        </Top>
-        {cart.products.length ? (
-          <Bottom>
-            <Info>
-              <Hr />
-              {cart.products.map((product) => (
-                <div key={product.product._id}>
-                  {product ? (
-                    <Product>
-                      <Hr />
-                      <ProductDetail>
-                        <ImageContainer>
-                          {" "}
-                          <Image src={product.product.img}></Image>
-                        </ImageContainer>
+      <Container>
+        <Wrapper>
+          <Title>VASA KOSARICA </Title>
+          <Top>
+            <Link to='/'>
+              <TopButton>NASTAVI SA KUPOVANJEM</TopButton>
+            </Link>
+            <TopTexts>
+              <TopText>KOSARICA ({cart?.quantity})</TopText>
+              <TopText>LISTA ZELJA (2)</TopText>
+            </TopTexts>
+            <TopButton type='filled'>ZAPOCNI NARUDZBU</TopButton>
+          </Top>
+          {cart.products.length ? (
+            <Bottom>
+              <Info>
+                <Hr />
+                {cart.products.map((product) => (
+                  <div key={product.product._id}>
+                    {product ? (
+                      <Product>
+                        <Hr />
+                        <ProductDetail>
+                          <ImageContainer>
+                            {" "}
+                            <Image src={product.product.img}></Image>
+                          </ImageContainer>
 
-                        <Details>
-                          <ProductName>{product.product.title}</ProductName>
-                          <ProductDescription>{product.product.description}</ProductDescription>
-                          {/* <ProductId>
+                          <Details>
+                            <ProductName>{product.product.title}</ProductName>
+                            <ProductDescription>{product.product.description}</ProductDescription>
+                            {/* <ProductId>
                             <b>ID:</b> {product.product._id}
                           </ProductId> */}
-                          {/*                       
+                            {/*                       
                       <ProductColor color={product.product.color} />
                       <ProductSize>
                         <b>Velicina:</b> {product.product.size.toUpperCase()}
                       </ProductSize> */}
-                        </Details>
-                      </ProductDetail>
-                      <PriceDetail>
-                        <ProductAmountContainer>
-                          <RemoveIcon></RemoveIcon>
-                          <ProductAmount>{product.quantity}</ProductAmount>
-                          <AddIcon></AddIcon>
-                        </ProductAmountContainer>
-                        <ProductPrice> {(product.product.price * product.quantity).toFixed(2)} KM</ProductPrice>
-                      </PriceDetail>
-                      <Remove>
-                        <HighlightOffIcon style={{ fontSize: "30px", cursor: "pointer", marginRight: "10px" }} onClick={(e) => handleRemove(e, product, product._id)}></HighlightOffIcon>
-                      </Remove>
-                    </Product>
-                  ) : (
-                    <div>loading...</div>
-                  )}
-                  <Hr />
-                </div>
-              ))}
-            </Info>
-            <Summary>
-              <SummaryTitle>DETALJI KOSARICE</SummaryTitle>
-              <SummaryItem>
-                <SummaryItemText>Subtotal</SummaryItemText>
-                <SummaryItemPrice> {cart.total ? cart?.total.toFixed(2) : "0.00"} KM</SummaryItemPrice>
-              </SummaryItem>
-              <SummaryItem>
-                <SummaryItemText>Cijena dostave</SummaryItemText>
-                <SummaryItemPrice> 5.90 KM</SummaryItemPrice>
-              </SummaryItem>
+                          </Details>
+                        </ProductDetail>
+                        <PriceDetail>
+                          <ProductAmountContainer>
+                            <RemoveIcon></RemoveIcon>
+                            <ProductAmount>{product.quantity}</ProductAmount>
+                            <AddIcon></AddIcon>
+                          </ProductAmountContainer>
+                          <ProductPrice> {(product.product.price * product.quantity).toFixed(2)} KM</ProductPrice>
+                        </PriceDetail>
+                        <Remove>
+                          <HighlightOffIcon style={{ fontSize: "30px", cursor: "pointer", marginRight: "10px" }} onClick={(e) => handleRemove(e, product, product._id)}></HighlightOffIcon>
+                        </Remove>
+                      </Product>
+                    ) : (
+                      <div>loading...</div>
+                    )}
+                    <Hr />
+                  </div>
+                ))}
+              </Info>
+              <Summary>
+                <SummaryTitle>DETALJI KOSARICE</SummaryTitle>
+                <SummaryItem>
+                  <SummaryItemText>Subtotal</SummaryItemText>
+                  <SummaryItemPrice> {cart.total ? cart?.total.toFixed(2) : "0.00"} KM</SummaryItemPrice>
+                </SummaryItem>
+                <SummaryItem>
+                  <SummaryItemText>Cijena dostave</SummaryItemText>
+                  <SummaryItemPrice> 5.90 KM</SummaryItemPrice>
+                </SummaryItem>
 
-              <SummaryItem>
-                <SummaryItemText>Popust na dostavu</SummaryItemText>
-                <SummaryItemPrice>-5.90 KM</SummaryItemPrice>
-              </SummaryItem>
-              <SummaryItem
-                // @ts-ignore
-                type='total'
-              >
-                <SummaryItemText>UKUPNO</SummaryItemText>
-                <SummaryItemPrice>{cart.total ? cart?.total.toFixed(2) : "0.00"} KM</SummaryItemPrice>
-              </SummaryItem>
-              <Button onClick={() => setShowOrderWindow(true)}>NARUCI</Button>
-            </Summary>
-          </Bottom>
-        ) : (
-          <div style={{ textAlign: "center", marginTop: "150px", border: "1px solid lightgray", padding: "30px" }}>VASA KOSARICA JE PRAZNA</div>
-        )}
-        {showOrderWindow && <Order setShowOrderWindow={setShowOrderWindow} showOrderWindow={showOrderWindow}></Order>}
-      </Wrapper>
-      <Footer></Footer>
-    </Container>
+                <SummaryItem>
+                  <SummaryItemText>Popust na dostavu</SummaryItemText>
+                  <SummaryItemPrice>-5.90 KM</SummaryItemPrice>
+                </SummaryItem>
+                <SummaryItem
+                  // @ts-ignore
+                  type='total'
+                >
+                  <SummaryItemText>UKUPNO</SummaryItemText>
+                  <SummaryItemPrice>{cart.total ? cart?.total.toFixed(2) : "0.00"} KM</SummaryItemPrice>
+                </SummaryItem>
+                <Button onClick={() => setShowOrderWindow(true)}>NARUCI</Button>
+              </Summary>
+            </Bottom>
+          ) : (
+            <div style={{ textAlign: "center", marginTop: "150px", border: "1px solid lightgray", padding: "30px" }}>VASA KOSARICA JE PRAZNA</div>
+          )}
+          {showOrderWindow && <Order setShowOrderWindow={setShowOrderWindow} showOrderWindow={showOrderWindow}></Order>}
+        </Wrapper>
+        <Footer></Footer>
+      </Container>
+    </>
   );
 };
 

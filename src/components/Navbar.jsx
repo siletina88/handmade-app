@@ -1,8 +1,13 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import styled, { css } from "styled-components";
 import SearchIcon from "@mui/icons-material/Search";
 import { Badge, IconButton } from "@mui/material";
 import { NoEncryption, ShoppingCart } from "@mui/icons-material";
+import ShopTwoIcon from "@mui/icons-material/ShopTwo";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { mobile, tablet } from "../responsive";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
@@ -10,21 +15,53 @@ import { logout } from "../redux/apiCalls";
 import logo from "../logo6.png";
 
 const Container = styled.div`
-  height: 95px;
+  height: 120px;
+  display: flex;
+  width: 100%;
+  position: static;
+  top: -100px;
+
+  transition: top 0.3s linear;
 
   background-color: #12130f;
-  ${tablet({ height: "160px" })}
-  ${mobile({ height: "160px" })}
+  ${tablet({ height: "120px" })}
+  ${mobile({ height: "60px", position: "sticky", top: "0" })}
+  ${(props) =>
+    props.active &&
+    css`
+      display: flex;
+      width: 100vw;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      justify-content: space-between;
+      transform: translateY(-60px);
+
+      box-shadow: 0px 2px 2px #12130f5a;
+      ${tablet({ transform: "translateY(-60px)" })};
+      ${mobile({ position: "sticky", top: "0", transform: "translateY(0px)", boxShadow: "none" })};
+    `};
+
+  z-index: 999999;
 `;
 
 const Wrapper = styled.div`
+  position: relative;
   padding: 10px 20px;
   display: flex;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   overflow-x: hidden;
-  ${tablet({ padding: "10px 0px", flexDirection: "column" })}
-  ${mobile({ padding: "10px 0px", flexDirection: "column" })}
+
+  ${mobile({ padding: "0px 0px", flexDirection: "column" })}
+  ${(props) =>
+    props.active &&
+    css`
+      transform: translateY(30px);
+      ${tablet({ transform: "translateY(30px)", padding: "0px 0px" })};
+      ${mobile({ transform: "translateY(0px)" })};
+    `};
 `;
 
 const Left = styled.div`
@@ -82,14 +119,21 @@ const Center = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  ${tablet({ flex: "3", paddingLeft: "15px", paddingTop: "10px" })}
-  ${mobile({ flex: "3", paddingLeft: "15px", paddingTop: "10px" })}
+  ${tablet({ flex: "3", paddingLeft: "15px", paddingTop: "10px", justifyContent: "flex-start" })}
 `;
 const Logo = styled.img`
-  width: 280px;
+  width: 300px;
   padding-left: 25px;
-  ${tablet({ width: "300px" })}
-  ${mobile({ width: "300px" })}
+  ${tablet({ width: "220px" })}
+  ${mobile({ width: "150px" })}
+
+  ${(props) =>
+    props.active &&
+    css`
+      width: 170px;
+      ${tablet({ width: "150px" })}
+      ${mobile({ width: "150px" })}
+    `};
 `;
 const Right = styled.div`
   flex: 1;
@@ -97,7 +141,8 @@ const Right = styled.div`
   justify-content: flex-end;
   align-items: center;
 
-  ${mobile({ width: "100%", alignItems: "center", justifyContent: "center", flex: "3" })}
+  ${mobile({ display: "none" })}
+  ${tablet({ flex: "2" })}
 `;
 const NavItem = styled.div`
   display: flex;
@@ -136,11 +181,203 @@ const VR = styled.div`
   height: 30px;
   width: 1px;
   display: none;
-  ${tablet({ display: "block" })}
+  ${tablet({ display: "none" })}
   ${mobile({ display: "block" })}
 `;
 
+const HamburgerIcon = styled.div`
+  display: none;
+  ${(props) =>
+    props.active &&
+    css`
+      display: flex;
+    `};
+  position: absolute;
+  width: 30px;
+  height: 26px;
+  top: 15px;
+  left: 10px;
+  z-index: 10000000;
+  background: black;
+  border: 1px solid white;
+
+  border-radius: 2px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+`;
+
+const HamburgerLinesContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+const HamburgerLine = styled.div`
+  height: 2px;
+  width: 20px;
+  position: absolute;
+  background-color: white;
+  transition: transform 0.5s ease;
+  &:nth-child(1) {
+    top: 7px;
+    ${(props) =>
+      props.active &&
+      css`
+        left: 16%;
+        top: 12px;
+        transform: rotate(45deg);
+        transform-origin: center;
+      `};
+  }
+  &:nth-child(2) {
+    top: 12px;
+    opacity: 1;
+    transition: transform 0.5s ease, opacity: 0.3s ease;
+    ${(props) =>
+      props.active &&
+      css`
+        opacity: 0;
+        transform: translateX(30px);
+      `};
+  }
+  &:nth-child(3) {
+    top: 17px;
+    ${(props) =>
+      props.active &&
+      css`
+        top: 12px;
+        left: 16%;
+        transform: rotate(-45deg);
+        transform-origin: center;
+      `};
+  }
+`;
+
+const MobileMenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  background-color: #12130f;
+  position: fixed;
+  top: 60px;
+
+  overflow: hidden;
+  height: 100vh;
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 0.3s ease;
+  box-shadow: 0px 1px 6px #0000007d;
+
+  z-index: 99;
+
+  ${(props) =>
+    props.active &&
+    css`
+      transform: translateX(0px);
+      opacity: 1;
+    `};
+`;
+
+const MobileMenuProfileContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  background-color: #f82c73;
+  padding: 20px 0px;
+`;
+
+const MobileMenuUsername = styled.p`
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+`;
+const MobileMenuProfileAvatarContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px solid white;
+`;
+const MobileMenuProfileAvatar = styled.img`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+const MobileMenuWrapper = styled.div`
+  display: flex;
+  margin-top: 30px;
+  padding-left: 100px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 500px;
+  gap: 20px;
+`;
+const MobileMenuItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+  width: 100%;
+  cursor: pointer;
+`;
+const MobileMenuIcon = styled.div`
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+`;
+const MobileMenuText = styled.p`
+  display: flex;
+  font-weight: bold;
+  color: white;
+`;
+const CartIcon = styled.div`
+  display: none;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: 15px;
+  right: 10px;
+  z-index: 100000200;
+
+  border-radius: 2px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  ${(props) =>
+    props.active &&
+    css`
+      display: flex;
+    `};
+`;
+
 const Navbar = () => {
+  const [mobile, setMobile] = useState(window.innerWidth > 450 ? false : true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scroll, setScroll] = useState(false);
   const dispatch = useDispatch();
   const quantity = useSelector((state) => state.cart.quantity);
   const history = useHistory();
@@ -153,9 +390,135 @@ const Navbar = () => {
     history.push("/");
   };
 
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", toggleHamburgerVisibility);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", toggleHamburgerVisibility);
+    };
+  }, []);
+
+  const handleScroll = () => {
+    const isTop = window.scrollY <= 119;
+    if (!isTop) {
+      setScroll(true);
+    } else {
+      setScroll(false);
+    }
+  };
+
+  const toggleHamburgerVisibility = () => {
+    const width = window.innerWidth;
+    if (width < 450) {
+      setMobile(true);
+    } else {
+      setMobile(false);
+    }
+  };
+
+  const handleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
   return (
-    <Container>
-      <Wrapper>
+    <Container active={scroll ? true : false}>
+      <MobileMenuContainer onClick={closeMobileMenu} active={mobileMenuOpen ? true : false}>
+        {user ? (
+          <>
+            <MobileMenuProfileContainer>
+              <MobileMenuProfileAvatarContainer>
+                <MobileMenuProfileAvatar src={user.img ? user.img : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} />
+              </MobileMenuProfileAvatarContainer>
+              <MobileMenuUsername>
+                Pozdrav, <span>{user.username}</span>
+              </MobileMenuUsername>
+            </MobileMenuProfileContainer>
+            <MobileMenuWrapper>
+              <MobileMenuItem>
+                <MobileMenuIcon>
+                  <AccountCircleIcon />
+                </MobileMenuIcon>
+                <Link style={{ textDecoration: "none" }} to='/profile'>
+                  <MobileMenuText>MOJ PROFIL</MobileMenuText>
+                </Link>
+              </MobileMenuItem>
+              <MobileMenuItem>
+                <MobileMenuIcon>
+                  <ShoppingCartIcon />
+                </MobileMenuIcon>
+                <Link style={{ textDecoration: "none" }} to='/cart'>
+                  <MobileMenuText>MOJA KOSARICA {quantity > 0 && `(${quantity})`}</MobileMenuText>
+                </Link>
+              </MobileMenuItem>
+              <MobileMenuItem>
+                <MobileMenuIcon>
+                  <ShopTwoIcon />
+                </MobileMenuIcon>
+                <Link style={{ textDecoration: "none" }} to='/profile/orders'>
+                  <MobileMenuText>MOJE NARUDZBE</MobileMenuText>
+                </Link>
+              </MobileMenuItem>
+              <MobileMenuItem>
+                <MobileMenuIcon>
+                  <PowerSettingsNewIcon />
+                </MobileMenuIcon>
+
+                <MobileMenuText onClick={handleLogout}>LOGOUT</MobileMenuText>
+              </MobileMenuItem>
+            </MobileMenuWrapper>
+          </>
+        ) : (
+          <MobileMenuWrapper>
+            <MobileMenuItem>
+              <MobileMenuIcon>
+                <AccountCircleIcon />
+              </MobileMenuIcon>
+              <Link style={{ textDecoration: "none" }} to='/login'>
+                <MobileMenuText>LOGIRAJ SE</MobileMenuText>
+              </Link>
+            </MobileMenuItem>
+            <MobileMenuItem>
+              <MobileMenuIcon>
+                <HowToRegIcon />
+              </MobileMenuIcon>
+              <Link style={{ textDecoration: "none" }} to='/register'>
+                <MobileMenuText>KREIRAJ NALOG</MobileMenuText>
+              </Link>
+            </MobileMenuItem>
+            <MobileMenuItem>
+              <MobileMenuIcon>
+                <ShoppingCartIcon />
+              </MobileMenuIcon>
+              <Link style={{ textDecoration: "none" }} to='/cart'>
+                <MobileMenuText>MOJA KOSARICA {quantity > 0 && `(${quantity})`}</MobileMenuText>
+              </Link>
+            </MobileMenuItem>
+          </MobileMenuWrapper>
+        )}
+      </MobileMenuContainer>
+      <HamburgerIcon active={mobile ? true : false} onClick={handleMobileMenu}>
+        <HamburgerLinesContainer>
+          <HamburgerLine active={mobileMenuOpen ? true : false}></HamburgerLine>
+          <HamburgerLine active={mobileMenuOpen ? true : false}></HamburgerLine>
+          <HamburgerLine active={mobileMenuOpen ? true : false}></HamburgerLine>
+        </HamburgerLinesContainer>
+      </HamburgerIcon>
+      <CartIcon active={mobile ? true : false}>
+        <Link to='/cart'>
+          <IconButton aria-label='cart'>
+            <Badge badgeContent={quantity} color='secondary'>
+              <ShoppingCart color='info' />
+            </Badge>
+          </IconButton>
+        </Link>
+      </CartIcon>
+      <Wrapper active={scroll ? true : false}>
         <Left>
           <Language>
             <LanguageOption>
@@ -172,7 +535,7 @@ const Navbar = () => {
         </Left>
         <Center>
           <Link to='/'>
-            <Logo src={logo}></Logo>
+            <Logo active={scroll ? true : false} src={logo}></Logo>
           </Link>
         </Center>
         <Right>
@@ -197,6 +560,7 @@ const Navbar = () => {
                 <Link style={{ textDecoration: "none" }} to='/register'>
                   <NavItem>REGISTRACIJA</NavItem>
                 </Link>
+
                 <Link style={{ textDecoration: "none" }} to='/login'>
                   <NavItem>LOGIN</NavItem>
                 </Link>

@@ -8,12 +8,13 @@ import Alert from "../components/Alert";
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 120px);
   background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url("https://images.pexels.com/photos/5989804/pexels-photo-5989804.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260");
   display: flex;
   align-items: center;
   justify-content: center;
   background-size: cover;
+  ${mobile({ height: "93vh" })};
 `;
 const Wrapper = styled.div`
   padding: 20px;

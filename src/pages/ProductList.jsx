@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Announcment from "../components/Announcment";
 import Footer from "../components/Footer";
@@ -42,9 +43,12 @@ const ProductList = () => {
     const value = e.target.value;
     setFilter({ ...filter, [e.target.name]: value.toLowerCase() });
   };
+
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
   return (
     <Container>
-      <Navbar></Navbar>
       <Announcment></Announcment>
 
       <Title>{cat.toUpperCase()}</Title>

@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import { useEffect } from "react";
 import { getUserInfoAndCart } from "./redux/actions";
 import { getCartId } from "./customFunctions";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const App = () => {
   }, [user]);
   return (
     <Router>
+      <Navbar />
       <Switch>
         <Route exact path='/'>
           <Home />
