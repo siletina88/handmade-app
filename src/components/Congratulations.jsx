@@ -48,7 +48,7 @@ const Text = styled.p`
   text-align: center;
 `;
 const Heading = styled.h2`
-  color: #f82c73;
+  color: #12130f;
 `;
 
 const Congratulations = ({ setOrdered, setShowOrderWindow }) => {

@@ -14,6 +14,7 @@ const Container = styled.div`
   flex: 1;
   width: 100%;
   height: 70vh;
+  border-radius: 3px;
   position: relative;
   overflow: hidden;
   ${tablet({ margin: "0px", paddingTop: "10px" })}

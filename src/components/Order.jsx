@@ -32,7 +32,7 @@ const Wrapper = styled.div`
   height: auto;
   background: white;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.397);
-  border-radius: 10px;
+  border-radius: 3px;
   overflow: hidden;
   ${tablet({ width: "60%" })};
   ${mobile({ width: "92%" })};
@@ -42,7 +42,7 @@ const Title = styled.h1`
   width: 100%;
   padding: 20px 0px;
   text-align: center;
-  background-color: #f82c73;
+  background-color: #12130f;
   ${tablet({ fontSize: "25px" })};
   ${mobile({ fontSize: "25px" })};
 `;
@@ -83,8 +83,8 @@ const Total = styled.span`
 const OrderTotal = styled.div`
   width: 100%;
   text-align: right;
-  color: #f82c73;
-  font-weight: 600;
+  color: #12130f;
+  font-weight: bold;
   text-decoration: underline;
 
   padding-top: 10px;
@@ -145,7 +145,7 @@ const Button = styled.button`
   font-weight: 600;
   text-transform: uppercase;
   background-color: #f82c73;
-  border-radius: 5px;
+  border-radius: 3px;
 `;
 const IconWrapper = styled.div`
   position: absolute;

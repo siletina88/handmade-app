@@ -15,7 +15,7 @@ const TD = styled.td`
   padding: 12px 15px;
   min-width: 60px;
 
-  border-right: 1px solid #00000076;
+  border-right: 1px solid #12130f;
 
   border-bottom: 2px solid #00000076;
   &::last-child {

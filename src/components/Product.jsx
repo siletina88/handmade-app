@@ -9,12 +9,12 @@ const ProductTop = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
-  flex: 8;
-  padding: 20px;
+
+  flex: 7;
+
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
   overflow: hidden;
 `;
@@ -32,7 +32,7 @@ const Info = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #3f3f3f37;
+  background-color: #9696968d;
   transition: all 0.5s ease;
   cursor: pointer;
 `;
@@ -60,21 +60,21 @@ const Description = styled.div`
   gap: 5px;
   width: 90%;
 
-  padding-top: 5px;
+  padding-top: 15px;
   padding-bottom: 25px;
 
   flex: 1;
 `;
 const Title = styled.p`
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 600;
-  color: black;
+  color: #636363;
   text-transform: uppercase;
 `;
 const Price = styled.p`
   font-size: 14px;
-  color: black;
-  font-weight: 600;
+  color: #636363;
+  font-weight: bold;
 `;
 const ItemDesc = styled.p`
   font-size: 14px;
@@ -106,11 +106,11 @@ const Container = styled.div`
   flex-direction: column;
   flex: 1;
   border-radius: 3px;
-  background-color: #fff7fa;
+  background-color: #f5f5f5;
   box-shadow: 1px 4px 9px -2px rgba(0, 0, 0, 0.301);
 
   min-width: 300px;
-  height: 500px;
+  height: 450px;
 
   align-items: center;
   justify-content: space-between;
@@ -132,11 +132,10 @@ const Container = styled.div`
 
 const ImgContainer = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  width: 90%;
+  width: 100%;
   border-radius: 3px;
-  border: 1px solid rgba(173, 173, 173, 0.425);
 
   height: 450px;
 
@@ -147,8 +146,9 @@ const Image = styled.img`
   height: 100%;
 
   z-index: 2;
-  ${mobile({ height: "auto", width: "100%" })}
+  ${mobile({ height: "100%", width: "100%" })}
   object-fit:cover;
+  object-position: center;
 `;
 
 const Product = ({ item }) => {

@@ -17,7 +17,7 @@ import logo from "../logo6.png";
 const Container = styled.div`
   height: 120px;
   display: flex;
-  width: 100%;
+  width: 100vw;
   position: static;
   top: -100px;
 
@@ -30,7 +30,7 @@ const Container = styled.div`
     props.active &&
     css`
       display: flex;
-      width: 100vw;
+      width: 100%;
       align-items: center;
       position: sticky;
       top: 0;

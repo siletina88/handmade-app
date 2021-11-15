@@ -44,7 +44,7 @@ const TableHead = styled.thead`
   border-bottom: 2px solid black;
 `;
 const TableRow = styled.tr`
-  background-color: #f82c73;
+  background-color: #12130f;
   color: #ffffff;
   text-align: left;
 `;
