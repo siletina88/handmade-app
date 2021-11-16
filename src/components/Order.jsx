@@ -28,6 +28,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding-bottom: 20px;
+  border: 1px solid whitesmoke;
   width: 40%;
   height: auto;
   background: white;
@@ -190,7 +191,7 @@ const Order = ({ setShowOrderWindow }) => {
   const getProductIds = () => {
     let listOfProducts = [];
     products.map((item) => {
-      listOfProducts.push({ quantity: item.quantity, _id: item.product._id });
+      listOfProducts.push({ quantity: item.quantity, _id: item.product._id, size: item.size, color: item.color });
     });
     return listOfProducts;
   };

@@ -22,14 +22,14 @@ const cartSlice = createSlice({
 
     addProduct: (state, action) => {
       state.quantity += 1;
-      state.products.push({ product: action.payload, quantity: action.payload.quantity });
+      state.products.push({ product: action.payload, quantity: action.payload.quantity, color: action.payload.color, size: action.payload.size });
 
       state.total += action.payload.price * action.payload.quantity;
     },
     removeProduct: (state, action) => {
       state.quantity -= 1;
 
-      state.products = state.products.filter((product) => product.product._id !== action.payload.product._id);
+      state.products = state.products.filter((product) => product._id !== action.payload._id);
       state.total = state.total - action.payload.product.price * action.payload.quantity;
     },
 

@@ -27,19 +27,19 @@ export const categories = [
     id: 1,
     img: "https://i.pinimg.com/564x/2d/fb/40/2dfb40f117ba512b141171bd3c72cfcd.jpg",
     title: "NARUKNICE",
-    cat: "women",
+    cat: "naruknice",
   },
   {
     id: 2,
     img: "https://i.pinimg.com/564x/ba/68/d8/ba68d8867308a24fbf515cb52a64fb97.jpg",
     title: "OGRLICE",
-    cat: "coat",
+    cat: "ogrlice",
   },
   {
     id: 3,
     img: "https://i.pinimg.com/564x/5f/49/0c/5f490cf81de4353aa410929200174e2f.jpg",
     title: "NAUSNICE",
-    cat: "jeans",
+    cat: "nausnice",
   },
 ];
 

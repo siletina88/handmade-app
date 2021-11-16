@@ -544,8 +544,8 @@ const Navbar = () => {
               <Link to='/profile'>
                 <NavItem>
                   <NavItemContainer>
-                    <Avatar src={user.img ? user.img : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}></Avatar>
-                    Hi, {user.username}
+                    <Avatar src={user?.img ? user?.img : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}></Avatar>
+                    Hi, {user?.username}
                   </NavItemContainer>
                 </NavItem>
               </Link>

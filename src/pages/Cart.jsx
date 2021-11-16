@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { getCart, removeItemFromCart } from "../redux/apiCalls";
 import { getUserInfoAndCart } from "../redux/actions";
+import { getCartId } from "../customFunctions";
 import { useEffect } from "react";
 
 const Container = styled.div`
@@ -124,9 +125,15 @@ const ProductColor = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  border: 1px solid gray;
+  box-shadow: 0px 1px 1px gray;
   background-color: ${(props) => props.color};
 `;
 const ProductSize = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
   ${mobile({ fontSize: "12px" })}
 `;
 
@@ -227,12 +234,11 @@ const Cart = () => {
   const handleRemove = (e, product) => {
     e.preventDefault();
     const cartId = cart._id;
-    const productId = product.product._id;
+    const productId = product._id;
     const cartPrice = product.product.price * product.quantity;
+    console.log(productId);
 
     removeItemFromCart(cartId, productId, cartPrice, dispatch);
-    //
-
     dispatch(removeProduct(product));
   };
   useEffect(() => {
@@ -241,6 +247,12 @@ const Cart = () => {
     body.style.overflow = showOrderWindow === true ? "hidden" : "visible";
     window.scroll(0, 0);
   }, [showOrderWindow]);
+
+  useEffect(() => {
+    if (user) {
+      getUserInfoAndCart(user, getCartId(cart), dispatch);
+    } else return;
+  }, []);
 
   return (
     <>
@@ -279,11 +291,13 @@ const Cart = () => {
                             {/* <ProductId>
                             <b>ID:</b> {product.product._id}
                           </ProductId> */}
-                            {/*                       
-                      <ProductColor color={product.product.color} />
-                      <ProductSize>
-                        <b>Velicina:</b> {product.product.size.toUpperCase()}
-                      </ProductSize> */}
+                            <ProductSize>
+                              <b>Boja:</b> <ProductColor color={product.color} />
+                            </ProductSize>
+
+                            <ProductSize>
+                              <b>Velicina:</b> {product.size}
+                            </ProductSize>
                           </Details>
                         </ProductDetail>
                         <PriceDetail>

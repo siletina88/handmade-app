@@ -17,6 +17,7 @@ import { handleQuantity } from "../customFunctions";
 
 const Container = styled.div`
   background-color: #eae6e5;
+  overflow: hidden;
 `;
 const Wrapper = styled.div`
   padding: 50px;
@@ -26,7 +27,7 @@ const Wrapper = styled.div`
 `;
 
 const Left = styled.div`
-  flex: 4;
+  flex: 3;
   display: flex;
   flex-direction: column;
 `;
@@ -49,7 +50,7 @@ const Thumbnail = styled.img`
 `;
 const Image = styled.img`
   width: 100%;
-  height: 70vh;
+  aspect-ratio: 1;
   object-fit: cover;
   object-position: center;
   ${tablet({ height: "60vh" })}
@@ -81,7 +82,9 @@ const FilterContainer = styled.div`
   display: flex;
 
   justify-content: space-between;
+  flex-direction: column;
   width: 60%;
+  gap: 20px;
   margin: 20px 0px;
   ${tablet({ width: "100%" })}
   ${mobile({ width: "100%" })}
@@ -90,31 +93,63 @@ const FilterContainer = styled.div`
 const Filter = styled.div`
   display: flex;
   align-items: center;
+  gap: 3px;
 `;
 
 const FilterTitle = styled.span`
-  font-size: 16px;
-  font-weight: 300;
-  margin-right: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 5px;
   ${mobile({ marginRight: "5px" })}
 `;
 
-const FilterColor = styled.div`
+const FilterColor = styled.button`
   width: 20px;
   height: 20px;
   border-radius: 50%;
   background-color: ${(props) => props.color};
-  margin: 0px 5px;
+
   cursor: pointer;
-  border: 2px solid black;
+  border: 1px solid gray;
+  box-shadow: 0px 1px 1px gray;
+  &:hover {
+    opacity: 0.6;
+    box-shadow: 3px 3px 3px black;
+  }
+  &:active {
+    transform: scale(1.3);
+  }
 `;
 
-const FilterSize = styled.select`
-  margin-left: 10px;
-  padding: 5px;
+const FilterSize = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 `;
 
-const FilterSizeOption = styled.option``;
+const FilterSizeOption = styled.div`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: gray;
+  color: white;
+  text-transform: uppercase;
+  border: 1px solid gray;
+  box-shadow: 0px 1px 1px gray;
+  &:hover {
+    opacity: 0.6;
+    box-shadow: 3px 3px 3px black;
+  }
+  &:active {
+    transform: scale(1.3);
+  }
+`;
 
 const AddContainer = styled.div`
   width: 60%;
@@ -200,15 +235,13 @@ const Product = () => {
   }, [id, product.img]);
 
   const handleClick = () => {
-    const cart = { ...product, color, size };
-
-    const item = { product: cart, quantity: Number(quantity) };
+    const item = { product, quantity: Number(quantity), color, size };
 
     if (cartItems.length > 0) {
       let existInCart = false;
       const checkIfExists = () => {
         cartItems.map((cartItem) => {
-          if (product._id === cartItem.product._id) {
+          if (product._id === cartItem.product._id && cartItem.product.color === color && cartItem.product.size === size) {
             existInCart = true;
             return;
           }
@@ -265,17 +298,18 @@ const Product = () => {
               <FilterTitle>Boja:</FilterTitle>
               {product &&
                 // @ts-ignore
-                product.color // @ts-ignore
-                  ?.map((c) => <FilterColor onClick={() => setColor(c)} key={c} color={c}></FilterColor>)}
+                product.color?.map((c) => <FilterColor onClick={() => setColor(c)} key={c} color={c}></FilterColor>)}
             </Filter>
             <Filter>
               <FilterTitle>Velicina:</FilterTitle>
-              <FilterSize onClick={(e) => setSize(e.target.value)}>
-                <FilterSizeOption>Broj</FilterSizeOption>
+              <FilterSize>
                 {product &&
                   // @ts-ignore
-                  product.size // @ts-ignore
-                    ?.map((s) => <FilterSizeOption key={s}>{s}</FilterSizeOption>)}
+                  product.size?.map((s) => (
+                    <FilterSizeOption onClick={() => setSize(s)} key={s}>
+                      {s}
+                    </FilterSizeOption>
+                  ))}
               </FilterSize>
             </Filter>
           </FilterContainer>
