@@ -52,7 +52,6 @@ const userSlice = createSlice({
     registerSuccess: (state, action) => {
       state.isFetching = false;
       state.currentUser = action.payload;
-      state.loggedIn = true;
     },
     registerFailure: (state, action) => {
       state.isFetching = false;

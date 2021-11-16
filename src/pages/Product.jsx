@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import { mobile, tablet } from "../responsive";
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { publicRequest } from "../requestMethods";
 import { addProduct } from "../redux/cartSlice";
@@ -128,7 +128,7 @@ const FilterSize = styled.div`
   gap: 5px;
 `;
 
-const FilterSizeOption = styled.div`
+const FilterSizeOption = styled.button`
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -142,12 +142,16 @@ const FilterSizeOption = styled.div`
   text-transform: uppercase;
   border: 1px solid gray;
   box-shadow: 0px 1px 1px gray;
+  transition: background 0.3s ease;
   &:hover {
-    opacity: 0.6;
-    box-shadow: 3px 3px 3px black;
+    background: #000000a4;
   }
   &:active {
     transform: scale(1.3);
+    background: black;
+  }
+  &:focus {
+    background: black;
   }
 `;
 

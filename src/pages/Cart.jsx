@@ -134,6 +134,7 @@ const ProductSize = styled.span`
   align-items: center;
   gap: 5px;
   font-size: 12px;
+  text-transform: uppercase;
   ${mobile({ fontSize: "12px" })}
 `;
 

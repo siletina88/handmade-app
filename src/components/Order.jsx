@@ -193,11 +193,11 @@ const Order = ({ setShowOrderWindow }) => {
     products.map((item) => {
       listOfProducts.push({ quantity: item.quantity, _id: item.product._id, size: item.size, color: item.color });
     });
+    console.log(listOfProducts);
     return listOfProducts;
   };
 
   const listOfProducts = getProductIds();
-  console.log(listOfProducts);
 
   const handleChange = (e) => {
     setInputs((prev) => {
@@ -215,6 +215,7 @@ const Order = ({ setShowOrderWindow }) => {
     }
 
     try {
+      console.log(listOfProducts);
       const res = await publicRequest.post(`orders`, order);
       setOrdered(true);
       if (user) {
