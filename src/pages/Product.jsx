@@ -27,18 +27,16 @@ const Wrapper = styled.div`
 `;
 
 const Left = styled.div`
-  flex: 3;
+  flex: 2;
   display: flex;
   flex-direction: column;
 `;
-const ImgContainer = styled.div`
-  border: 1px solid lightgray;
-`;
+const ImgContainer = styled.div``;
 const ThumbContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  border: 1px solid lightgray;
+
   gap: 5px;
   overflow-x: hidden;
 `;
@@ -50,6 +48,7 @@ const Thumbnail = styled.img`
 `;
 const Image = styled.img`
   width: 100%;
+  height: 65vh;
   aspect-ratio: 1;
   object-fit: cover;
   object-position: center;

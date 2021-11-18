@@ -15,6 +15,8 @@ const Title = styled.h1`
 const FilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  background-color: #12130f;
+  color: white;
 `;
 const Filter = styled.div`
   margin: 20px;
@@ -29,7 +31,13 @@ const FilterText = styled.span`
 const Select = styled.select`
   padding: 7px;
   margin-right: 10px;
-  ${mobile({ margin: "10px 0px" })}
+  color: white;
+  border-radius: 3px;
+  background: black;
+  &:focus {
+    outline: 2px solid white;
+  }
+  ${mobile({ margin: "10px 0px" })};
 `;
 const Option = styled.option``;
 
@@ -51,27 +59,19 @@ const ProductList = () => {
     <Container>
       <Announcment></Announcment>
 
-      <Title>{cat.toUpperCase()}</Title>
       <FilterContainer>
         <Filter>
           <FilterText>Filtriraj Artikle:</FilterText>
-          <Select name='color' onChange={handleFilter}>
-            <Option disabled>Boja</Option>
-            <Option>Crvena</Option>
-            <Option>Crna</Option>
-            <Option>Bijela</Option>
-            <Option>Plava</Option>
-            <Option>Zuta</Option>
-          </Select>
+
           <Select name='size' onChange={handleFilter}>
             <Option disabled>Velicina</Option>
-            <Option>XS</Option>
+
             <Option>S</Option>
             <Option>M</Option>
             <Option>L</Option>
-            <Option>XL</Option>
           </Select>
         </Filter>
+
         <Filter>
           <FilterText>Sortiraj Artikle:</FilterText>
           <Select onChange={(e) => setSort(e.target.value)}>
