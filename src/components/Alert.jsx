@@ -34,7 +34,7 @@ const Alert = ({ type, message, trigger, timeout }) => {
     }
 
     return () => clearTimeout(timer);
-  }, [trigger]);
+  }, [trigger, message]);
 
   switch (type) {
     case "success":
@@ -44,6 +44,7 @@ const Alert = ({ type, message, trigger, timeout }) => {
             <AlertContainer>
               <Message color='green'>
                 <CheckCircleIcon style={{ color: "green", paddingRight: "10px", display: "flex", alignItems: "center", fontSize: "14px" }} />
+
                 {message}
               </Message>
             </AlertContainer>

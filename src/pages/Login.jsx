@@ -8,6 +8,7 @@ import WarningIcon from "@mui/icons-material/Warning";
 import spinner from "../spinner.gif";
 import { useEffect } from "react";
 import Alert from "../components/Alert";
+import ModalSuccess from "../components/ModalSuccess";
 
 const Container = styled.div`
   width: 100vw;
@@ -102,13 +103,22 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const { isFetching, error, currentUser, message } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setShowAlert(false);
-    await login(dispatch, { username, password });
+
+    const response = await login(dispatch, { username, password });
+    if (response) {
+      if (response?.includes("verifikujete")) {
+        setShowModal(true);
+      } else {
+        setShowAlert(true);
+      }
+    }
 
     if (!currentUser || error) {
       setShowAlert(true);
@@ -133,6 +143,7 @@ const Login = () => {
         <Link>Zaboravili ste password ili korisnicko ime?</Link>
         <Link>Kreirajte novi nalog</Link>
         <Alert type='error' message={!password || !username ? "Molimo Vas da popunite polja" : message} trigger={showAlert}></Alert>
+        <ModalSuccess type='warning' heading='Nalog nije verifikovan' message={!password || !username ? "Molimo Vas da popunite polja" : message} trigger={showModal}></ModalSuccess>
 
         {isFetching && (
           <LoadingCont>

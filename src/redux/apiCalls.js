@@ -35,9 +35,11 @@ export const login = async (dispatch, user) => {
   try {
     const res = await publicRequest.post("/auth/login", user);
     dispatch(loginSuccess(res.data));
+    return false;
   } catch (error) {
     const { response } = error;
     dispatch(loginFailure(response.data));
+    return response.data;
   }
 };
 
@@ -57,10 +59,13 @@ export const register = async (dispatch, user) => {
   dispatch(registerStart());
   try {
     const res = await publicRequest.post("/auth/register", user);
+
     dispatch(registerSuccess());
+    return true;
   } catch (error) {
     const { response } = error;
     dispatch(registerFailure(response.data));
+    return false;
   }
 };
 

@@ -1,7 +1,7 @@
 export const sliderItems = [
   {
     id: 1,
-    img: "https://pngimg.com/uploads/jewelry/jewelry_PNG6756.png",
+    img: "https://images.unsplash.com/photo-1607082349566-187342175e2f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
     title: "Ljetna rasprodaja",
     desc: "Kupujte po povoljnijim cijenama, zahvaljujući ljetnjoj rasprodaji!",
     bg: "#f5fafd",

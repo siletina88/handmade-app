@@ -17,7 +17,7 @@ import logo from "../logo6.png";
 const Container = styled.div`
   height: 120px;
   display: flex;
-  width: 100vw;
+  width: 100%;
   position: static;
   top: -100px;
 
@@ -42,7 +42,7 @@ const Container = styled.div`
       ${mobile({ position: "sticky", top: "0", transform: "translateY(0px)", boxShadow: "none" })};
     `};
 
-  z-index: 999999;
+  z-index: 9;
 `;
 
 const Wrapper = styled.div`

@@ -49,9 +49,8 @@ const userSlice = createSlice({
       state.error = false;
       state.message = "";
     },
-    registerSuccess: (state, action) => {
+    registerSuccess: (state) => {
       state.isFetching = false;
-      state.currentUser = action.payload;
     },
     registerFailure: (state, action) => {
       state.isFetching = false;

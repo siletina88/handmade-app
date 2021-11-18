@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { getUserInfoAndCart } from "./redux/actions";
 import { getCartId } from "./customFunctions";
 import Navbar from "./components/Navbar";
+import UserVerificationSuccess from "./pages/UserVerificationSuccess";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,9 @@ const App = () => {
 
         <Route path='/login'>{user ? <Redirect to='/' /> : <Login />}</Route>
         <Route path='/register'>{user ? <Redirect to='/' /> : <Register />}</Route>
+        <Route path='/verified'>
+          <UserVerificationSuccess></UserVerificationSuccess>
+        </Route>
       </Switch>
     </Router>
   );

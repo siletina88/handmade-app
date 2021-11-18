@@ -1,13 +1,35 @@
 import React, { useState, useRef, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useSelector, useDispatch } from "react-redux";
 import { mobile, tablet } from "../responsive";
+import Alert from "./Alert";
 
-import Congratulations from "./Congratulations";
+import ModalSuccess from "./ModalSuccess";
 import { clearCartOnOrder } from "../redux/apiCalls";
 import { clearCart } from "../redux/cartSlice";
 import { publicRequest } from "../requestMethods";
+import { ImageNotSupportedSharp } from "@mui/icons-material";
+
+const bounce = keyframes`
+  0% {
+    transform: translateY(-500px);
+  }
+
+
+  100% {
+    transform: translateY(0px);
+  }
+`;
+const darken = keyframes`
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+`;
 
 const Container = styled.div`
   display: flex;
@@ -15,9 +37,11 @@ const Container = styled.div`
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  z-index: 99;
+  animation: ${darken} 0.2s linear;
 
   background: #1313139d;
 `;
@@ -28,15 +52,17 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding-bottom: 20px;
-  border: 1px solid whitesmoke;
+  border: 1px solid rgba(37, 37, 37, 0.774);
   width: 40%;
   height: auto;
+  margin-top: 20px;
   background: white;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.397);
   border-radius: 3px;
   overflow: hidden;
   ${tablet({ width: "60%" })};
   ${mobile({ width: "92%" })};
+  animation: ${bounce} 0.3s linear;
 `;
 const Title = styled.h1`
   color: white;
@@ -136,7 +162,7 @@ const Label = styled.label`
 
 const Button = styled.button`
   margin-top: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   cursor: pointer;
   border: none;
   padding: 10px 20px;
@@ -156,9 +182,10 @@ const IconWrapper = styled.div`
   width: 20px;
 `;
 
-const Order = ({ setShowOrderWindow }) => {
+const Order = ({ setOrdered, setShowOrderWindow }) => {
   const dispatch = useDispatch();
-  const [ordered, setOrdered] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [message, setMessage] = useState("");
   const [inputs, setInputs] = useState({});
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user.currentUser);
@@ -186,14 +213,13 @@ const Order = ({ setShowOrderWindow }) => {
 
   const products = cart.products;
   const total = cart.total;
-  console.log(products);
 
   const getProductIds = () => {
     let listOfProducts = [];
     products.map((item) => {
       listOfProducts.push({ quantity: item.quantity, _id: item.product._id, size: item.size, color: item.color });
     });
-    console.log(listOfProducts);
+
     return listOfProducts;
   };
 
@@ -206,6 +232,7 @@ const Order = ({ setShowOrderWindow }) => {
   };
 
   const handleClick = async (e) => {
+    setShowAlert(false);
     e.preventDefault();
     let order;
     if (user) {
@@ -213,18 +240,27 @@ const Order = ({ setShowOrderWindow }) => {
     } else {
       order = { ...inputs, products: listOfProducts, total };
     }
+    if (!inputs.name || !inputs.phone || !inputs.address || !inputs.city || !inputs.email) {
+      setMessage("Molimo da ispunite sva polja!");
+      setShowAlert(true);
+      console.log(message);
+    } else {
+      if (inputs.email.includes("@")) {
+        try {
+          const res = await publicRequest.post(`orders`, order);
+          setOrdered(true);
+          setShowOrderWindow(false);
 
-    try {
-      console.log(listOfProducts);
-      const res = await publicRequest.post(`orders`, order);
-      setOrdered(true);
-      if (user) {
-        clearCartOnOrder(cartId, userId, dispatch);
+          if (user) {
+            clearCartOnOrder(cartId, userId, dispatch);
+          } else {
+            dispatch(clearCart());
+          }
+        } catch (error) {}
       } else {
-        dispatch(clearCart());
+        setMessage("Vasa email adresa nije validna!");
+        setShowAlert(true);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -244,52 +280,49 @@ const Order = ({ setShowOrderWindow }) => {
   return (
     <Container>
       <Wrapper>
-        {ordered ? (
-          <Congratulations setShowOrderWindow={setShowOrderWindow} setOrdered={setOrdered}></Congratulations>
-        ) : (
-          <>
-            <Title>ZAVRSI NARUDZBU</Title>
-            <IconWrapper>
-              <HighlightOffIcon onClick={() => setShowOrderWindow(false)} style={{ fontSize: "30px", cursor: "pointer", color: "white" }} />
-            </IconWrapper>
+        <>
+          <Title>ZAVRSI NARUDZBU</Title>
+          <IconWrapper>
+            <HighlightOffIcon onClick={() => setShowOrderWindow(false)} style={{ fontSize: "30px", cursor: "pointer", color: "white" }} />
+          </IconWrapper>
 
-            <OrderDetails>
-              <ProductList>
-                {cart.products.map((item) => (
-                  <Product>
-                    {item.product.title} x {item.quantity}
-                    <Total>{item.product.price * item.quantity} KM</Total>
-                  </Product>
-                ))}
-              </ProductList>
-              <OrderTotal>UKUPNO {cart.total.toFixed(2)} KM</OrderTotal>
-            </OrderDetails>
-            <Form>
-              <FormItem>
-                <Label>Ime i prezime</Label>
-                <Input ref={user && fullName} onChange={handleChange} name='name' type='text'></Input>
-              </FormItem>
-              <FormItem>
-                <Label>Adresa dostave </Label>
-                <Input ref={user && address} onChange={handleChange} name='address' type='text'></Input>
-              </FormItem>
-              <FormItem>
-                <Label>Grad </Label>
-                <Input ref={user && city} onChange={handleChange} name='city' type='text'></Input>
-              </FormItem>
-              <FormItem>
-                <Label>Broj telefona</Label>
-                <Input ref={user && phone} onChange={handleChange} name='phone' type='text'></Input>
-              </FormItem>
-              <FormItem>
-                <Label>Email</Label>
-                <Input ref={user && email} onChange={handleChange} name='email' type='email'></Input>
-              </FormItem>
+          <OrderDetails>
+            <ProductList>
+              {cart.products.map((item) => (
+                <Product key={item._id}>
+                  {item.product.title} x {item.quantity}
+                  <Total>{item.product.price * item.quantity} KM</Total>
+                </Product>
+              ))}
+            </ProductList>
+            <OrderTotal>UKUPNO {cart.total.toFixed(2)} KM</OrderTotal>
+          </OrderDetails>
+          <Form>
+            <FormItem>
+              <Label>Ime i prezime</Label>
+              <Input ref={user && fullName} onChange={handleChange} name='name' type='text'></Input>
+            </FormItem>
+            <FormItem>
+              <Label>Adresa dostave </Label>
+              <Input ref={user && address} onChange={handleChange} name='address' type='text'></Input>
+            </FormItem>
+            <FormItem>
+              <Label>Grad </Label>
+              <Input ref={user && city} onChange={handleChange} name='city' type='text'></Input>
+            </FormItem>
+            <FormItem>
+              <Label>Broj telefona</Label>
+              <Input ref={user && phone} onChange={handleChange} name='phone' type='text'></Input>
+            </FormItem>
+            <FormItem>
+              <Label>Email</Label>
+              <Input ref={user && email} onChange={handleChange} name='email' type='email'></Input>
+            </FormItem>
 
-              <Button onClick={handleClick}>Naruci</Button>
-            </Form>
-          </>
-        )}
+            <Button onClick={handleClick}>Naruci</Button>
+          </Form>
+          <Alert type='error' message={message} trigger={showAlert}></Alert>
+        </>
       </Wrapper>
     </Container>
   );

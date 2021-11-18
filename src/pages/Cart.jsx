@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Announcment from "../components/Announcment";
-import Navbar from "../components/Navbar";
+import ModalSuccess from "../components/ModalSuccess";
 import Footer from "../components/Footer";
 import Order from "../components/Order";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -183,8 +183,9 @@ const Summary = styled.div`
   border: 0.5px solid lightgray;
 
   padding: 20px;
+
   height: auto;
-  ${mobile({ width: "80%" })}
+  ${mobile({ width: "80%", margin: "10px auto" })}
 `;
 const SummaryTitle = styled.h1`
   font-weight: 200;
@@ -215,6 +216,7 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
+  const [ordered, setOrdered] = useState(false);
   const [showOrderWindow, setShowOrderWindow] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
@@ -242,12 +244,6 @@ const Cart = () => {
     removeItemFromCart(cartId, productId, cartPrice, dispatch);
     dispatch(removeProduct(product));
   };
-  useEffect(() => {
-    console.log("I RAN");
-    const body = document.querySelector("body");
-    body.style.overflow = showOrderWindow === true ? "hidden" : "visible";
-    window.scroll(0, 0);
-  }, [showOrderWindow]);
 
   useEffect(() => {
     if (user) {
@@ -293,12 +289,19 @@ const Cart = () => {
                             <b>ID:</b> {product.product._id}
                           </ProductId> */}
                             <ProductSize>
-                              <b>Boja:</b> <ProductColor color={product.color} />
+                              {product.color && (
+                                <>
+                                  <b>Boja:</b> <ProductColor color={product.color} />
+                                </>
+                              )}
                             </ProductSize>
-
-                            <ProductSize>
-                              <b>Velicina:</b> {product.size}
-                            </ProductSize>
+                            {product.size && (
+                              <ProductSize>
+                                <>
+                                  <b>Velicina:</b> {product.size}
+                                </>
+                              </ProductSize>
+                            )}
                           </Details>
                         </ProductDetail>
                         <PriceDetail>
@@ -348,7 +351,16 @@ const Cart = () => {
           ) : (
             <div style={{ textAlign: "center", marginTop: "150px", border: "1px solid lightgray", padding: "30px" }}>VASA KOSARICA JE PRAZNA</div>
           )}
-          {showOrderWindow && <Order setShowOrderWindow={setShowOrderWindow} showOrderWindow={showOrderWindow}></Order>}
+          {showOrderWindow && <Order setOrdered={setOrdered} setShowOrderWindow={setShowOrderWindow} showOrderWindow={showOrderWindow}></Order>}
+
+          <ModalSuccess
+            trigger={ordered}
+            type='success'
+            heading='Hvala Vam!'
+            message='Uspjesno ste obavili narudzbu. Uskoro cete dobiti email sa potvrdom i detaljima narudzbe.'
+            redirectTo='/'
+            timeout='7000'
+          ></ModalSuccess>
         </Wrapper>
         <Footer></Footer>
       </Container>

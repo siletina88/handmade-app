@@ -5,6 +5,7 @@ import { mobile, tablet } from "../responsive";
 import { useDispatch, useSelector } from "react-redux";
 import { register, login } from "../redux/apiCalls";
 import Alert from "../components/Alert";
+import ModalSuccess from "../components/ModalSuccess";
 
 const Container = styled.div`
   width: 100vw;
@@ -77,6 +78,7 @@ const Register = () => {
   const [error, setError] = useState(null);
   const [welcome, setWelcome] = useState("");
   const { message } = useSelector((state) => state.user);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleChange = (e) => {
     setError(false);
@@ -90,23 +92,20 @@ const Register = () => {
   };
 
   const handleClick = async (e) => {
-    setWelcome("");
     setError(false);
     e.preventDefault();
     const user = { ...inputs };
-
-    if (user.username && user.password && user.password.length > 5 && user?.password === password && user?.email.includes("@")) {
-      await register(dispatch, { ...user });
-      setWelcome("Uspjesno ste registrovali nalog. Molimo Vas da verifikujete vasu email adresu kako bi nastavili sa koristenjem nasih usluga. Hvala!");
-      setTimeout(() => {
-        history.push("/login");
-      }, 5000);
-
-      // login(dispatch, { username, password });
-    } else {
-      setError(true);
-      return;
-    }
+    const Register = async () => {
+      if (user.username && user.password && user.password.length > 5 && user?.password === password && user?.email.includes("@")) {
+        const result = await register(dispatch, { ...user });
+        return result;
+      } else {
+        setError(true);
+        return;
+      }
+    };
+    const response = await Register();
+    setShowSuccess(response ? response : false);
   };
 
   return (
@@ -152,8 +151,17 @@ const Register = () => {
           trigger={error}
           type='error'
         ></Alert>
-        <Alert message={message} trigger={message} type='error'></Alert>
-        {!message && <Alert message={welcome} trigger={welcome} type='success'></Alert>}
+        <Alert message={message} trigger={message} type='error' timeout='3000'></Alert>
+        {/* {!message && <Alert message={welcome} trigger={welcome} type='success'></Alert>} */}
+
+        <ModalSuccess
+          trigger={showSuccess}
+          type='success'
+          heading='Nalog kreiran'
+          message='Uspjesno ste kreirali vas nalog. Uskoro cete dobiti email za verifikaciju vaseg naloga. Nakon sto verifikujete mozete da se logirate.'
+          timeout='10000'
+          redirectTo='/login'
+        ></ModalSuccess>
       </Wrapper>
     </Container>
   );
