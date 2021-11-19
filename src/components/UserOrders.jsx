@@ -64,7 +64,6 @@ const UserOrders = () => {
   const fetchAllOrders = async () => {
     const res = await userRequest(`orders/get/${userId}`);
     setOrders(res.data);
-    console.log(res.data);
   };
 
   const getProducts = async () => {

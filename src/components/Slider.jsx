@@ -14,6 +14,7 @@ const Container = styled.div`
   position: relative;
   overflow: hidden;
   ${mobile({ display: "none" })}
+  border-bottom: 1px solid lightgray;
 `;
 
 const Arrow = styled.div`
@@ -33,6 +34,7 @@ const Arrow = styled.div`
   cursor: pointer;
   opacity: 0.5;
   z-index: 2;
+  border-bottom: 1px solid gray;
 `;
 const Wrapper = styled.div`
   height: 100%;
@@ -44,7 +46,8 @@ const Slide = styled.div`
   display: flex;
   align-items: center;
   width: 100vw;
-  height: calc(70vh - 20px);
+  height: 100%;
+
   background-color: ${(props) => props.bg};
 `;
 const ImgContainer = styled.div`

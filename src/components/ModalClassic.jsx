@@ -1,16 +1,18 @@
-import { SettingsApplicationsRounded } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
+import ReactDom from "react-dom";
 import { useHistory } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
 const bounce = keyframes`
   0% {
-    transform: translateY(-500px);
+    transform: translateY(-600px);
+    opacity: 0;
   }
 
 
   100% {
     transform: translateY(0px);
+    opacity: 1;
   }
 `;
 const darken = keyframes`
@@ -28,14 +30,14 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
   z-index: 10000;
-  background-color: #000000a0;
+  background-color: #000000c7;
   top: 0;
   left: 0;
   display: ${(props) => (props.hide ? "none" : "flex")};
   align-items: center;
   justify-content: center;
   width: 100%;
-  animation: ${darken} 0.2s linear;
+  animation: ${darken} 0s linear;
 `;
 
 const Wrapper = styled.div`
@@ -93,7 +95,7 @@ const Heading = styled.h2`
   color: #12130f;
 `;
 
-const ModalSuccess = ({ trigger, type, heading, message, timeout, redirectTo }) => {
+const ModalClassic = ({ trigger, type, heading, message, timeout, redirectTo }) => {
   const history = useHistory();
   const [counter, setCounter] = useState(timeout / 1000);
   const [close, setClose] = useState(false);
@@ -132,7 +134,7 @@ const ModalSuccess = ({ trigger, type, heading, message, timeout, redirectTo }) 
   };
   switch (type) {
     case "success":
-      return (
+      return ReactDom.createPortal(
         <>
           {showModal && (
             <Container hide={close} onClick={handleClose}>
@@ -148,11 +150,12 @@ const ModalSuccess = ({ trigger, type, heading, message, timeout, redirectTo }) 
               </Wrapper>
             </Container>
           )}
-        </>
+        </>,
+        document.getElementById("modal")
       );
 
     case "error":
-      return (
+      return ReactDom.createPortal(
         <>
           {showModal && (
             <Container hide={close} onClick={handleClose}>
@@ -168,10 +171,11 @@ const ModalSuccess = ({ trigger, type, heading, message, timeout, redirectTo }) 
               </Wrapper>
             </Container>
           )}
-        </>
+        </>,
+        document.getElementById("modal")
       );
     case "warning":
-      return (
+      return ReactDom.createPortal(
         <>
           {showModal && (
             <Container hide={close} onClick={handleClose}>
@@ -187,9 +191,10 @@ const ModalSuccess = ({ trigger, type, heading, message, timeout, redirectTo }) 
               </Wrapper>
             </Container>
           )}
-        </>
+        </>,
+        document.getElementById("modal")
       );
   }
 };
 
-export default ModalSuccess;
+export default ModalClassic;

@@ -35,11 +35,16 @@ export const login = async (dispatch, user) => {
   try {
     const res = await publicRequest.post("/auth/login", user);
     dispatch(loginSuccess(res.data));
-    return false;
+    return "success";
   } catch (error) {
     const { response } = error;
-    dispatch(loginFailure(response.data));
-    return response.data;
+    if (response) {
+      dispatch(loginFailure(response.data));
+    } else {
+      dispatch(loginFailure("Server nije dostupan. Provjerite vasu internet konekciju ili pokusajte kasnije!"));
+    }
+
+    return "failed";
   }
 };
 
@@ -64,7 +69,11 @@ export const register = async (dispatch, user) => {
     return true;
   } catch (error) {
     const { response } = error;
-    dispatch(registerFailure(response.data));
+    if (response) {
+      dispatch(registerFailure(response.data));
+    } else {
+      dispatch(registerFailure("Server nije dostupan. Provjerite vasu internet konekciju ili pokusajte kasnije!"));
+    }
     return false;
   }
 };
@@ -75,9 +84,11 @@ export const updateUser = async (id, user, dispatch) => {
   try {
     const res = await userRequest.put(`/users/${id}`, user);
     dispatch(updateUserSuccess(res.data));
+    return "success";
   } catch (error) {
     console.log(error);
     dispatch(updateUserFailure());
+    return "failed";
   }
 };
 
@@ -124,10 +135,11 @@ export const updateCart = async (cartId, item, userId, dispatch) => {
   try {
     const res = await userRequest.put(`/cart/add/${userId}`, { item, cartId, userId });
     dispatch(updateUserCartSuccess(res.data));
-    console.log(res.data);
+    return "success";
   } catch (error) {
     console.log(error);
     dispatch(updateUserCartFailure());
+    return "failure";
   }
 };
 // clear cart
@@ -150,9 +162,17 @@ export const removeItemFromCart = async (cartId, productId, cartPrice, dispatch)
   try {
     const res = await userRequest.put(`/cart/remove/${cartId}/${productId}`, { cartPrice });
     dispatch(updateUserCartSuccess(res.data));
-    console.log(res.data);
+    return "success";
   } catch (error) {
-    console.log(error);
+    return "failed";
     dispatch(updateUserCartFailure());
+  }
+};
+export const makeAnOrder = async (order) => {
+  try {
+    const res = await publicRequest.post(`orders`, order);
+    return "success";
+  } catch (error) {
+    return "failed";
   }
 };

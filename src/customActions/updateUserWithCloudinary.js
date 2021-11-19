@@ -37,7 +37,8 @@ export const updateUserWithCloudinary = async (dispatch, file, inputs, id) => {
     return uploaders().then(() => {
       const user = { ...inputs, img: url };
       // const redirect = (window.location = "/profile");
-      updateUser(id, user, dispatch);
+      const res = updateUser(id, user, dispatch);
+      return res;
     });
     // ... perform after upload is successful operation
   };
@@ -45,7 +46,8 @@ export const updateUserWithCloudinary = async (dispatch, file, inputs, id) => {
     return handleDrop();
   } else {
     const user = { ...inputs };
-    // const redirect = (window.location = "/profile");
-    return updateUser(id, user, dispatch);
+
+    const res = updateUser(id, user, dispatch);
+    return res;
   }
 };

@@ -5,7 +5,7 @@ import WarningIcon from "@mui/icons-material/Warning";
 import { updateUser } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import spinner from "../spinner.gif";
-import Alert from "./Alert";
+import AlertModal from "./AlertModal";
 
 const Title = styled.h1`
   margin-bottom: 20px;
@@ -75,9 +75,11 @@ const ChangePassword = () => {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.user.currentUser._id);
   const { isFetching } = useSelector((state) => state.user);
-  const [showAlert, setShowAlert] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showFailureAlert, setShowFailureAlert] = useState(false);
 
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [repeat, setRepeat] = useState("");
   const [error, setError] = useState("");
 
@@ -92,12 +94,20 @@ const ChangePassword = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    setShowAlert(false);
+    setMessage("");
+    setShowSuccessAlert(false);
+    setShowFailureAlert(false);
     if (password === repeat) {
       if (password.length > 5) {
         const user = { password };
-        await updateUser(id, user, dispatch);
-        setShowAlert(true);
+        const res = await updateUser(id, user, dispatch);
+        if (res === "success") {
+          setMessage("Uspjesno ste promjenili vasu lozinku!");
+          setShowSuccessAlert(true);
+        } else {
+          setMessage("Greska, molimo vas pokusajte kasnije");
+          setShowFailureAlert(true);
+        }
       } else {
         setError("Sifra mora biti najmanje 6 karaktera!");
         setPassword("");
@@ -127,7 +137,8 @@ const ChangePassword = () => {
           <Input onChange={handleChangeRepeat} value={repeat} type='password'></Input>
         </FormItem>
         <BottomContainer>
-          <Button onClick={handleClick}>Promjeni</Button> <Alert type='success' message='Uspjesno ste promjenili vasu sifru' trigger={showAlert}></Alert>
+          <Button onClick={handleClick}>Promjeni</Button> <AlertModal timeout='2000' type='success' message={message} trigger={showSuccessAlert}></AlertModal>
+          <AlertModal timeout='2000' type='error' message={message} trigger={showFailureAlert}></AlertModal>
           {isFetching && (
             <LoadingCont>
               <Loading src={spinner}></Loading>

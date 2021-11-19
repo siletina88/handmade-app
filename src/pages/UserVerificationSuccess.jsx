@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 
-import ModalSuccess from "../components/ModalSuccess";
-
-import Slider from "../components/Slider";
+import ModalClassic from "../components/ModalClassic";
 
 const UserVerificationSuccess = () => {
   const showModal = true;
@@ -11,14 +9,14 @@ const UserVerificationSuccess = () => {
   }, []);
   return (
     <>
-      <ModalSuccess
+      <ModalClassic
         trigger={showModal}
         message='Uspjesno ste verfikovali vasu email adresu. Uskoro cete biti preusmjereni na stranicu za prijavu!'
         heading='Nalog je verifikovan'
         timeout='5000'
         redirectTo='/login'
         type='success'
-      ></ModalSuccess>
+      ></ModalClassic>
     </>
   );
 };

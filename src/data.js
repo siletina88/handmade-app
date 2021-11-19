@@ -1,7 +1,7 @@
 export const sliderItems = [
   {
     id: 1,
-    img: "https://images.unsplash.com/photo-1607082349566-187342175e2f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
+    img: "https://i.ibb.co/SNP2QJg/Pngtree-big-sale-png-background-design-5491850.png",
     title: "Ljetna rasprodaja",
     desc: "Kupujte po povoljnijim cijenama, zahvaljujući ljetnjoj rasprodaji!",
     bg: "#f5fafd",
@@ -9,14 +9,14 @@ export const sliderItems = [
   {
     id: 2,
     img: "https://pngimg.com/uploads/jewelry/jewelry_PNG6835.png",
-    title: "AUTUMN COLLECTION",
-    desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
+    title: "AKCIJA!",
+    desc: "Kupis jedan artikal i na drugi dobijas 50% popusta!",
     bg: "#fcf1ed",
   },
   {
     id: 3,
     img: "https://pngimg.com/uploads/necklace/necklace_PNG85.png",
-    title: "LOUNGEWEAR LOVE",
+    title: "BUDI U TRENDU",
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     bg: "#fbf0f4",
   },

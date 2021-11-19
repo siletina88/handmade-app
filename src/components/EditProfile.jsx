@@ -7,7 +7,7 @@ import spinner from "../spinner.gif";
 
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserWithCloudinary } from "../customActions/updateUserWithCloudinary";
-import Alert from "./Alert";
+import AlertModal from "./AlertModal";
 
 const Title = styled.h1`
   margin-bottom: 20px;
@@ -65,7 +65,9 @@ const BottomContainer = styled.div`
 const EditProfile = () => {
   const user = useSelector((state) => state.user.currentUser);
   const { isFetching } = useSelector((state) => state.user);
-  const [showAlert, setShowAlert] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showFailureAlert, setShowFailureAlert] = useState(false);
+  const [message, setMessage] = useState("");
 
   const getUserId = () => {
     if (user) {
@@ -88,10 +90,18 @@ const EditProfile = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    setShowAlert(false);
+    setMessage("");
+    setShowSuccessAlert(false);
+    setShowFailureAlert(false);
 
-    await updateUserWithCloudinary(dispatch, file, inputs, id);
-    setShowAlert(true);
+    const res = await updateUserWithCloudinary(dispatch, file, inputs, id);
+    if (res === "success") {
+      setMessage("Uspjesno ste azurirali vas profil!");
+      setShowSuccessAlert(true);
+    } else {
+      setMessage("Greska, molimo vas pokusajte kasnije");
+      setShowFailureAlert(true);
+    }
   };
 
   return (
@@ -122,7 +132,8 @@ const EditProfile = () => {
         <BottomContainer>
           <Button onClick={handleClick}>Uredi</Button>{" "}
           <LoadingCont>
-            <Alert type='success' message='Uspjesno ste azurirali profil' trigger={showAlert} timeout='2000'></Alert>
+            <AlertModal type='success' message={message} trigger={showSuccessAlert} timeout='2000'></AlertModal>
+            <AlertModal type='error' message={message} trigger={showFailureAlert} timeout='2000'></AlertModal>
             {isFetching && <Loading src={spinner}></Loading>}
           </LoadingCont>
         </BottomContainer>

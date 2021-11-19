@@ -4,12 +4,10 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useSelector, useDispatch } from "react-redux";
 import { mobile, tablet } from "../responsive";
 import Alert from "./Alert";
-
-import ModalSuccess from "./ModalSuccess";
+import AlertModal from "./AlertModal";
+import { makeAnOrder } from "../redux/apiCalls";
 import { clearCartOnOrder } from "../redux/apiCalls";
 import { clearCart } from "../redux/cartSlice";
-import { publicRequest } from "../requestMethods";
-import { ImageNotSupportedSharp } from "@mui/icons-material";
 
 const bounce = keyframes`
   0% {
@@ -36,7 +34,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   position: fixed;
   top: 0;
   left: 0;
@@ -44,6 +43,7 @@ const Container = styled.div`
   animation: ${darken} 0.2s linear;
 
   background: #1313139d;
+  ${mobile({ alignItems: "center", paddingTop: "20px" })};
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -61,7 +61,7 @@ const Wrapper = styled.div`
   border-radius: 3px;
   overflow: hidden;
   ${tablet({ width: "60%" })};
-  ${mobile({ width: "92%" })};
+  ${mobile({ width: "92%", margin: "0" })};
   animation: ${bounce} 0.3s linear;
 `;
 const Title = styled.h1`
@@ -86,6 +86,7 @@ const OrderDetails = styled.div`
   align-items: center;
   flex-direction: column;
   font-size: 14px;
+  ${mobile({ fontSize: "12px" })};
 `;
 const ProductList = styled.ul`
   display: flex;
@@ -129,7 +130,7 @@ const Form = styled.form`
   justify-content: center;
 
   gap: 15px;
-  ${mobile({ width: "90%" })};
+  ${mobile({ width: "90%", gap: "10px" })};
 `;
 const Input = styled.input`
   border: none;
@@ -158,6 +159,7 @@ const Label = styled.label`
   font-weight: 600;
   width: 100%;
   margin-bottom: 5px;
+  ${mobile({ marginBottom: "2px" })};
 `;
 
 const Button = styled.button`
@@ -185,6 +187,7 @@ const IconWrapper = styled.div`
 const Order = ({ setOrdered, setShowOrderWindow }) => {
   const dispatch = useDispatch();
   const [showAlert, setShowAlert] = useState(false);
+  const [showFailureAlert, setShowFailureAlert] = useState(false);
   const [message, setMessage] = useState("");
   const [inputs, setInputs] = useState({});
   const cart = useSelector((state) => state.cart);
@@ -233,6 +236,7 @@ const Order = ({ setOrdered, setShowOrderWindow }) => {
 
   const handleClick = async (e) => {
     setShowAlert(false);
+    setShowFailureAlert(false);
     e.preventDefault();
     let order;
     if (user) {
@@ -243,11 +247,10 @@ const Order = ({ setOrdered, setShowOrderWindow }) => {
     if (!inputs.name || !inputs.phone || !inputs.address || !inputs.city || !inputs.email) {
       setMessage("Molimo da ispunite sva polja!");
       setShowAlert(true);
-      console.log(message);
     } else {
       if (inputs.email.includes("@")) {
-        try {
-          const res = await publicRequest.post(`orders`, order);
+        const res = await makeAnOrder(order);
+        if (res === "success") {
           setOrdered(true);
           setShowOrderWindow(false);
 
@@ -256,7 +259,9 @@ const Order = ({ setOrdered, setShowOrderWindow }) => {
           } else {
             dispatch(clearCart());
           }
-        } catch (error) {}
+        } else {
+          setShowFailureAlert(true);
+        }
       } else {
         setMessage("Vasa email adresa nije validna!");
         setShowAlert(true);
@@ -322,6 +327,7 @@ const Order = ({ setOrdered, setShowOrderWindow }) => {
             <Button onClick={handleClick}>Naruci</Button>
           </Form>
           <Alert type='error' message={message} trigger={showAlert}></Alert>
+          <AlertModal timeout='2000' type='error' message='Greska, molimo pokusajte kasnije!' trigger={showFailureAlert}></AlertModal>
         </>
       </Wrapper>
     </Container>

@@ -17,7 +17,7 @@ import logo from "../logo6.png";
 const Container = styled.div`
   height: 120px;
   display: flex;
-  width: 100%;
+  width: auto;
   position: static;
   top: -100px;
 
@@ -25,7 +25,7 @@ const Container = styled.div`
 
   background-color: #12130f;
   ${tablet({ height: "120px" })}
-  ${mobile({ height: "60px", position: "sticky", top: "0" })}
+  ${mobile({ height: "60px", width: "100vw", position: "sticky", top: "0" })}
   ${(props) =>
     props.active &&
     css`

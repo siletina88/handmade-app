@@ -5,7 +5,7 @@ import { mobile, tablet } from "../responsive";
 import { useDispatch, useSelector } from "react-redux";
 import { register, login } from "../redux/apiCalls";
 import Alert from "../components/Alert";
-import ModalSuccess from "../components/ModalSuccess";
+import ModalClassic from "../components/ModalClassic";
 
 const Container = styled.div`
   width: 100vw;
@@ -154,14 +154,14 @@ const Register = () => {
         <Alert message={message} trigger={message} type='error' timeout='3000'></Alert>
         {/* {!message && <Alert message={welcome} trigger={welcome} type='success'></Alert>} */}
 
-        <ModalSuccess
+        <ModalClassic
           trigger={showSuccess}
           type='success'
           heading='Nalog kreiran'
           message='Uspjesno ste kreirali vas nalog. Uskoro cete dobiti email za verifikaciju vaseg naloga. Nakon sto verifikujete mozete da se logirate.'
           timeout='10000'
           redirectTo='/login'
-        ></ModalSuccess>
+        ></ModalClassic>
       </Wrapper>
     </Container>
   );

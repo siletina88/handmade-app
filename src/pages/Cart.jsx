@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Announcment from "../components/Announcment";
-import ModalSuccess from "../components/ModalSuccess";
+import ModalClassic from "../components/ModalClassic";
+import AlertModal from "../components/AlertModal";
+
 import Footer from "../components/Footer";
 import Order from "../components/Order";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -106,7 +108,7 @@ const Details = styled.div`
 
   justify-content: flex-start;
   ${tablet({ padding: "0px 15px" })}
-  ${mobile({ padding: "0px 15px" })}
+  ${mobile({ padding: "0px 30px" })}
 `;
 const ProductName = styled.span`
   font-weight: bold;
@@ -218,6 +220,9 @@ const Button = styled.button`
 const Cart = () => {
   const [ordered, setOrdered] = useState(false);
   const [showOrderWindow, setShowOrderWindow] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showFailureAlert, setShowFailureAlert] = useState(false);
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
   const checkUser = () => {
@@ -227,22 +232,30 @@ const Cart = () => {
       return id;
     } else {
       const id = "public";
-      console.log(id);
+
       return id;
     }
   };
   const id = checkUser();
 
   const cart = useSelector((state) => state.cart);
-  const handleRemove = (e, product) => {
+  const handleRemove = async (e, product) => {
+    setShowSuccessAlert(false);
+    setShowFailureAlert(false);
     e.preventDefault();
     const cartId = cart._id;
     const productId = product._id;
     const cartPrice = product.product.price * product.quantity;
-    console.log(productId);
 
-    removeItemFromCart(cartId, productId, cartPrice, dispatch);
-    dispatch(removeProduct(product));
+    const res = await removeItemFromCart(cartId, productId, cartPrice, dispatch);
+    if (res === "success") {
+      dispatch(removeProduct(product));
+      setShowSuccessAlert(true);
+      return;
+    } else {
+      setShowFailureAlert(true);
+      return;
+    }
   };
 
   useEffect(() => {
@@ -349,18 +362,20 @@ const Cart = () => {
               </Summary>
             </Bottom>
           ) : (
-            <div style={{ textAlign: "center", marginTop: "150px", border: "1px solid lightgray", padding: "30px" }}>VASA KOSARICA JE PRAZNA</div>
+            <div style={{ fontSize: "30px", textAlign: "center", fontWeight: "bold", marginTop: "50px", padding: "30px" }}>VASA KOSARICA JE PRAZNA</div>
           )}
           {showOrderWindow && <Order setOrdered={setOrdered} setShowOrderWindow={setShowOrderWindow} showOrderWindow={showOrderWindow}></Order>}
 
-          <ModalSuccess
+          <ModalClassic
             trigger={ordered}
             type='success'
             heading='Hvala Vam!'
             message='Uspjesno ste obavili narudzbu. Uskoro cete dobiti email sa potvrdom i detaljima narudzbe.'
             redirectTo='/'
             timeout='7000'
-          ></ModalSuccess>
+          ></ModalClassic>
+          <AlertModal trigger={showSuccessAlert} type='success' message='Artikal uklonjen iz kosarice' timeout='2000'></AlertModal>
+          <AlertModal trigger={showFailureAlert} type='error' message='Greska, pokusajte kasnije!' timeout='2000'></AlertModal>
         </Wrapper>
         <Footer></Footer>
       </Container>

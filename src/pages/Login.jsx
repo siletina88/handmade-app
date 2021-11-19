@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { login } from "../redux/apiCalls";
-import { clear } from "../redux/actions";
+
 import { mobile, tablet } from "../responsive";
-import WarningIcon from "@mui/icons-material/Warning";
+
 import spinner from "../spinner.gif";
-import { useEffect } from "react";
+
 import Alert from "../components/Alert";
-import ModalSuccess from "../components/ModalSuccess";
+import ModalClassic from "../components/ModalClassic";
 
 const Container = styled.div`
   width: 100vw;
@@ -118,6 +118,8 @@ const Login = () => {
       } else {
         setShowAlert(true);
       }
+    } else {
+      return;
     }
 
     if (!currentUser || error) {
@@ -143,7 +145,7 @@ const Login = () => {
         <Link>Zaboravili ste password ili korisnicko ime?</Link>
         <Link>Kreirajte novi nalog</Link>
         <Alert type='error' message={!password || !username ? "Molimo Vas da popunite polja" : message} trigger={showAlert}></Alert>
-        <ModalSuccess type='warning' heading='Nalog nije verifikovan' message={!password || !username ? "Molimo Vas da popunite polja" : message} trigger={showModal}></ModalSuccess>
+        <ModalClassic type='warning' heading='Nalog nije verifikovan' message={!password || !username ? "Molimo Vas da popunite polja" : message} trigger={showModal}></ModalClassic>
 
         {isFetching && (
           <LoadingCont>

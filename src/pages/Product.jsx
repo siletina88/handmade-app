@@ -4,7 +4,8 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import styled from "styled-components";
 import Announcment from "../components/Announcment";
 import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import AlertModal from "../components/AlertModal";
+
 import Newsletter from "../components/Newsletter";
 import { mobile, tablet } from "../responsive";
 import { NavLink, useLocation } from "react-router-dom";
@@ -22,6 +23,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
+
   ${tablet({ flexDirection: "column" })}
   ${mobile({ flexDirection: "column", padding: "10px" })}
 `;
@@ -192,9 +194,13 @@ const Button = styled.button`
   color: white;
 
   font-weight: 400;
+  transition: background-color 0.3s ease;
 
   &:hover {
     background-color: #f82c73c8;
+  }
+  &:active {
+    background-color: #6d6d6dc6;
   }
   ${tablet({ margin: "0 auto" })}
   ${mobile({ width: "100%", justifyContent: "center" })}
@@ -205,6 +211,10 @@ const Product = () => {
   const id = location.pathname.split("/")[2];
   const user = useSelector((state) => state.user.currentUser);
   const cartItems = useSelector((state) => state.cart.products);
+  const [message, setMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showWarningModal, setShowWarningModal] = useState(false);
+  const [showFailureModal, setShowFailureModal] = useState(false);
 
   const [product, setProduct] = useState({});
   const [currentImage, setCurrentImage] = useState("");
@@ -234,30 +244,56 @@ const Product = () => {
       } catch (error) {}
     };
     getProduct();
+
     setCurrentImage(product?.img);
   }, [id, product.img]);
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    setShowWarningModal(false);
+    setShowSuccessModal(false);
+    setShowFailureModal(false);
+    setMessage("");
     const item = { product, quantity: Number(quantity), color, size };
 
     if (cartItems.length > 0) {
-      let existInCart = false;
-      const checkIfExists = () => {
+      const checkIfExists = async () => {
+        let check = false;
         cartItems.map((cartItem) => {
-          if (product._id === cartItem.product._id && cartItem.product.color === color && cartItem.product.size === size) {
-            existInCart = true;
-            return;
+          if (product._id === cartItem.product._id && cartItem.color === color && cartItem.size === size) {
+            check = true;
           }
         });
+        return check;
       };
-      checkIfExists();
+
+      const existInCart = await checkIfExists();
+
       if (!existInCart) {
         dispatch(addProduct({ ...product, quantity, color, size }));
-        updateCart(cartId, item, userId, dispatch);
-      } else return;
+        const res = await updateCart(cartId, item, userId, dispatch);
+        if (res === "success") {
+          setMessage("Artikal je dodan u kosaricu!");
+          setShowSuccessModal(true);
+        } else {
+          setMessage("Greska, molimo vas pokusajte kasnije");
+          setShowFailureModal(true);
+        }
+      } else {
+        setMessage("Artikal je vec u kosarici!");
+        setShowWarningModal(true);
+
+        return;
+      }
     } else {
       dispatch(addProduct({ ...product, quantity, color, size }));
-      updateCart(cartId, item, userId, dispatch);
+      const res = await updateCart(cartId, item, userId, dispatch);
+      if (res === "success") {
+        setMessage("Artikal je dodan u kosaricu!");
+        setShowSuccessModal(true);
+      } else {
+        setMessage("Greska, molimo vas pokusajte kasnije");
+        setShowFailureModal(true);
+      }
     }
   };
 
@@ -265,66 +301,85 @@ const Product = () => {
     <Container>
       <Announcment />
       <Wrapper>
-        <Left>
-          {" "}
-          <ImgContainer>
-            {currentImage ? (
-              <Image
-                src={
+        {product && (
+          <>
+            {" "}
+            <Left>
+              <ImgContainer>
+                {currentImage ? (
+                  <Image
+                    src={
+                      // @ts-ignore
+                      currentImage
+                    }
+                  ></Image>
+                ) : (
+                  <Image src={"https://lh3.googleusercontent.com/proxy/b8B-EmGSEJltLdYxMp0TgmFvRvImP4UTd-y5C0euBUvZ1ntRhFi0p2LAmMw07S_liiAPxiPV5joVTi9LA8WLAtk"}></Image>
+                )}
+              </ImgContainer>
+              <ThumbContainer>{product?.imgAlt ? product.imgAlt.map((item) => <Thumbnail key={item} onClick={() => setCurrentImage(item)} src={item}></Thumbnail>) : <h1>loading</h1>}</ThumbContainer>
+            </Left>
+            <InfoContainer>
+              <Title>
+                {
                   // @ts-ignore
-                  currentImage
+                  product?.title
                 }
-              ></Image>
-            ) : (
-              <Image src={"https://lh3.googleusercontent.com/proxy/b8B-EmGSEJltLdYxMp0TgmFvRvImP4UTd-y5C0euBUvZ1ntRhFi0p2LAmMw07S_liiAPxiPV5joVTi9LA8WLAtk"}></Image>
-            )}
-          </ImgContainer>
-          <ThumbContainer>{product?.imgAlt ? product.imgAlt.map((item) => <Thumbnail key={item} onClick={() => setCurrentImage(item)} src={item}></Thumbnail>) : <h1>loading</h1>}</ThumbContainer>
-        </Left>
-
-        <InfoContainer>
-          <Title>
-            {
-              // @ts-ignore
-              product.title
-            }
-          </Title>
-          <Description>
-            {
-              // @ts-ignore
-              product.description
-            }
-          </Description>
-          <Price>{product?.price} KM</Price>
-          <FilterContainer>
-            <Filter>
-              <FilterTitle>Boja:</FilterTitle>
-              {product &&
-                // @ts-ignore
-                product.color?.map((c) => <FilterColor onClick={() => setColor(c)} key={c} color={c}></FilterColor>)}
-            </Filter>
-            <Filter>
-              <FilterTitle>Velicina:</FilterTitle>
-              <FilterSize>
-                {product &&
+              </Title>
+              <Description>
+                {
                   // @ts-ignore
-                  product.size?.map((s) => (
-                    <FilterSizeOption onClick={() => setSize(s)} key={s}>
-                      {s}
-                    </FilterSizeOption>
-                  ))}
-              </FilterSize>
-            </Filter>
-          </FilterContainer>
-          <AddContainer>
-            <AmountContainer>
-              <RemoveIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("dec", quantity, setQuantity)} />
-              <Amount>{quantity}</Amount>
-              <AddIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("inc", quantity, setQuantity)} />
-            </AmountContainer>
-          </AddContainer>
-          <Button onClick={handleClick}>Dodaj u kosaricu</Button>
-        </InfoContainer>
+                  product?.description
+                }
+              </Description>
+              <Price>{product?.price} KM</Price>
+              <FilterContainer>
+                {product?.color?.length > 0 && (
+                  <Filter>
+                    <FilterTitle>Boja:</FilterTitle>
+                    {product &&
+                      // @ts-ignore
+                      product.color?.map((c) => <FilterColor onClick={() => setColor(c)} key={c} color={c}></FilterColor>)}
+                  </Filter>
+                )}
+
+                {product?.size?.length > 0 && (
+                  <Filter>
+                    <FilterTitle>Velicina:</FilterTitle>
+
+                    <FilterSize>
+                      {product &&
+                        // @ts-ignore
+                        product.size?.map((s) => (
+                          <FilterSizeOption onClick={() => setSize(s)} key={s}>
+                            {s}
+                          </FilterSizeOption>
+                        ))}
+                    </FilterSize>
+                  </Filter>
+                )}
+
+                <Filter>
+                  {" "}
+                  <FilterTitle>
+                    Na stanju: {product?.inStock ? <span style={{ color: "green", fontWeight: "bold" }}>DA</span> : <span style={{ color: "red", fontWeight: "bold" }}>NE</span>}
+                  </FilterTitle>
+                </Filter>
+              </FilterContainer>
+              <AddContainer>
+                <AmountContainer>
+                  <RemoveIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("dec", quantity, setQuantity)} />
+                  <Amount>{quantity}</Amount>
+                  <AddIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("inc", quantity, setQuantity)} />
+                </AmountContainer>
+              </AddContainer>
+              <Button onClick={handleClick}>Dodaj u kosaricu</Button>
+            </InfoContainer>
+            <AlertModal timeout='2000' trigger={showSuccessModal} message={message} type='success'></AlertModal>
+            <AlertModal timeout='2000' trigger={showWarningModal} message={message} type='warning'></AlertModal>
+            <AlertModal timeout='2000' trigger={showFailureModal} message={message} type='error'></AlertModal>
+          </>
+        )}
       </Wrapper>
       <Newsletter />
       <Footer />
