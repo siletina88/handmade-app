@@ -43,7 +43,7 @@ const App = () => {
 
         <Route path='/login'>{user ? <Redirect to='/' /> : <Login />}</Route>
         <Route path='/register'>{user ? <Redirect to='/' /> : <Register />}</Route>
-        <Route path='/verified'>
+        <Route exact path='/verified'>
           <UserVerificationSuccess></UserVerificationSuccess>
         </Route>
       </Switch>
