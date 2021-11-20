@@ -175,6 +175,7 @@ const Product = ({ item }) => {
       <Description>
         <Title>{item.title}</Title>
         <Price>{item.price} KM</Price>
+        <Price>Na stanju : {item.inStock ? <span style={{ color: "green", fontWeight: "bold" }}>DA</span> : <span style={{ color: "red", fontWeight: "bold" }}>NE</span>}</Price>
         {/* <Colors>
           Boje:
           {item.color.map((color) => (color ? <Color color={color}></Color> : ""))}

@@ -104,21 +104,37 @@ const FilterTitle = styled.span`
   ${mobile({ marginRight: "5px" })}
 `;
 
-const FilterColor = styled.button`
-  width: 20px;
-  height: 20px;
+const FilterColorContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+`;
+
+const FilterColor = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
+  font-size: 2px;
+
   background-color: ${(props) => props.color};
 
   cursor: pointer;
-  border: 1px solid gray;
+  transition: opacity 0.3s ease;
+
+  border: ${(props) => (props.selected ? "2px solid black" : "none")};
   box-shadow: 0px 1px 1px gray;
   &:hover {
     opacity: 0.6;
-    box-shadow: 3px 3px 3px black;
   }
   &:active {
-    transform: scale(1.3);
+    transform: scale(1.1);
+    background: black;
   }
 `;
 
@@ -130,8 +146,8 @@ const FilterSize = styled.div`
 `;
 
 const FilterSizeOption = styled.button`
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   font-size: 10px;
   display: flex;
@@ -141,17 +157,14 @@ const FilterSizeOption = styled.button`
   background: gray;
   color: white;
   text-transform: uppercase;
-  border: 1px solid gray;
+  border: ${(props) => (props.selected ? "2px solid black" : "none")};
   box-shadow: 0px 1px 1px gray;
   transition: background 0.3s ease;
   &:hover {
     background: #000000a4;
   }
   &:active {
-    transform: scale(1.3);
-    background: black;
-  }
-  &:focus {
+    transform: scale(1.1);
     background: black;
   }
 `;
@@ -189,15 +202,15 @@ const Button = styled.button`
   padding: 15px 10px;
   border: none;
 
-  background-color: #f82c73;
-  cursor: pointer;
-  color: white;
+  background-color: ${(props) => (props.disabled ? "gray" : "#f82c73")};
+  cursor: ${(props) => (props.disabled ? "" : "pointer")};
+  color: ${(props) => (props.disabled ? "lightgray" : "white")};
 
   font-weight: 400;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #f82c73c8;
+    background-color: ${(props) => (props.disabled ? "gray" : " #f82c73c8")};
   }
   &:active {
     background-color: #6d6d6dc6;
@@ -220,6 +233,7 @@ const Product = () => {
   const [currentImage, setCurrentImage] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
+  const [selected, setSelected] = useState(null);
   const [size, setSize] = useState("");
   const dispatch = useDispatch();
   let userId;
@@ -248,6 +262,10 @@ const Product = () => {
     setCurrentImage(product?.img);
   }, [id, product.img]);
 
+  const handleColor = (e) => {
+    setColor(e.target.innerText);
+  };
+
   const handleClick = async () => {
     setShowWarningModal(false);
     setShowSuccessModal(false);
@@ -274,6 +292,8 @@ const Product = () => {
         if (res === "success") {
           setMessage("Artikal je dodan u kosaricu!");
           setShowSuccessModal(true);
+          setColor("");
+          setSize("");
         } else {
           setMessage("Greska, molimo vas pokusajte kasnije");
           setShowFailureModal(true);
@@ -281,6 +301,8 @@ const Product = () => {
       } else {
         setMessage("Artikal je vec u kosarici!");
         setShowWarningModal(true);
+        setColor("");
+        setSize("");
 
         return;
       }
@@ -290,6 +312,8 @@ const Product = () => {
       if (res === "success") {
         setMessage("Artikal je dodan u kosaricu!");
         setShowSuccessModal(true);
+        setColor("");
+        setSize("");
       } else {
         setMessage("Greska, molimo vas pokusajte kasnije");
         setShowFailureModal(true);
@@ -337,9 +361,15 @@ const Product = () => {
                 {product?.color?.length > 0 && (
                   <Filter>
                     <FilterTitle>Boja:</FilterTitle>
-                    {product &&
-                      // @ts-ignore
-                      product.color?.map((c) => <FilterColor onClick={() => setColor(c)} key={c} color={c}></FilterColor>)}
+                    <FilterColorContainer>
+                      {product &&
+                        // @ts-ignore
+                        product.color?.map((c) => (
+                          <FilterColor selected={c === color ? true : false} onClick={handleColor} key={c} color={c}>
+                            {c}
+                          </FilterColor>
+                        ))}
+                    </FilterColorContainer>
                   </Filter>
                 )}
 
@@ -351,7 +381,7 @@ const Product = () => {
                       {product &&
                         // @ts-ignore
                         product.size?.map((s) => (
-                          <FilterSizeOption onClick={() => setSize(s)} key={s}>
+                          <FilterSizeOption selected={s === size ? true : false} onClick={() => setSize(s)} key={s}>
                             {s}
                           </FilterSizeOption>
                         ))}
@@ -360,7 +390,6 @@ const Product = () => {
                 )}
 
                 <Filter>
-                  {" "}
                   <FilterTitle>
                     Na stanju: {product?.inStock ? <span style={{ color: "green", fontWeight: "bold" }}>DA</span> : <span style={{ color: "red", fontWeight: "bold" }}>NE</span>}
                   </FilterTitle>
@@ -373,7 +402,9 @@ const Product = () => {
                   <AddIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("inc", quantity, setQuantity)} />
                 </AmountContainer>
               </AddContainer>
-              <Button onClick={handleClick}>Dodaj u kosaricu</Button>
+              <Button disabled={!product?.inStock} onClick={handleClick}>
+                Dodaj u kosaricu
+              </Button>
             </InfoContainer>
             <AlertModal timeout='2000' trigger={showSuccessModal} message={message} type='success'></AlertModal>
             <AlertModal timeout='2000' trigger={showWarningModal} message={message} type='warning'></AlertModal>
