@@ -13,3 +13,8 @@ export const handleQuantity = (type, quantity, setQuantity) => {
     console.log(quantity);
   }
 };
+
+export const logger = (...params) => {
+  if (process.env.NODE_ENV === "production") return;
+  console.log(params);
+};

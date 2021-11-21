@@ -244,17 +244,22 @@ const Cart = () => {
     setShowFailureAlert(false);
     e.preventDefault();
     const cartId = cart._id;
-    const productId = product._id;
+    const productId = product.product._id;
     const cartPrice = product.product.price * product.quantity;
 
-    const res = await removeItemFromCart(cartId, productId, cartPrice, dispatch);
-    if (res === "success") {
+    if (user) {
+      const res = await removeItemFromCart(cartId, productId, cartPrice, dispatch);
+      if (res === "success") {
+        dispatch(removeProduct(product));
+        setShowSuccessAlert(true);
+        return;
+      } else {
+        setShowFailureAlert(true);
+        return;
+      }
+    } else {
       dispatch(removeProduct(product));
       setShowSuccessAlert(true);
-      return;
-    } else {
-      setShowFailureAlert(true);
-      return;
     }
   };
 
@@ -326,7 +331,7 @@ const Cart = () => {
                           <ProductPrice> {(product.product.price * product.quantity).toFixed(2)} KM</ProductPrice>
                         </PriceDetail>
                         <Remove>
-                          <HighlightOffIcon style={{ fontSize: "30px", cursor: "pointer", marginRight: "10px" }} onClick={(e) => handleRemove(e, product, product._id)}></HighlightOffIcon>
+                          <HighlightOffIcon style={{ fontSize: "30px", cursor: "pointer", marginRight: "10px" }} onClick={(e) => handleRemove(e, product)}></HighlightOffIcon>
                         </Remove>
                       </Product>
                     ) : (

@@ -18,6 +18,8 @@ const App = () => {
   const user = useSelector((state) => state.user.currentUser);
   const cart = useSelector((state) => state.cart);
 
+  console.log(process.env);
+
   useEffect(() => {
     if (user) {
       getUserInfoAndCart(user, getCartId(cart), dispatch);

@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { mobile, tablet } from "../responsive";
+import { mobile } from "../responsive";
 
 const bounce = keyframes`
   0% {
