@@ -86,7 +86,6 @@ export const updateUser = async (id, user, dispatch) => {
     dispatch(updateUserSuccess(res.data));
     return "success";
   } catch (error) {
-    console.log(error);
     dispatch(updateUserFailure());
     return "failed";
   }
@@ -99,7 +98,6 @@ export const assignCartToUser = async (id, cartId, dispatch) => {
     const res = await userRequest.put(`/users/${id}`, { _id: id, cart: cartId });
     dispatch(updateUserSuccess(res.data));
   } catch (error) {
-    console.log(error);
     dispatch(updateUserFailure());
   }
 };
@@ -112,7 +110,6 @@ export const getCart = async (id, dispatch) => {
 
     dispatch(getUserCartSuccess(res.data));
   } catch (error) {
-    console.log(error);
     dispatch(getUserCartFailure());
   }
 };
@@ -122,10 +119,9 @@ export const createCart = async (userId, dispatch) => {
   try {
     const res = await userRequest.post(`/cart/`, { userId });
     await dispatch(createUserCartSuccess(res.data));
-    console.log("from function", res.data);
+
     assignCartToUser(userId, res.data._id, dispatch);
   } catch (error) {
-    console.log(error);
     dispatch(createUserCartFailure());
   }
 };
@@ -137,7 +133,6 @@ export const updateCart = async (cartId, item, userId, dispatch) => {
     dispatch(updateUserCartSuccess(res.data));
     return "success";
   } catch (error) {
-    console.log(error);
     dispatch(updateUserCartFailure());
     return "failure";
   }
@@ -148,15 +143,12 @@ export const clearCartOnOrder = async (cartId, userId, dispatch) => {
   try {
     const res = await userRequest.put(`/cart/clear/${userId}`, { cartId });
     dispatch(clearUserCartSuccess(res.data));
-    console.log(res.data);
   } catch (error) {
-    console.log(error);
     dispatch(clearUserCartFailure());
   }
 };
 // remove item from cart
 export const removeItemFromCart = async (cartId, productId, cartPrice, dispatch) => {
-  console.log(cartId, productId, cartPrice);
   dispatch(updateUserCartStart());
 
   try {
