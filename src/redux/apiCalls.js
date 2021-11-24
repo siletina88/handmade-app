@@ -91,8 +91,9 @@ export const updateUser = async (id, user, dispatch) => {
     dispatch(updateUserSuccess(res.data));
     return "success";
   } catch (error) {
+    const { response } = error;
     dispatch(updateUserFailure());
-    return "failed";
+    return response;
   }
 };
 

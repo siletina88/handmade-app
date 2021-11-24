@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import { logout } from "../redux/apiCalls";
 import WarningIcon from "@mui/icons-material/Warning";
 import { updateUser } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
@@ -73,6 +75,7 @@ const BottomContainer = styled.div`
 
 const ChangePassword = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const id = useSelector((state) => state.user.currentUser._id);
   const { isFetching } = useSelector((state) => state.user);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -106,8 +109,17 @@ const ChangePassword = () => {
           setMessage("Uspjesno ste promjenili vasu lozinku!");
           setShowSuccessAlert(true);
         } else {
-          setMessage("Greska, molimo vas pokusajte kasnije");
-          setShowFailureAlert(true);
+          if (res.data === "Token is not valid") {
+            setMessage("Vasa sesija je istekla, molimo da se ulogujete ponovo!");
+            setShowFailureAlert(true);
+            setTimeout(() => {
+              logout(dispatch);
+              history.push("/login");
+            }, 3000);
+          } else {
+            setMessage("Greska, molimo vas pokusajte kasnije");
+            setShowFailureAlert(true);
+          }
         }
       } else {
         setError("Sifra mora biti najmanje 6 karaktera!");

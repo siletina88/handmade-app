@@ -1,11 +1,12 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { mobile, tablet } from "../responsive";
 
-import { useState, useEffect } from "react";
 import spinner from "../spinner.gif";
 
-import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/apiCalls";
 import { updateUserWithCloudinary } from "../customActions/updateUserWithCloudinary";
 import AlertModal from "./AlertModal";
 
@@ -64,6 +65,7 @@ const BottomContainer = styled.div`
 
 const EditProfile = () => {
   const user = useSelector((state) => state.user.currentUser);
+  const history = useHistory();
   const { isFetching } = useSelector((state) => state.user);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showFailureAlert, setShowFailureAlert] = useState(false);
@@ -98,9 +100,21 @@ const EditProfile = () => {
     if (res === "success") {
       setMessage("Uspjesno ste azurirali vas profil!");
       setShowSuccessAlert(true);
+      return;
     } else {
-      setMessage("Greska, molimo vas pokusajte kasnije");
-      setShowFailureAlert(true);
+      if (res.data === "Token is not valid") {
+        setMessage("Vasa sesija je istekla, molimo ulogujte se ponovo!");
+        setShowFailureAlert(true);
+        setTimeout(() => {
+          logout(dispatch);
+          history.push("/login");
+        }, 3000);
+        return;
+      } else {
+        setMessage("Greska, molimo pokusajte ponovo za par trenutaka!");
+        setShowFailureAlert(true);
+        return;
+      }
     }
   };
 
