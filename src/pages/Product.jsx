@@ -12,6 +12,7 @@ import { handleQuantity } from "../customFunctions";
 
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
+import Loading from "../components/Loading";
 
 const Container = styled.div`
   background-color: #eae6e5;
@@ -225,6 +226,7 @@ const Product = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [showFailureModal, setShowFailureModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [product, setProduct] = useState({});
   const [currentImage, setCurrentImage] = useState("");
@@ -252,6 +254,7 @@ const Product = () => {
       try {
         const res = await publicRequest.get("/products/find/" + id);
         setProduct(res.data);
+        setLoading(false);
       } catch (error) {}
     };
     getProduct();
@@ -321,94 +324,101 @@ const Product = () => {
   return (
     <Container>
       <Announcment />
-      <Wrapper>
-        {product && (
-          <>
-            {" "}
-            <Left>
-              <ImgContainer>
-                {currentImage ? (
-                  <Image
-                    src={
-                      // @ts-ignore
-                      currentImage
-                    }
-                  ></Image>
-                ) : (
-                  <Image src={"https://lh3.googleusercontent.com/proxy/b8B-EmGSEJltLdYxMp0TgmFvRvImP4UTd-y5C0euBUvZ1ntRhFi0p2LAmMw07S_liiAPxiPV5joVTi9LA8WLAtk"}></Image>
-                )}
-              </ImgContainer>
-              <ThumbContainer>{product?.imgAlt ? product.imgAlt.map((item) => <Thumbnail key={item} onClick={() => setCurrentImage(item)} src={item}></Thumbnail>) : <h1>loading</h1>}</ThumbContainer>
-            </Left>
-            <InfoContainer>
-              <Title>
-                {
-                  // @ts-ignore
-                  product?.title
-                }
-              </Title>
-              <Description>
-                {
-                  // @ts-ignore
-                  product?.description
-                }
-              </Description>
-              <Price>{product?.price} KM</Price>
-              <FilterContainer>
-                {product?.color?.length > 0 && (
-                  <Filter>
-                    <FilterTitle>Boja:</FilterTitle>
-                    <FilterColorContainer>
-                      {product &&
+      {loading ? (
+        <Loading />
+      ) : (
+        <Wrapper>
+          {product && (
+            <>
+              {" "}
+              <Left>
+                <ImgContainer>
+                  {currentImage ? (
+                    <Image
+                      src={
                         // @ts-ignore
-                        product.color?.map((c) => (
-                          <FilterColor selected={c === color ? true : false} onClick={handleColor} key={c} color={c}>
-                            {c}
-                          </FilterColor>
-                        ))}
-                    </FilterColorContainer>
-                  </Filter>
-                )}
+                        currentImage
+                      }
+                    ></Image>
+                  ) : (
+                    <Image src={"https://lh3.googleusercontent.com/proxy/b8B-EmGSEJltLdYxMp0TgmFvRvImP4UTd-y5C0euBUvZ1ntRhFi0p2LAmMw07S_liiAPxiPV5joVTi9LA8WLAtk"}></Image>
+                  )}
+                </ImgContainer>
+                <ThumbContainer>
+                  {product?.imgAlt ? product.imgAlt.map((item) => <Thumbnail key={item} onClick={() => setCurrentImage(item)} src={item}></Thumbnail>) : <h1>loading</h1>}
+                </ThumbContainer>
+              </Left>
+              <InfoContainer>
+                <Title>
+                  {
+                    // @ts-ignore
+                    product?.title
+                  }
+                </Title>
+                <Description>
+                  {
+                    // @ts-ignore
+                    product?.description
+                  }
+                </Description>
+                <Price>{product?.price} KM</Price>
+                <FilterContainer>
+                  {product?.color?.length > 0 && (
+                    <Filter>
+                      <FilterTitle>Boja:</FilterTitle>
+                      <FilterColorContainer>
+                        {product &&
+                          // @ts-ignore
+                          product.color?.map((c) => (
+                            <FilterColor selected={c === color ? true : false} onClick={handleColor} key={c} color={c}>
+                              {c}
+                            </FilterColor>
+                          ))}
+                      </FilterColorContainer>
+                    </Filter>
+                  )}
 
-                {product?.size?.length > 0 && (
+                  {product?.size?.length > 0 && (
+                    <Filter>
+                      <FilterTitle>Velicina:</FilterTitle>
+
+                      <FilterSize>
+                        {product &&
+                          // @ts-ignore
+                          product.size?.map((s) => (
+                            <FilterSizeOption selected={s === size ? true : false} onClick={() => setSize(s)} key={s}>
+                              {s}
+                            </FilterSizeOption>
+                          ))}
+                      </FilterSize>
+                    </Filter>
+                  )}
+
                   <Filter>
-                    <FilterTitle>Velicina:</FilterTitle>
-
-                    <FilterSize>
-                      {product &&
-                        // @ts-ignore
-                        product.size?.map((s) => (
-                          <FilterSizeOption selected={s === size ? true : false} onClick={() => setSize(s)} key={s}>
-                            {s}
-                          </FilterSizeOption>
-                        ))}
-                    </FilterSize>
+                    <FilterTitle>
+                      Na stanju: {product?.inStock ? <span style={{ color: "green", fontWeight: "bold" }}>DA</span> : <span style={{ color: "red", fontWeight: "bold" }}>NE</span>}
+                    </FilterTitle>
                   </Filter>
-                )}
+                </FilterContainer>
+                <AddContainer>
+                  <AmountContainer>
+                    <RemoveIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("dec", quantity, setQuantity)} />
+                    <Amount>{quantity}</Amount>
+                    <AddIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("inc", quantity, setQuantity)} />
+                  </AmountContainer>
+                </AddContainer>
+                <Button disabled={!product?.inStock} onClick={handleClick}>
+                  Dodaj u kosaricu
+                </Button>
+              </InfoContainer>
+              <AlertModal timeout='2000' trigger={showSuccessModal} message={message} type='success'></AlertModal>
+              <AlertModal timeout='2000' trigger={showWarningModal} message={message} type='warning'></AlertModal>
+              <AlertModal timeout='2000' trigger={showFailureModal} message={message} type='error'></AlertModal>
+            </>
+          )}
+        </Wrapper>
+      )}
 
-                <Filter>
-                  <FilterTitle>
-                    Na stanju: {product?.inStock ? <span style={{ color: "green", fontWeight: "bold" }}>DA</span> : <span style={{ color: "red", fontWeight: "bold" }}>NE</span>}
-                  </FilterTitle>
-                </Filter>
-              </FilterContainer>
-              <AddContainer>
-                <AmountContainer>
-                  <RemoveIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("dec", quantity, setQuantity)} />
-                  <Amount>{quantity}</Amount>
-                  <AddIcon style={{ cursor: "pointer" }} onClick={() => handleQuantity("inc", quantity, setQuantity)} />
-                </AmountContainer>
-              </AddContainer>
-              <Button disabled={!product?.inStock} onClick={handleClick}>
-                Dodaj u kosaricu
-              </Button>
-            </InfoContainer>
-            <AlertModal timeout='2000' trigger={showSuccessModal} message={message} type='success'></AlertModal>
-            <AlertModal timeout='2000' trigger={showWarningModal} message={message} type='warning'></AlertModal>
-            <AlertModal timeout='2000' trigger={showFailureModal} message={message} type='error'></AlertModal>
-          </>
-        )}
-      </Wrapper>
       <Newsletter />
       <Footer />
     </Container>

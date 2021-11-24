@@ -26,7 +26,7 @@ export const getUserInfoAndCart = async (user, getCartId, dispatch) => {
       getCart(id, dispatch);
     } else {
       const userId = user._id;
-      console.log("here");
+
       createCart(userId, dispatch);
       // const cartId = getCartId();
       // console.log(cartId);

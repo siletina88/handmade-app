@@ -1,10 +1,10 @@
-import { AutoFixOffSharp } from "@mui/icons-material";
+import Loading from "./Loading";
 import { useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import { popularProducts } from "../data";
+
 import Product from "./Product";
-import axios from "axios";
+
 import { mobile, tablet } from "../responsive";
 import { publicRequest } from "../requestMethods";
 
@@ -38,12 +38,14 @@ const Container = styled.div`
 const Products = ({ cat, filter, sort }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getProducts = async () => {
       try {
         const res = await publicRequest.get(cat ? `products?category=${cat}` : "products");
         setProducts(res.data);
+        setLoading(false);
       } catch (error) {}
     };
     getProducts();
@@ -70,9 +72,13 @@ const Products = ({ cat, filter, sort }) => {
   return (
     <>
       <Title>{cat ? `${cat}` : "Artikli"}</Title>
-      <Container>
-        {cat ? filteredProducts.map((item) => <Product key={item._id} item={item}></Product>) : products.slice(0, 12).map((item) => <Product key={item._id} item={item}></Product>)}
-      </Container>
+      {loading ? (
+        <Loading />
+      ) : (
+        <Container>
+          {cat ? filteredProducts.map((item) => <Product key={item._id} item={item}></Product>) : products.slice(0, 12).map((item) => <Product key={item._id} item={item}></Product>)}
+        </Container>
+      )}
     </>
   );
 };
