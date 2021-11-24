@@ -28,6 +28,7 @@ import {
   createUserCartSuccess,
   clearCart,
 } from "./cartSlice";
+import { SmsFailedTwoTone } from "@mui/icons-material";
 
 //login
 export const login = async (dispatch, user) => {
@@ -39,7 +40,11 @@ export const login = async (dispatch, user) => {
   } catch (error) {
     const { response } = error;
     if (response) {
+      console.log(response.data);
       dispatch(loginFailure(response.data));
+      if (response.data.includes("verifikujete")) {
+        return response.data;
+      }
     } else {
       dispatch(loginFailure("Server nije dostupan. Provjerite vasu internet konekciju ili pokusajte kasnije!"));
     }
@@ -129,7 +134,7 @@ export const createCart = async (userId, dispatch) => {
 export const updateCart = async (cartId, item, userId, dispatch) => {
   dispatch(updateUserCartStart());
   try {
-    const res = await publicRequest.put(`/cart/add/${userId}`, { item, cartId, userId });
+    const res = await userRequest.put(`/cart/add/${userId}`, { item, cartId, userId });
     dispatch(updateUserCartSuccess(res.data));
     return "success";
   } catch (error) {
@@ -152,7 +157,7 @@ export const removeItemFromCart = async (cartId, productId, cartPrice, dispatch)
   dispatch(updateUserCartStart());
 
   try {
-    const res = await publicRequest.put(`/cart/remove/${cartId}/${productId}`, { cartPrice });
+    const res = await userRequest.put(`/cart/remove/${cartId}/${productId}`, { cartPrice });
     dispatch(updateUserCartSuccess(res.data));
     return "success";
   } catch (error) {

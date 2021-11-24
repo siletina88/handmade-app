@@ -1,11 +1,10 @@
-import styled from "styled-components";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import { Alert, ModalClassic } from "../components";
 import { mobile, tablet } from "../responsive";
 import { useDispatch, useSelector } from "react-redux";
 import { register, login } from "../redux/apiCalls";
-import Alert from "../components/Alert";
-import ModalClassic from "../components/ModalClassic";
 
 const Container = styled.div`
   width: 100vw;

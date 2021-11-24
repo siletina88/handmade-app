@@ -1,20 +1,17 @@
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import styled from "styled-components";
-import Announcment from "../components/Announcment";
-import Footer from "../components/Footer";
-import AlertModal from "../components/AlertModal";
-
-import Newsletter from "../components/Newsletter";
-import { mobile, tablet } from "../responsive";
-import { NavLink, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import { Announcment, Footer, Newsletter, AlertModal } from "../components";
+
+import { mobile, tablet } from "../responsive";
 import { publicRequest } from "../requestMethods";
 import { addProduct } from "../redux/cartSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { updateCart } from "../redux/apiCalls";
 import { handleQuantity } from "../customFunctions";
+
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
 
 const Container = styled.div`
   background-color: #eae6e5;

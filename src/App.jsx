@@ -1,24 +1,17 @@
-import Product from "./pages/Product";
-import Home from "./pages/Home";
-import ProductList from "./pages/ProductList";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import Cart from "./pages/Cart";
+import { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import Profile from "./pages/Profile";
-import { useEffect } from "react";
+
+import { Product, Home, ProductList, Login, Cart, UserVerificationSuccess, Register, Profile } from "./pages";
+import { Navbar } from "./components";
+
 import { getUserInfoAndCart } from "./redux/actions";
 import { getCartId } from "./customFunctions";
-import Navbar from "./components/Navbar";
-import UserVerificationSuccess from "./pages/UserVerificationSuccess";
 
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
   const cart = useSelector((state) => state.cart);
-
-  console.log(process.env);
 
   useEffect(() => {
     if (user) {

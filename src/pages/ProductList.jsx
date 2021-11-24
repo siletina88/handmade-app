@@ -1,9 +1,8 @@
-import styled from "styled-components";
 import { useEffect } from "react";
-import Navbar from "../components/Navbar";
-import Announcment from "../components/Announcment";
-import Footer from "../components/Footer";
-import Products from "../components/Products";
+import styled from "styled-components";
+
+import { Announcment, Footer, Products } from "../components";
+
 import { mobile } from "../responsive";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";

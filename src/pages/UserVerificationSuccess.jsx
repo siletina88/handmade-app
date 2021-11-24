@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import ModalClassic from "../components/ModalClassic";
+import { ModalClassic } from "../components";
 
 const UserVerificationSuccess = () => {
   const showModal = true;

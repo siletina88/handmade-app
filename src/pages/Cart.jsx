@@ -1,22 +1,17 @@
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import Announcment from "../components/Announcment";
-import ModalClassic from "../components/ModalClassic";
-import AlertModal from "../components/AlertModal";
+import { Link } from "react-router-dom";
+import { Announcment, Footer, ModalClassic, AlertModal, Order } from "../components";
+import { removeProduct } from "../redux/cartSlice";
+import { getCart, removeItemFromCart } from "../redux/apiCalls";
+import { getUserInfoAndCart } from "../redux/actions";
+import { getCartId } from "../customFunctions";
 
-import Footer from "../components/Footer";
-import Order from "../components/Order";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { mobile, tablet } from "../responsive";
-import { useSelector, useDispatch } from "react-redux";
-import { removeProduct } from "../redux/cartSlice";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { getCart, removeItemFromCart } from "../redux/apiCalls";
-import { getUserInfoAndCart } from "../redux/actions";
-import { getCartId } from "../customFunctions";
-import { useEffect } from "react";
 
 const Container = styled.div`
   width: 100%;

@@ -99,8 +99,9 @@ const ChangePassword = () => {
     setShowFailureAlert(false);
     if (password === repeat) {
       if (password.length > 5) {
-        const user = { password };
+        const user = { password, _id: id };
         const res = await updateUser(id, user, dispatch);
+        console.log(res);
         if (res === "success") {
           setMessage("Uspjesno ste promjenili vasu lozinku!");
           setShowSuccessAlert(true);
