@@ -287,6 +287,35 @@ const Product = () => {
       const existInCart = await checkIfExists();
 
       if (!existInCart) {
+        if (user) {
+          dispatch(addProduct({ ...product, quantity, color, size }));
+          const res = await updateCart(cartId, item, userId, dispatch);
+          if (res === "success") {
+            setMessage("Artikal je dodan u kosaricu!");
+            setShowSuccessModal(true);
+            setColor("");
+            setSize("");
+          } else {
+            setMessage("Greska, molimo vas pokusajte kasnije");
+            setShowFailureModal(true);
+          }
+        } else {
+          dispatch(addProduct({ ...product, quantity, color, size }));
+          setMessage("Artikal je dodan u kosaricu!");
+          setShowSuccessModal(true);
+          setColor("");
+          setSize("");
+        }
+      } else {
+        setMessage("Artikal je vec u kosarici!");
+        setShowWarningModal(true);
+        setColor("");
+        setSize("");
+
+        return;
+      }
+    } else {
+      if (user) {
         dispatch(addProduct({ ...product, quantity, color, size }));
         const res = await updateCart(cartId, item, userId, dispatch);
         if (res === "success") {
@@ -299,24 +328,11 @@ const Product = () => {
           setShowFailureModal(true);
         }
       } else {
-        setMessage("Artikal je vec u kosarici!");
-        setShowWarningModal(true);
-        setColor("");
-        setSize("");
-
-        return;
-      }
-    } else {
-      dispatch(addProduct({ ...product, quantity, color, size }));
-      const res = await updateCart(cartId, item, userId, dispatch);
-      if (res === "success") {
-        setMessage("Artikal je dodan u kosaricu!");
+        dispatch(addProduct({ ...product, quantity, color, size }));
         setShowSuccessModal(true);
+        setMessage("Artikal je dodan u kosaricu!");
         setColor("");
         setSize("");
-      } else {
-        setMessage("Greska, molimo vas pokusajte kasnije");
-        setShowFailureModal(true);
       }
     }
   };
