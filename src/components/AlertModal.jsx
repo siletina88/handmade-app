@@ -12,8 +12,6 @@ const bounce = keyframes`
     opacity: 0;
   }
 
-
-
   100% {
     transform: translateY(0px);
     opacity: 1;
@@ -25,7 +23,6 @@ const expire = keyframes`
     transform: scaleX(1);
   }
 
-
   100% {
     transform-origin: left;
     transform: scaleX(0);
@@ -36,7 +33,6 @@ const Container = styled.div`
   position: fixed;
   opacity: 1;
   width: 100vw;
-
   z-index: 10000;
 
   top: 0;
@@ -169,7 +165,7 @@ const AlertModal = ({ trigger, type, heading, message, timeout, redirectTo }) =>
             <Container hide={close} onClick={handleClose}>
               <Wrapper>
                 <IconContainer color='#00c400'>
-                  <CheckCircleOutlineIcon></CheckCircleOutlineIcon>
+                  <CheckCircleOutlineIcon />
                 </IconContainer>
                 <MessageContainer>
                   <Heading>{heading}</Heading>
@@ -194,7 +190,7 @@ const AlertModal = ({ trigger, type, heading, message, timeout, redirectTo }) =>
             <Container hide={close} onClick={handleClose}>
               <Wrapper>
                 <IconContainer color='#df0000'>
-                  <ErrorOutlineIcon></ErrorOutlineIcon>
+                  <ErrorOutlineIcon />
                 </IconContainer>
                 <MessageContainer>
                   <Heading>{heading}</Heading>
@@ -218,7 +214,7 @@ const AlertModal = ({ trigger, type, heading, message, timeout, redirectTo }) =>
             <Container hide={close} onClick={handleClose}>
               <Wrapper>
                 <IconContainer color='#fcbe03'>
-                  <ErrorOutlineIcon></ErrorOutlineIcon>
+                  <ErrorOutlineIcon />
                 </IconContainer>
                 <MessageContainer>
                   <Heading>{heading}</Heading>

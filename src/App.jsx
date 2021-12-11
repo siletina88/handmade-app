@@ -34,12 +34,12 @@ const App = () => {
         <Route path='/cart'>
           <Cart />
         </Route>
-        <Route path='/profile/'>{user ? <Profile></Profile> : <Redirect to='/' />}</Route>
+        <Route path='/profile/'>{user ? <Profile /> : <Redirect to='/' />}</Route>
 
         <Route path='/login'>{user ? <Redirect to='/' /> : <Login />}</Route>
         <Route path='/register'>{user ? <Redirect to='/' /> : <Register />}</Route>
         <Route exact path='/verified'>
-          <UserVerificationSuccess></UserVerificationSuccess>
+          <UserVerificationSuccess />
         </Route>
       </Switch>
     </Router>

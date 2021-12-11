@@ -7,7 +7,6 @@ import { removeProduct } from "../redux/cartSlice";
 import { getCart, removeItemFromCart } from "../redux/apiCalls";
 import { getUserInfoAndCart } from "../redux/actions";
 import { getCartId } from "../customFunctions";
-
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -223,11 +222,9 @@ const Cart = () => {
   const checkUser = () => {
     if (user) {
       const id = useSelector((state) => state.user.currentUser._id);
-
       return id;
     } else {
       const id = "public";
-
       return id;
     }
   };
@@ -319,9 +316,9 @@ const Cart = () => {
                         </ProductDetail>
                         <PriceDetail>
                           <ProductAmountContainer>
-                            <RemoveIcon></RemoveIcon>
+                            <RemoveIcon />
                             <ProductAmount>{product.quantity}</ProductAmount>
-                            <AddIcon></AddIcon>
+                            <AddIcon />
                           </ProductAmountContainer>
                           <ProductPrice> {(product.product.price * product.quantity).toFixed(2)} KM</ProductPrice>
                         </PriceDetail>

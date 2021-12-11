@@ -57,7 +57,7 @@ const userSlice = createSlice({
       state.error = true;
       state.message = action.payload;
     },
-    //update user
+
     updateUserStart: (state) => {
       state.isFetching = true;
       state.error = false;

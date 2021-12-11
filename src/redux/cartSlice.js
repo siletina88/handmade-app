@@ -66,7 +66,6 @@ const cartSlice = createSlice({
     },
     updateUserCartSuccess: (state, action) => {
       state.isFetching = false;
-      // state.products.push(action.payload);
     },
     updateUserCartFailure: (state, action) => {
       state.isFetching = false;
@@ -80,7 +79,6 @@ const cartSlice = createSlice({
       state.products = [];
       state.quantity = 0;
       state.total = 0;
-      // state.products.push(action.payload);
     },
     clearUserCartFailure: (state, action) => {
       state.isFetching = false;

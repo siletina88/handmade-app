@@ -5,7 +5,6 @@ import { mobile, tablet } from "../responsive";
 
 const Container = styled.div`
   display: flex;
-
   background-color: #eae6e5;
   gap: 20px;
   padding: 20px;

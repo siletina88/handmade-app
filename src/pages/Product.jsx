@@ -274,7 +274,7 @@ const Product = () => {
     const item = { product, quantity: Number(quantity), color, size };
 
     if (cartItems.length > 0) {
-      const checkIfExists = async () => {
+      const checkIfExists = () => {
         let check = false;
         cartItems.map((cartItem) => {
           if (product._id === cartItem.product._id && cartItem.color === color && cartItem.size === size) {
@@ -284,7 +284,7 @@ const Product = () => {
         return check;
       };
 
-      const existInCart = await checkIfExists();
+      const existInCart = checkIfExists();
 
       if (!existInCart) {
         if (user) {

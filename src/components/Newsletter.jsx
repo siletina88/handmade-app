@@ -1,6 +1,4 @@
-import SendIcon from "@mui/icons-material/Send";
 import MarkEmailReadSharpIcon from "@mui/icons-material/MarkEmailReadSharp";
-
 import styled from "styled-components";
 import { mobile } from "../responsive";
 

@@ -8,12 +8,11 @@ const Home = () => {
   return (
     <>
       <Announcment />
-
-      <Slider></Slider>
-      <Categories></Categories>
-      <Products></Products>
-      <Newsletter></Newsletter>
-      <Footer></Footer>
+      <Slider />
+      <Categories />
+      <Products />
+      <Newsletter />
+      <Footer />
     </>
   );
 };

@@ -8,8 +8,6 @@ const bounce = keyframes`
     transform: translateY(-600px);
     opacity: 0;
   }
-
-
   100% {
     transform: translateY(0px);
     opacity: 1;
@@ -19,7 +17,6 @@ const darken = keyframes`
   0% {
     opacity: 0;
   }
-
   100% {
     opacity: 1;
   }

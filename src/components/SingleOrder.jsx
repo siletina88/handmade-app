@@ -82,7 +82,6 @@ const SingleOrder = ({ createdAt, id, total, products, status, allProducts, addr
     <Container>
       <TD>{date}</TD>
       <TD color={color}>{stanje}</TD>
-
       <TD width='fit-content'>
         <ImageContainer>
           {x.map((product) => (

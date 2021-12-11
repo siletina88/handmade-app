@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import SearchIcon from "@mui/icons-material/Search";
 import { Badge, IconButton } from "@mui/material";
-import { NoEncryption, ShoppingCart } from "@mui/icons-material";
+import { ShoppingCart } from "@mui/icons-material";
 import ShopTwoIcon from "@mui/icons-material/ShopTwo";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
@@ -32,11 +32,10 @@ const Container = styled.div`
       display: flex;
       width: 100%;
       align-items: center;
-      position: sticky;
+      position: static;
       top: 0;
       justify-content: space-between;
       transform: translateY(-60px);
-
       box-shadow: 0px 2px 2px #12130f5a;
       ${tablet({ transform: "translateY(-60px)" })};
       ${mobile({ position: "sticky", top: "0", transform: "translateY(0px)", boxShadow: "none" })};

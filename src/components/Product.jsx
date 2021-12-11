@@ -122,13 +122,6 @@ const Container = styled.div`
     opacity: 1;
   }
 `;
-// const Circle = styled.div`
-//   width: 200px;
-//   height: 200px;
-//   border-radius: 50%;
-//   background-color: white;
-//   position: absolute;
-// `;
 
 const ImgContainer = styled.div`
   display: flex;
